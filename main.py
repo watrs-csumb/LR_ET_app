@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
-from datetime import datetime
 
 from ipyleaflet import GeoJSON, Map
 from shiny import reactive
@@ -14,9 +13,7 @@ from shinywidgets import render_widget
 plt.style.use('bmh')
 
 # region Map layer and GDF Loading
-here = Path(__file__)
-
-hydrologic_path = Path(here.parent / 'geodata' / 'hydrologic_regions.geojson')
+hydrologic_path = Path(__file__).resolve().parent / 'geodata' / 'hydrologic_regions.geojson'
 with open(hydrologic_path, 'r') as f:
     hydrologic_regions = json.load(f)
 
@@ -35,7 +32,7 @@ hydrologic_layer = GeoJSON(
 hydrologic_gdf = gpd.read_file(hydrologic_path)
 hydrologic_gdf.set_geometry('geometry', inplace=True)
 
-subbasin_path = Path(here.parent / 'geodata' / 'subbasins.geojson')
+subbasin_path = Path(__file__).resolve().parent / 'geodata' / 'subbasins.geojson'
 with open(subbasin_path, 'r') as f:
     subbasins = json.load(f)
 
@@ -54,7 +51,7 @@ subbasin_layer = GeoJSON(
 subbasin_gdf = gpd.read_file(subbasin_path)
 subbasin_gdf.set_geometry('geometry', inplace=True)
 
-overdrafted_path = Path(here.parent / 'geodata' / 'overdrafted_subbasins.geojson')
+overdrafted_path = Path(__file__).resolve().parent / 'geodata' / 'overdrafted_subbasins.geojson'
 with open(overdrafted_path, 'r') as f:
     overdrafted_basins = json.load(f)
 
@@ -71,7 +68,7 @@ overdrafted_layer = GeoJSON(
 overdrafted_gdf = gpd.read_file(overdrafted_path)
 overdrafted_gdf.set_geometry('geometry', inplace=True)
 
-gsa_path = Path(here.parent / 'geodata' / 'groundwater_sustainability_agencies.geojson')
+gsa_path = Path(__file__).resolve().parent / 'geodata' / 'groundwater_sustainability_agencies.geojson'
 with open(gsa_path, 'r') as f:
     gsa_regions = json.load(f)
 
@@ -97,18 +94,29 @@ gsa_gdf = gpd.read_file(gsa_path)
 gsa_gdf.set_geometry('geometry', inplace=True)
 # endregion
 
-geodata = pd.read_csv('geodata/data.csv')
 
 # hydrologic_summary = pd.read_csv('regions_ag_mask_open_data.csv')[['HR_NAME', 'area_acres', 'year_month', 'year', 'month', 'timestep', 'ENSEMBLE_ET_acre_ft']]
 # subbasin_summary = pd.read_csv('gw_basin_ag_mask_open_data.csv')[['Basin_Subb', 'area_acres', 'year_month', 'year', 'month', 'timestep', 'ENSEMBLE_ET_acre_ft']]
-hydrologic_summary = pd.read_csv('hydrologic_summary.csv')
-subbasin_summary = pd.read_csv('subbasin_summary.csv')
-gsa_summary = pd.read_csv('gsa_summary.csv')
-hydrologic_crop_summary = pd.read_csv('hydrologic_crop_summary_old.csv')
-subbasin_crop_summary = pd.read_csv('subbasin_crop_summary.csv')
-gsa_crop_summary = pd.read_csv('gsa_crop_summary.csv')
+hydrologic_summary_path = Path(__file__).resolve().parent / 'data_summaries' / 'hydrologic_summary.csv'
+hydrologic_summary = pd.read_csv(hydrologic_summary_path)
 
-bridge = pd.read_csv('bridge_table.csv')
+subbasin_summary_path = Path(__file__).resolve().parent / 'data_summaries' / 'subbasin_summary.csv'
+subbasin_summary = pd.read_csv(subbasin_summary_path)
+
+gsa_summary_path = Path(__file__).resolve().parent / 'data_summaries' / 'gsa_summary.csv'
+gsa_summary = pd.read_csv(gsa_summary_path)
+
+hydrologic_crop_summary_path = Path(__file__).resolve().parent / 'data_summaries' / 'hydrologic_crop_summary.csv'
+hydrologic_crop_summary = pd.read_csv(hydrologic_crop_summary_path)
+
+subbasin_crop_summary_path = Path(__file__).resolve().parent / 'data_summaries' / 'subbasin_crop_summary.csv'
+subbasin_crop_summary = pd.read_csv(subbasin_crop_summary_path)
+
+gsa_crop_summary_path = Path(__file__).resolve().parent / 'data_summaries' / 'gsa_crop_summary.csv'
+gsa_crop_summary = pd.read_csv(gsa_crop_summary_path)
+
+bridge_path = Path(__file__).resolve().parent / 'bridge_table.csv'
+bridge = pd.read_csv(bridge_path)
 
 # Change units from mm to feet
 # hydrologic_summary['value'] = hydrologic_summary['value'] / 304.8
@@ -570,4 +578,3 @@ with ui.layout_columns(col_widths=[6, 6]):
 
                 crops = get_top_crops(selection_type, selection())
                 return get_crop_annual_total(selection_type, selection(), crops, value_type)
-

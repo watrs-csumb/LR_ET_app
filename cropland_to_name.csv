@@ -1,0 +1,119 @@
+﻿code,cadwr_crop
+C,Citrus
+C1,Grapefruit
+C10,Eucalyptus
+C11,Mixed subtropical
+C2,Lemons
+C3,Oranges
+C4,Dates
+C5,Avocados
+C6,Olives
+C7,Subtropical
+C8,Kiwis
+C9,Jojoba
+D,Deciduous fruits and nuts
+D1,Apples
+D10,Miscellaneous deciduous
+D11,Mixed deciduous
+D12,Almonds
+D13,Walnuts
+D14,Pistachios
+D15,Pomegranates
+D16,Plums
+D17,Pecans
+D2,Apricots
+D3,Cherries
+D5,Peaches and nectarines
+D6,Pears
+D6,Pears
+D7,Plums
+D8,Prunes
+D9,Figs
+F,Field Crops - No Subclass
+F1,Cotton
+F10,Beans (dry)
+F11,Field Misc.
+F12,Sunflowers
+F13,Hybrid sorghum/Sudan
+F14,Millet
+F15,Sugar cane
+F16,Corn
+F2,Safflower
+F3,Flax
+F4,Hops
+F5,Sugar beets
+F5,Sugar beets
+F6,Corn
+F7,Grain sorghum
+F8,Sudan
+F9,Castor beans
+G,Grain and Hay
+G1,Barley
+G2,Wheat
+G3,Oats
+G6,Misc. Grain and Hay
+G7,Mixed grain and hay
+I1,Fallow/Idle
+I2,Fallow/Idle
+I4,Fallow/Idle
+NR,Riparian Vegetation
+NR1,"Marsh lands, tules and sedges"
+NR2,Natural high water table meadow
+NR3,"Trees, shrubs or other larger stream side or watercourse vegetation"
+NR4,"Seasonal duck marsh, dry or only partially wet during summer"
+NR5,"Permanent duck marsh, flooded during summer"
+P,Pasture
+P1,Alfalfa
+P10,Klein grass
+P2,Clover
+P3,Mixed pasture
+P4,Native pasture
+P5,Induced high water table native pasture
+P6,Miscellaneous grasses
+P7,Turf Farms
+P8,Bermuda grass
+P9,Rye grass
+R,Rice
+R1,Rice
+R2,Wild Rice
+T,Truck Crops
+T1,Artichokes
+T10,Onions and Garlic
+T11,Peas
+T12,Potatoes
+T13,Sweet Potatoes
+T14,Spinach
+T15,Tomatoes (Processing)
+T16,"Flowers, nursery and Christmas Tree Farms"
+T17,Truck Crops Mix
+T18,Truck Crops - Misc.
+T19,Blueberries
+T2,Asparagus
+T20,Strawberries
+T21,Peppers
+T22,Broccoli
+T23,Cabbage
+T24,Cauliflower
+T25,Brussels sprouts
+T26,Tomatoes
+T27,Greenhouse
+T28,Blueberries
+T29,Asian leafy vegetables
+T3,Beans (green)
+T30,Lettuce
+T31,Potatoes
+T32,Tomatoes (all)
+T4,Cole crops
+T4,Broccoli
+T6,Carrots
+T7,Celery
+T8,Lettuce (all types)
+T9,"Melons, Squash, and Cucumbers"
+U,Developed
+UL2,Urban Landscape - Golf Course Irrigated
+V,Vineyards
+V1,Table grapes
+V2,Wine grapes
+V3,Raisin grapes
+X,Fallow/Idle
+YP,Young Orchard

@@ -1,0 +1,19 @@
+# Environment file
+.env
+
+# Personal testing and notes files
+ztest.py
+znotes.txt
+
+# Files that are too big to be pushed to GitHub :(
+geodata/data.csv
+geodata/data_with_crops.csv
+geodata/fields.geojson
+geodata/landiq_results_2018.geojson
+geodata/landiq_results_2019.geojson
+geodata/landiq_results_2020.geojson
+geodata/landiq_results_2021.geojson
+geodata/landiq_results_2022.geojson
+geodata/landiq_results_2023.geojson
+geodata/landiq_results_2024.geojson
+eto_CAproject.csv
