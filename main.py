@@ -118,11 +118,6 @@ gsa_crop_summary = pd.read_csv(gsa_crop_summary_path)
 bridge_path = Path(__file__).resolve().parent / 'bridge_table.csv'
 bridge = pd.read_csv(bridge_path)
 
-# Change units from mm to feet
-# hydrologic_summary['value'] = hydrologic_summary['value'] / 304.8
-# subbasin_summary['value'] = subbasin_summary['value'] / 304.8
-# gsa_summary['value'] = gsa_summary['value'] / 304.8
-
 # for year in range(2004, 2025):
 #     start = datetime(year - 1, 11, 1)
 #     end = datetime(year, 10, 31)
@@ -196,23 +191,23 @@ def get_annual_total(selection_type: str, region: str, value: str = 'ET'):
             summary['SUM'] = summary['SUM'] * 10  # GSAs are extra small, so make units a little smaller to match
         
         if value == 'ET':
-            summary['SUM'] = summary['SUM'] / 1000000  # by 1,000,000 mm
+            summary['SUM'] = summary['SUM'] / 10000  # by 10,000 acre-ft
             fig, ax = plt.subplots()
             summary[summary['dataset'] == 'ensemble'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
             ax.set_ylim(bottom = summary[summary['dataset'] == 'ensemble']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'ensemble']['SUM'].max() * 1.05)
-            plt.ylabel(f'Total ET ({"hundred thousands" if selection_type == "gsa" else "millions"} of mm)')
+            plt.ylabel(f'Total ET ({"thousands" if selection_type == "gsa" else "ten thousands"} of acre-ft)')
         elif value == 'PR':
-            summary['SUM'] = summary['SUM'] / 100000  # by 100,000 mm
+            summary['SUM'] = summary['SUM'] / 1000  # by 1,000 acre-ft
             fig, ax = plt.subplots()
             summary[summary['dataset'] == 'gridmet_pr'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
             ax.set_ylim(bottom = summary[summary['dataset'] == 'gridmet_pr']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'gridmet_pr']['SUM'].max() * 1.05)
-            plt.ylabel(f'Total PR ({"ten thousands" if selection_type == "gsa" else "hundred thousands"} of mm)')
+            plt.ylabel(f'Total PR ({"hundreds" if selection_type == "gsa" else "thousands"} of acre-ft)')
         elif value == 'Net ET':
-            summary['SUM'] = summary['SUM'] / 1000000  # by 1,000,000 mm
+            summary['SUM'] = summary['SUM'] / 10000  # by 10,000 acre-ft
             fig, ax = plt.subplots()
             summary[summary['dataset'] == 'net_et'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
             ax.set_ylim(bottom = summary[summary['dataset'] == 'net_et']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'net_et']['SUM'].max() * 1.05)
-            plt.ylabel(f'Total Net ET ({"hundred thousands" if selection_type == "gsa" else "millions"} of mm)')
+            plt.ylabel(f'Total Net ET ({"thousands" if selection_type == "gsa" else "ten thousands"} of acre-ft)')
 
         plt.title(f'Annual Total {value} - {region}')
         plt.xlabel('Water Year')
@@ -255,7 +250,7 @@ def get_annual_dist(selection_type: str, region: str, value: str = 'ET'):
         # ax.axhline(0, style='--')
 
         plt.xlabel('Water Year')
-        plt.ylabel(f'Total {value} (mm)')
+        plt.ylabel(f'Total {value} (acre-ft)')
         plt.title(f'Annual {value} Distribution - {region}')
         plt.tight_layout()
         return ax
@@ -294,7 +289,7 @@ def get_total(selection_type: str, region: str, value: str = 'ET'):
         )
         ax.text(
             0.5, 0.5, 
-            f'Total {value}: {total:,.2f} mm', 
+            f'Total {value}: {total:,.2f} acre-ft', 
             fontsize=22, 
             color='black',
             ha='center',
@@ -302,7 +297,7 @@ def get_total(selection_type: str, region: str, value: str = 'ET'):
         )
         ax.text(
             0.5, 0.2, 
-            f'Mean {value}: {mean:,.2f} mm', 
+            f'Mean {value}: {mean:,.2f} acre-ft', 
             fontsize=22, 
             color='black',
             ha='center',
@@ -313,139 +308,61 @@ def get_total(selection_type: str, region: str, value: str = 'ET'):
     else:
         return empty_plot()
 
-def get_top_crops(selection_type: str, region: str) -> list[str]:
-    '''Return list of top 10 most common crops in a specified region across water years 2018 - 2024'''
+def select_crops(selection_type: str, region: str, crop_display_setting: str = 'most_common') -> list[str]:
+    '''Return list of 10 crops based on provided setting in a specified region across water years 2018 - 2024'''
     if selection_type == 'i03':
         selected_region = bridge[bridge['HR_NAME'] == region]
+        summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['dataset'] == 'ensemble') & (hydrologic_crop_summary['water_year'] == 0)]
     elif selection_type == 'i08':
         code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
         selected_region = bridge[bridge['Basin_Subb'] == code]
+        summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['dataset'] == 'ensemble') & (subbasin_crop_summary['water_year'] == 0)]
     elif selection_type == 'gsa':
         code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
         selected_region = bridge[bridge['GSA_ID'] == code]
+        summary = gsa_crop_summary[(gsa_crop_summary['GSA_ID'] == code) & (gsa_crop_summary['dataset'] == 'ensemble') & (gsa_crop_summary['water_year'] == 0)]
     else:
         return []
 
-    return selected_region[['crop_2018', 'crop_2019', 'crop_2020', 'crop_2021', 'crop_2022', 'crop_2023', 'crop_2024']].stack().value_counts().head(10).index.values
-
-def get_crop_annual_total(selection_type: str, region: str, crops: list[str], value: str = 'ET'):
-    if selection() != '':
-        # if selection_type == 'i03':
-        #     summary = hydrologic_summary[hydrologic_summary['HR_NAME'] == region]
-        if selection_type == 'i08':
-            code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
-            summary = subbasin_crop_summary[subbasin_crop_summary['Basin_Subb'] == code]
-            # print(summary.info())
-            # print(summary[summary['crop'] == 'Almonds'])
-            # print('+=+=+=+')
-        # elif selection_type == 'gsa':
-        #     code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
-        #     summary = gsa_summary[gsa_summary['GSA_ID'] == code]
-        #     summary['SUM'] = summary['SUM'] * 10  # GSAs are extra small, so make units a little smaller to match
-        
-        if value == 'ET':
-            # summary['SUM'] = summary['SUM'] / 1000000  # by 1,000,000 mm
-            fig, ax = plt.subplots()
-            for crop in crops:
-                print(crop)
-                print(summary[(summary['dataset'] == 'ensemble') & (summary['crop'] == crop)])
-                print('='*70)
-                summary[(summary['dataset'] == 'ensemble') & (summary['crop'] == crop)].plot(x='water_year', y='SUM', label=crop, marker='o', rot=0, ax=ax)
-                # summary[(summary['dataset'] == 'ensemble') & (summary['crop']) == crop].groupby('water_year').sum().plot(x='water_year', y='SUM', marker='o', ax=ax, rot=0)
-
-            # ax.set_ylim(bottom = summary[summary['dataset'] == 'ensemble']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'ensemble']['SUM'].max() * 1.05)
-            # plt.ylabel(f'Total ET ({"hundred thousands" if selection_type == "gsa" else "millions"} of mm)')
-        # elif value == 'PR':
-        #     summary['SUM'] = summary['SUM'] / 100000  # by 100,000 mm
-        #     fig, ax = plt.subplots()
-        #     summary[summary['dataset'] == 'gridmet_pr'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
-        #     ax.set_ylim(bottom = summary[summary['dataset'] == 'gridmet_pr']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'gridmet_pr']['SUM'].max() * 1.05)
-        #     plt.ylabel(f'Total PR ({"ten thousands" if selection_type == "gsa" else "hundred thousands"} of mm)')
-        # elif value == 'Net ET':
-        #     summary['SUM'] = summary['SUM'] / 1000000  # by 1,000,000 mm
-        #     fig, ax = plt.subplots()
-        #     summary[summary['dataset'] == 'net_et'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
-        #     ax.set_ylim(bottom = summary[summary['dataset'] == 'net_et']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'net_et']['SUM'].max() * 1.05)
-        #     plt.ylabel(f'Total Net ET ({"hundred thousands" if selection_type == "gsa" else "millions"} of mm)')
-
-        plt.title(f'Annual Total {value} - {region}')
-        plt.xlabel('Water Year')
-        ax.legend(
-            loc='upper center', 
-            bbox_to_anchor=(0.5, -0.3), # Anchors the top of the legend below the plot (y = -0.15)
-            ncol=3,                      # Splits the labels horizontally into 4 columns
-            # borderaxespad=0.,            # Removes extra padding between axes and bounding box
-            # frameon=True                 # Set to False if you want to save even more vertical space
-        )
-        # plt.tight_layout()
-        return ax
+    if crop_display_setting == 'most_common':
+        return list(selected_region[['crop_2018', 'crop_2019', 'crop_2020', 'crop_2021', 'crop_2022', 'crop_2023', 'crop_2024']].stack().value_counts().head(10).index.values) 
+    elif crop_display_setting == 'most_et':
+        return list(summary.sort_values('MEAN', ascending=False).head(10)['crop'].values)
+    elif crop_display_setting == 'least_et':
+        return list(summary.sort_values('MEAN', ascending=True).head(10)['crop'].values)
+    elif crop_display_setting == 'mix':
+        return list(summary.sort_values('MEAN', ascending=False).head(5)['crop'].values) + list(summary.sort_values('MEAN', ascending=True).head(5)['crop'].values)
+    elif crop_display_setting == 'custom':
+        return []
     else:
-        return empty_plot()
+        return []
 
-def get_crop_annual_dist(selection_type: str, region: str, crops: list[str], value: str = 'ET'):
+
+def get_crop_comparison(selection_type: str, region: str, crops: list[str], value: str = 'ET'):
     if selection() != '':
-        # if selection_type == 'i03':
-        #     summary = hydrologic_summary[hydrologic_summary['HR_NAME'] == region]
+        if selection_type == 'i03':
+            summary = hydrologic_summary[hydrologic_summary['HR_NAME'] == region]
         if selection_type == 'i08':
             code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
-            summary = subbasin_summary[subbasin_summary['Basin_Subb'] == code]
-        # elif selection_type == 'gsa':
-        #     code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
-        #     summary = gsa_summary[gsa_summary['GSA_ID'] == code]
-        #     summary['SUM'] = summary['SUM'] * 10  # GSAs are extra small, so make units a little smaller to match
+            summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['crop'].isin(crops)) & (subbasin_crop_summary['water_year'] == 0)]
+        elif selection_type == 'gsa':
+            code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
+            summary = gsa_summary[gsa_summary['GSA_ID'] == code]
+            # summary['SUM'] = summary['SUM'] * 10  # GSAs are extra small, so make units a little smaller to match
         
         if value == 'ET':
-            years = [2018, 2019, 2020, 2021, 2022, 2023, 2024]
+            fig, ax = plt.subplots()
+            summary[summary['dataset'] == 'ensemble'].sort_values('MEAN', ascending=False).plot.barh(x='crop', y='MEAN', legend=False, ax=ax)
+        elif value == 'PR':
+            fig, ax = plt.subplots()
+            summary[summary['dataset'] == 'gridmet_pr'].sort_values('MEAN', ascending=False).plot.barh(x='crop', y='MEAN', legend=False, ax=ax)
+        elif value == 'Net ET':
+            fig, ax = plt.subplots()
+            summary[summary['dataset'] == 'net_et'].sort_values('MEAN', ascending=False).plot.barh(x='crop', y='MEAN', legend=False, ax=ax)
 
-            n_years = len(years)
-            n_crops = len(crops)
-            group_width = 0.8                # total width per water_year group
-            box_width = group_width / n_crops
-
-            fig, ax = plt.subplots(figsize=(11, 4))
-
-            for i, crop in enumerate(crops):
-                positions = [x + (i - (n_crops-1)/2) * box_width for x in range(n_years)]
-                data_by_year = [
-                    (summary.loc[(summary["crop"] == crop) & (summary["water_year"] == yr), "delta_et"] / 25.4)
-                    for yr in years
-                ]
-                ax.boxplot(
-                    data_by_year,
-                    positions=positions,
-                    widths=box_width * 0.9,
-                    patch_artist=True,
-                    boxprops=dict(alpha=0.7),
-                    medianprops=dict(color="black", linewidth=1.2),
-                    flierprops=dict(marker="o", markersize=2, alpha=0),
-                    whiskerprops=dict(linewidth=1),
-                    capprops=dict(linewidth=1),
-                )
-
-            ax.axhline(0, color="k", linewidth=1, linestyle="--")
-            ax.set_xticks(range(n_years))
-            ax.set_xticklabels(years, rotation=0, ha="center")
-            ax.set_xlabel("Water year")
-            ax.set_ylabel("Agricultural ET (inches)")
-            ax.set_title("")
-
-            # plt.ylabel(f'Total ET ({"hundred thousands" if selection_type == "gsa" else "millions"} of mm)')
-
-        # elif value == 'PR':
-        #     summary['SUM'] = summary['SUM'] / 100000  # by 100,000 mm
-        #     fig, ax = plt.subplots()
-        #     summary[summary['dataset'] == 'gridmet_pr'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
-        #     ax.set_ylim(bottom = summary[summary['dataset'] == 'gridmet_pr']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'gridmet_pr']['SUM'].max() * 1.05)
-        #     plt.ylabel(f'Total PR ({"ten thousands" if selection_type == "gsa" else "hundred thousands"} of mm)')
-        # elif value == 'Net ET':
-        #     summary['SUM'] = summary['SUM'] / 1000000  # by 1,000,000 mm
-        #     fig, ax = plt.subplots()
-        #     summary[summary['dataset'] == 'net_et'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
-        #     ax.set_ylim(bottom = summary[summary['dataset'] == 'net_et']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'net_et']['SUM'].max() * 1.05)
-        #     plt.ylabel(f'Total Net ET ({"hundred thousands" if selection_type == "gsa" else "millions"} of mm)')
-
-        plt.title(f'Annual Total {value} - {region}')
-        plt.xlabel('Water Year')
+        plt.title(f'Mean Annual {value} by Crop - {region}')
+        plt.xlabel(f'Mean Annual {value} (acre-ft)')
+        plt.ylabel('Top 10 Crop Types')
         # plt.tight_layout()
         return ax
     else:
@@ -458,8 +375,8 @@ ui.page_opts(fillable=True)
 with ui.sidebar():
     'Filters:'
 
-with ui.layout_columns(col_widths=[6, 6]):
-    with ui.layout_columns(col_widths=[12, 6, 6]):
+with ui.layout_columns(col_widths=[4, 8]):
+    with ui.layout_columns(col_widths=[12, 12]):
         with ui.card(full_screen=True):
             m = Map(center=(37.5, -121.2), zoom=6)
 
@@ -540,41 +457,62 @@ with ui.layout_columns(col_widths=[6, 6]):
             @render.text
             def name_output():
                 return f'{selection()}'
-            
-        with ui.value_box(height='60px'):
-            'Region ID'
-            @render.text
-            def code_output():
-                return get_data(selection_type=input.selection_type.get(), region=selection(), data='id').title()
-        
-    with ui.layout_columns(col_widths=[12, 12]):
-        with ui.navset_card_tab(id='tab'):
-            with ui.nav_panel('Annual Total Values'):
-                @render.plot
-                def annual_total_plot():
-                    value_type = input.value_type.get()
-                    selection_type = input.selection_type.get()
-                    return get_annual_total(selection_type, selection(), value_type)
 
-            with ui.nav_panel('Annual Distributions'):
-                @render.plot
-                def annual_dist_plot():
-                    value_type = input.value_type.get()
-                    selection_type = input.selection_type.get()
-                    return get_annual_dist(selection_type, selection(), value_type)
+    with ui.navset_pill(id='tab'):
+        with ui.nav_panel('Regional Crop Data'):
+            with ui.layout_columns(col_widths=[3, 9]):
+                with ui.card():
+                    ui.input_radio_buttons(
+                        'crop_display_setting',
+                        'Crop Types to Display:',
+                        {
+                            'most_common': ui.span('Most Common'),
+                            'most_et': ui.span('Highest Mean Consumptive Water Use'),
+                            'least_et': ui.span('Lowest Mean Consumptive Water Use'),
+                            'mix': ui.span('Highest and Lowest Mean Consumptive Water Use'),
+                            'custom': ui.span('Custom Selected')
+                        },
+                        selected='most_common'
+                    )
 
-            with ui.nav_panel('Overall Values'):
-                @render.plot
-                def total_plot():
-                    value_type = input.value_type.get()
-                    selection_type = input.selection_type.get()
-                    return get_total(selection_type, selection(), value_type)
+                
+                with ui.card(full_screen=True):
+                    @render.plot
+                    def crop_plot():
+                        value_type = input.value_type.get()
+                        selection_type = input.selection_type.get()
+                        crop_display_setting = input.crop_display_setting.get()
 
-        with ui.card(full_screen=True):
-            @render.plot
-            def crop_plot():
-                value_type = input.value_type.get()
-                selection_type = input.selection_type.get()
+                        crops = select_crops(selection_type, selection(), crop_display_setting)
+                        return get_crop_comparison(selection_type, selection(), crops, value_type)
 
-                crops = get_top_crops(selection_type, selection())
-                return get_crop_annual_total(selection_type, selection(), crops, value_type)
+        with ui.nav_panel('Water Savings Calculator'):
+            with ui.card():
+                'Coming soon to a store near you!'
+
+
+        with ui.nav_panel('Overall Regional Data'):
+            with ui.layout_columns(col_widths=[12]):
+                with ui.navset_card_tab(id='subtab'):
+                    with ui.nav_panel('Annual Total Values'):
+                        @render.plot
+                        def annual_total_plot():
+                            value_type = input.value_type.get()
+                            selection_type = input.selection_type.get()
+                            return get_annual_total(selection_type, selection(), value_type)
+
+                    with ui.nav_panel('Annual Distributions'):
+                        @render.plot
+                        def annual_dist_plot():
+                            value_type = input.value_type.get()
+                            selection_type = input.selection_type.get()
+                            return get_annual_dist(selection_type, selection(), value_type)
+
+                    with ui.nav_panel('Overall Values'):
+                        @render.plot
+                        def total_plot():
+                            value_type = input.value_type.get()
+                            selection_type = input.selection_type.get()
+                            return get_total(selection_type, selection(), value_type)
+
+

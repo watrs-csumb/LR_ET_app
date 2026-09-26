@@ -7,6 +7,9 @@ bridge = pd.read_csv('bridge_table.csv')
 bridge = bridge[bridge['crop_2024'].notna()]
 # Also filter out fields that have no crops in any LandIQ 2018 - 2024
 bridge = bridge[bridge['crop_2018'].notna() | bridge['crop_2019'].notna() | bridge['crop_2020'].notna() | bridge['crop_2021'].notna() | bridge['crop_2022'].notna() | bridge['crop_2023'].notna() | bridge['crop_2024'].notna()]
+# Also also filter out fields that have "nursery" in the crop name, as these are likely greenhouses
+bridge = bridge[(~bridge['crop_2018'].str.contains('nursery')) & (~bridge['crop_2019'].str.contains('nursery')) & (~bridge['crop_2020'].str.contains('nursery')) & (~bridge['crop_2021'].str.contains('nursery')) & (~bridge['crop_2022'].str.contains('nursery')) & (~bridge['crop_2023'].str.contains('nursery')) & (~bridge['crop_2024'].str.contains('nursery'))]
+
 
 hydrologic_path = Path(__file__).resolve().parent.parent / 'geodata' / 'hydrologic_regions.geojson'
 hydrologic_regions = gpd.read_file(hydrologic_path)
