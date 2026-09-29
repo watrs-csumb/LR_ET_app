@@ -343,13 +343,13 @@ def select_crops(selection_type: str, region: str, crop_display_setting: str = '
 def get_crops_for_selectize(selection_type: str, region: str) -> dict[str, str]:
     if selection() != '':
         if selection_type == 'i03':
-            crops = hydrologic_crop_summary[hydrologic_summary['HR_NAME'] == region]['crop'].sort_values().unique()
+            crops = hydrologic_crop_summary[hydrologic_crop_summary['HR_NAME'] == region]['crop'].sort_values().unique()
         if selection_type == 'i08':
             code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
-            crops = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code)]['crop'].sort_values().unique()
+            crops = subbasin_crop_summary[subbasin_crop_summary['Basin_Subb'] == code]['crop'].sort_values().unique()
         elif selection_type == 'gsa':
             code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
-            crops = gsa_summary[gsa_summary['GSA_ID'] == code]['crop'].sort_values().unique()
+            crops = gsa_crop_summary[gsa_crop_summary['GSA_ID'] == code]['crop'].sort_values().unique()
 
         all_crops = {crop: crop for crop in crops}
         return all_crops
@@ -359,13 +359,13 @@ def get_crops_for_selectize(selection_type: str, region: str) -> dict[str, str]:
 def get_crop_comparison(selection_type: str, region: str, crops: list[str], value: str = 'ET'):
     if selection() != '':
         if selection_type == 'i03':
-            summary = hydrologic_crop_summary[hydrologic_crop_summary['HR_NAME'] == region & (hydrologic_crop_summary['crop'].isin(crops)) & (hydrologic_crop_summary['water_year'] == 0)]
+            summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['crop'].isin(crops)) & (hydrologic_crop_summary['water_year'] == 0)]
         if selection_type == 'i08':
             code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
             summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['crop'].isin(crops)) & (subbasin_crop_summary['water_year'] == 0)]
         elif selection_type == 'gsa':
             code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
-            summary = gsa_crop_summary[gsa_crop_summary['GSA_ID'] == code & (gsa_crop_summary['crop'].isin(crops)) & (gsa_crop_summary['water_year'] == 0)]
+            summary = gsa_crop_summary[(gsa_crop_summary['GSA_ID'] == code) & (gsa_crop_summary['crop'].isin(crops)) & (gsa_crop_summary['water_year'] == 0)]
         
         if value == 'ET':
             fig, ax = plt.subplots()
