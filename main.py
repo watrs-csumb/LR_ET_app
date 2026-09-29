@@ -165,12 +165,6 @@ def get_data(selection_type: str, region: str, data: str = 'id'):
 
         if len(gdf) > 0:
             return gdf.iloc[0]
-    elif data == 'ET':
-        return 1.0
-    elif data == 'PR':
-        return 2.2
-    elif data == 'Net ET':
-        return 3.33
     
     return '0.0'
 
@@ -310,33 +304,36 @@ def select_crops(selection_type: str, region: str, crop_display_setting: str = '
         
         For "custom", returns a list of exactly one value: "custom"
     '''
-    if crop_display_setting == 'custom':
-        return ['custom']
+    if selection() != '':
+        if crop_display_setting == 'custom':
+            return ['custom']
 
-    if selection_type == 'i03':
-        selected_region = bridge[bridge['HR_NAME'] == region]
-        summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['dataset'] == 'ensemble') & (hydrologic_crop_summary['water_year'] == 0)]
-    elif selection_type == 'i08':
-        code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
-        selected_region = bridge[bridge['Basin_Subb'] == code]
-        summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['dataset'] == 'ensemble') & (subbasin_crop_summary['water_year'] == 0)]
-    elif selection_type == 'gsa':
-        code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
-        selected_region = bridge[bridge['GSA_ID'] == code]
-        summary = gsa_crop_summary[(gsa_crop_summary['GSA_ID'] == code) & (gsa_crop_summary['dataset'] == 'ensemble') & (gsa_crop_summary['water_year'] == 0)]
-    else:
-        return []
+        if selection_type == 'i03':
+            selected_region = bridge[bridge['HR_NAME'] == region]
+            summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['dataset'] == 'ensemble') & (hydrologic_crop_summary['water_year'] == 0)]
+        elif selection_type == 'i08':
+            code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
+            selected_region = bridge[bridge['Basin_Subb'] == code]
+            summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['dataset'] == 'ensemble') & (subbasin_crop_summary['water_year'] == 0)]
+        elif selection_type == 'gsa':
+            code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
+            selected_region = bridge[bridge['GSA_ID'] == code]
+            summary = gsa_crop_summary[(gsa_crop_summary['GSA_ID'] == code) & (gsa_crop_summary['dataset'] == 'ensemble') & (gsa_crop_summary['water_year'] == 0)]
+        else:
+            return []
 
-    if crop_display_setting == 'most_common':
-        return list(selected_region[['crop_2018', 'crop_2019', 'crop_2020', 'crop_2021', 'crop_2022', 'crop_2023', 'crop_2024']].stack().value_counts().head(10).index.values) 
-    elif crop_display_setting == 'most_et':
-        return list(summary.sort_values('MEAN', ascending=False).head(10)['crop'].values)
-    elif crop_display_setting == 'least_et':
-        return list(summary.sort_values('MEAN', ascending=True).head(10)['crop'].values)
-    elif crop_display_setting == 'mix':
-        return list(summary.sort_values('MEAN', ascending=False).head(5)['crop'].values) + list(summary.sort_values('MEAN', ascending=True).head(5)['crop'].values)
-    elif crop_display_setting == 'custom':
-        return []
+        if crop_display_setting == 'most_common':
+            return list(selected_region[['crop_2018', 'crop_2019', 'crop_2020', 'crop_2021', 'crop_2022', 'crop_2023', 'crop_2024']].stack().value_counts().head(10).index.values) 
+        elif crop_display_setting == 'most_et':
+            return list(summary.sort_values('MEAN', ascending=False).head(10)['crop'].values)
+        elif crop_display_setting == 'least_et':
+            return list(summary.sort_values('MEAN', ascending=True).head(10)['crop'].values)
+        elif crop_display_setting == 'mix':
+            return list(summary.sort_values('MEAN', ascending=False).head(5)['crop'].values) + list(summary.sort_values('MEAN', ascending=True).head(5)['crop'].values)
+        elif crop_display_setting == 'custom':
+            return []
+        else:
+            return []
     else:
         return []
 
@@ -491,9 +488,9 @@ with ui.layout_columns(col_widths=[4, 8]):
                         'Crop Types to Display:',
                         {
                             'most_common': 'Most Common',
-                            'most_et':     'Highest Mean Consumptive Water Use',
-                            'least_et':    'Lowest Mean Consumptive Water Use',
-                            'mix':         'Highest and Lowest Mean Consumptive Water Use',
+                            'most_et':     'Highest Mean',
+                            'least_et':    'Lowest Mean',
+                            'mix':         'Highest/Lowest Mean',
                             'custom':      'Custom Selected'
                         },
                         selected='most_common'
@@ -513,7 +510,7 @@ with ui.layout_columns(col_widths=[4, 8]):
                         else:
                             return None
                 
-                with ui.card(height=800, full_screen=True):
+                with ui.card(height=798, full_screen=True):
                     @render.plot
                     def crop_plot():
                         value_type = input.value_type.get()
