@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
+import textwrap
 
 from ipyleaflet import GeoJSON, Map
 from shiny import reactive
@@ -82,10 +83,10 @@ gsa_layer = GeoJSON(
         'fillColor': 'black',
     },
     point_style={
-        "radius": 0,
-        "fillOpacity": 0,
-        "opacity": 0,
-        "interactive": False
+        'radius': 0,
+        'fillOpacity': 0,
+        'opacity': 0,
+        'interactive': False
     },
     hover_style={'fillOpacity': 0.5},
 )
@@ -118,22 +119,17 @@ gsa_crop_summary = pd.read_csv(gsa_crop_summary_path)
 bridge_path = Path(__file__).resolve().parent / 'bridge_table.csv'
 bridge = pd.read_csv(bridge_path)
 
-# for year in range(2004, 2025):
-#     start = datetime(year - 1, 11, 1)
-#     end = datetime(year, 10, 31)
-
-#     subbasin_summary.aggregate()
 
 selection_coords = reactive.Value((-1, -1))
 selection = reactive.Value('')
 
-def empty_plot():
-    '''Displays "Please select a region..." in place of an actual plot.'''
+def empty_plot(message: str = 'Please select a region...'):
+    '''Displays a message in place of an actual plot.'''
     fig, ax = plt.subplots(figsize=(6, 4))
     
     ax.text(
         0.5, 0.5, 
-        'Please select a region...', 
+        message, 
         fontsize=22, 
         color='black',
         ha='center',
@@ -209,7 +205,7 @@ def get_annual_total(selection_type: str, region: str, value: str = 'ET'):
             ax.set_ylim(bottom = summary[summary['dataset'] == 'net_et']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'net_et']['SUM'].max() * 1.05)
             plt.ylabel(f'Total Net ET ({"thousands" if selection_type == "gsa" else "ten thousands"} of acre-ft)')
 
-        plt.title(f'Annual Total {value} - {region}')
+        plt.title(f'Annual Total {value}')
         plt.xlabel('Water Year')
         # plt.tight_layout()
         return ax
@@ -251,7 +247,7 @@ def get_annual_dist(selection_type: str, region: str, value: str = 'ET'):
 
         plt.xlabel('Water Year')
         plt.ylabel(f'Total {value} (acre-ft)')
-        plt.title(f'Annual {value} Distribution - {region}')
+        plt.title(f'Annual {value} Distribution')
         plt.tight_layout()
         return ax
     else:
@@ -309,7 +305,14 @@ def get_total(selection_type: str, region: str, value: str = 'ET'):
         return empty_plot()
 
 def select_crops(selection_type: str, region: str, crop_display_setting: str = 'most_common') -> list[str]:
-    '''Return list of 10 crops based on provided setting in a specified region across water years 2018 - 2024'''
+    '''
+        Return list of 10 crops based on provided setting in a specified region across water years 2018 - 2024
+        
+        For "custom", returns a list of exactly one value: "custom"
+    '''
+    if crop_display_setting == 'custom':
+        return ['custom']
+
     if selection_type == 'i03':
         selected_region = bridge[bridge['HR_NAME'] == region]
         summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['dataset'] == 'ensemble') & (hydrologic_crop_summary['water_year'] == 0)]
@@ -337,18 +340,32 @@ def select_crops(selection_type: str, region: str, crop_display_setting: str = '
     else:
         return []
 
+def get_crops_for_selectize(selection_type: str, region: str) -> dict[str, str]:
+    if selection() != '':
+        if selection_type == 'i03':
+            crops = hydrologic_crop_summary[hydrologic_summary['HR_NAME'] == region]['crop'].sort_values().unique()
+        if selection_type == 'i08':
+            code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
+            crops = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code)]['crop'].sort_values().unique()
+        elif selection_type == 'gsa':
+            code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
+            crops = gsa_summary[gsa_summary['GSA_ID'] == code]['crop'].sort_values().unique()
+
+        all_crops = {crop: crop for crop in crops}
+        return all_crops
+    else:
+        return {}
 
 def get_crop_comparison(selection_type: str, region: str, crops: list[str], value: str = 'ET'):
     if selection() != '':
         if selection_type == 'i03':
-            summary = hydrologic_summary[hydrologic_summary['HR_NAME'] == region]
+            summary = hydrologic_crop_summary[hydrologic_crop_summary['HR_NAME'] == region & (hydrologic_crop_summary['crop'].isin(crops)) & (hydrologic_crop_summary['water_year'] == 0)]
         if selection_type == 'i08':
             code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
             summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['crop'].isin(crops)) & (subbasin_crop_summary['water_year'] == 0)]
         elif selection_type == 'gsa':
             code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
-            summary = gsa_summary[gsa_summary['GSA_ID'] == code]
-            # summary['SUM'] = summary['SUM'] * 10  # GSAs are extra small, so make units a little smaller to match
+            summary = gsa_crop_summary[gsa_crop_summary['GSA_ID'] == code & (gsa_crop_summary['crop'].isin(crops)) & (gsa_crop_summary['water_year'] == 0)]
         
         if value == 'ET':
             fig, ax = plt.subplots()
@@ -360,13 +377,20 @@ def get_crop_comparison(selection_type: str, region: str, crops: list[str], valu
             fig, ax = plt.subplots()
             summary[summary['dataset'] == 'net_et'].sort_values('MEAN', ascending=False).plot.barh(x='crop', y='MEAN', legend=False, ax=ax)
 
-        plt.title(f'Mean Annual {value} by Crop - {region}')
+        # Wrap y-axis tick labels
+        wrapped_labels = [textwrap.fill(label.get_text(), 15) for label in ax.get_yticklabels()]
+        ax.set_yticklabels(wrapped_labels, ha='right', va='center')
+
+        plt.title(f'Mean Annual {value} by Crop')
         plt.xlabel(f'Mean Annual {value} (acre-ft)')
-        plt.ylabel('Top 10 Crop Types')
-        # plt.tight_layout()
+        plt.ylabel('')
+        plt.tight_layout()
         return ax
     else:
         return empty_plot()
+
+def get_custom_crop_comparison():
+    return empty_plot()
 
 ui.tags.style('.bslib-value-box .value-box-value { font-size:20px !important; }')
 
@@ -466,29 +490,52 @@ with ui.layout_columns(col_widths=[4, 8]):
                         'crop_display_setting',
                         'Crop Types to Display:',
                         {
-                            'most_common': ui.span('Most Common'),
-                            'most_et': ui.span('Highest Mean Consumptive Water Use'),
-                            'least_et': ui.span('Lowest Mean Consumptive Water Use'),
-                            'mix': ui.span('Highest and Lowest Mean Consumptive Water Use'),
-                            'custom': ui.span('Custom Selected')
+                            'most_common': 'Most Common',
+                            'most_et':     'Highest Mean Consumptive Water Use',
+                            'least_et':    'Lowest Mean Consumptive Water Use',
+                            'mix':         'Highest and Lowest Mean Consumptive Water Use',
+                            'custom':      'Custom Selected'
                         },
                         selected='most_common'
                     )
 
+                    @render.ui
+                    def custom_crop_selection():
+                        if input.crop_display_setting.get() == 'custom':
+                            return ui.input_selectize(
+                                'custom_crops',
+                                'Customize Crop Selection',
+                                get_crops_for_selectize(input.selection_type.get(), selection()),
+                                selected=None,
+                                multiple=True,
+                                # width=None,
+                            )
+                        else:
+                            return None
                 
-                with ui.card(full_screen=True):
+                with ui.card(height=800, full_screen=True):
                     @render.plot
                     def crop_plot():
                         value_type = input.value_type.get()
                         selection_type = input.selection_type.get()
                         crop_display_setting = input.crop_display_setting.get()
 
-                        crops = select_crops(selection_type, selection(), crop_display_setting)
-                        return get_crop_comparison(selection_type, selection(), crops, value_type)
+                        if crop_display_setting == 'custom':
+                            custom_crops = input.custom_crops.get()
+
+                            if len(custom_crops) == 0:
+                                return empty_plot('Please select crops to display (max 10)...')
+                            elif len(custom_crops) > 10:
+                                return empty_plot('More than 10 crops selected...')
+                            else:
+                                return get_crop_comparison(selection_type, selection(), custom_crops, value_type)
+                        else:
+                            crops = select_crops(selection_type, selection(), crop_display_setting)
+                            return get_crop_comparison(selection_type, selection(), crops, value_type)
 
         with ui.nav_panel('Water Savings Calculator'):
             with ui.card():
-                'Coming soon to a store near you!'
+                'Coming soon to a data visualization app near you!'
 
 
         with ui.nav_panel('Overall Regional Data'):
