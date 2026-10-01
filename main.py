@@ -138,7 +138,6 @@ def empty_plot(message: str = 'Please select a region...'):
     ax.axis('off')
     return ax
 
-# TODO: Some input validation would probably be smart
 def get_data(selection_type: str, region: str, data: str = 'id'):
     if selection_type == 'i03':
         search_gdf = hydrologic_gdf
@@ -386,8 +385,6 @@ def get_crop_comparison(selection_type: str, region: str, crops: list[str], valu
     else:
         return empty_plot()
 
-def get_custom_crop_comparison():
-    return empty_plot()
 
 ui.tags.style('.bslib-value-box .value-box-value { font-size:20px !important; }')
 
@@ -429,7 +426,7 @@ with ui.layout_columns(col_widths=[4, 8]):
                 return m     
 
             @reactive.effect
-            @reactive.event(input.selection_type, input.show_overdrafted)
+            @reactive.event(input.selection_type)
             def _():
                 selection_type = input.selection_type.get()
 
@@ -445,6 +442,23 @@ with ui.layout_columns(col_widths=[4, 8]):
                     m.add(gsa_layer)       
 
                 selection.set('')
+
+            @reactive.effect
+            @reactive.event(input.show_overdrafted)
+            def _():
+                selection_type = input.selection_type.get()
+
+                m.layers = m.layers[:1]
+                if input.show_overdrafted.get():
+                    m.add(overdrafted_layer)
+                
+                if selection_type == 'i03':
+                    m.add(hydrologic_layer)
+                elif selection_type == 'i08':
+                    m.add(subbasin_layer)
+                elif selection_type == 'gsa':
+                    m.add(gsa_layer)      
+            
             ui.input_checkbox(
                 'show_overdrafted',
                 'Show Critically Overdrafted Subbasins',
@@ -496,21 +510,23 @@ with ui.layout_columns(col_widths=[4, 8]):
                         selected='most_common'
                     )
 
-                    @render.ui
+                    with ui.panel_conditional('input.crop_display_setting === "custom"'):
+                        ui.input_selectize(
+                            'custom_crops',
+                            'Customize Crop Selection',
+                            [],
+                            selected=None,
+                            multiple=True
+                        )
+
+                    @reactive.effect
+                    @reactive.event(input.crop_display_setting)
                     def custom_crop_selection():
                         if input.crop_display_setting.get() == 'custom':
-                            return ui.input_selectize(
-                                'custom_crops',
-                                'Customize Crop Selection',
-                                get_crops_for_selectize(input.selection_type.get(), selection()),
-                                selected=None,
-                                multiple=True,
-                                # width=None,
-                            )
-                        else:
-                            return None
+                            new_choices = get_crops_for_selectize(input.selection_type.get(), selection())
+                            ui.update_selectize('custom_crops', choices=new_choices, selected=input.custom_crops.get())
                 
-                with ui.card(height=798, full_screen=True):
+                with ui.card(height=798.5, full_screen=True):
                     @render.plot
                     def crop_plot():
                         value_type = input.value_type.get()
@@ -558,5 +574,3 @@ with ui.layout_columns(col_widths=[4, 8]):
                             value_type = input.value_type.get()
                             selection_type = input.selection_type.get()
                             return get_total(selection_type, selection(), value_type)
-
-
