@@ -24,7 +24,7 @@ data['water_year'] = data['month_date'].dt.year + (data['month_date'].dt.month >
 data['year'] = data['month_date'].dt.year
 data['month'] = data['month_date'].dt.month
 
-data = data.merge(eto[['OPENET_ID', 'month_date', 'value_mm']].rename(columns={'value_mm': 'eto'}), on=['OPENET_ID', 'month_date'], how='left')
+data = data.merge(eto[['OPENET_ID', 'month_date', 'value']].rename(columns={'value': 'eto'}), on=['OPENET_ID', 'month_date'], how='left')
 data = data.dropna(subset=['eto'])
 
 ensemble_data = data[data['dataset'] == 'ensemble'].copy()
@@ -49,10 +49,10 @@ data['value_ft'] = data['value_in'] / INCHES_TO_FEET
 fields_path = Path(__file__).resolve().parent.parent / 'geodata' / 'fields.geojson'
 fields = gpd.read_file(fields_path)
 data = pd.merge(data, fields[['OPENET_ID', 'ACRES']], on='OPENET_ID', how='left')
-data['value'] = data['value_ft'] * data['ACRES']
+data['value_acre_ft'] = data['value_ft'] * data['ACRES']
 
 path = Path(__file__).resolve().parent.parent / 'geodata' / 'data.csv'
-data[['OPENET_ID', 'dataset', 'month', 'value', 'month_date', 'water_year', 'year']].to_csv(path, index=False)
+data[['OPENET_ID', 'dataset', 'month', 'value_ft', 'value_acre_ft', 'month_date', 'water_year', 'year']].to_csv(path, index=False)
 
 # TODO: Pivot table to make more sense
 # TODO: More unit-specific column names

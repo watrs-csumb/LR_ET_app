@@ -27,7 +27,7 @@ print('done')
 
 print('net et computation')
 net_data = data[data['dataset'] == 'ensemble'].reset_index().copy()
-net_data['value'] = net_data['value'] - data[data['dataset'] == 'gridmet_pr'].reset_index()['value']
+net_data['value_acre_ft'] = net_data['value_acre_ft'] - data[data['dataset'] == 'gridmet_pr'].reset_index()['value_acre_ft']
 net_data['dataset'] = 'net_et'
 data = pd.concat([data, net_data])
 print('done')
@@ -56,14 +56,14 @@ print('done')
 
 print('hydrologic summary')
 hydrologic_summary = data.groupby(['HR_NAME', 'dataset', 'water_year'], as_index=False).aggregate(
-    SUM = ('value', 'sum'),
-    MEAN = ('value', 'mean'),
-    MEDIAN = ('value', 'median'),
-    PCT25 = ('value', pct25),
-    PCT75 = ('value', pct75),
-    LOWER_WHISKER = ('value', lower_whisker),
-    UPPER_WHISKER = ('value', upper_whisker),
-    STDDEV = ('value', 'std')
+    SUM = ('value_acre_ft', 'sum'),
+    MEAN = ('value_acre_ft', 'mean'),
+    MEDIAN = ('value_acre_ft', 'median'),
+    PCT25 = ('value_acre_ft', pct25),
+    PCT75 = ('value_acre_ft', pct75),
+    LOWER_WHISKER = ('value_acre_ft', lower_whisker),
+    UPPER_WHISKER = ('value_acre_ft', upper_whisker),
+    STDDEV = ('value_acre_ft', 'std')
 )
 hydrologic_summary_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'hydrologic_summary.csv'
 hydrologic_summary.to_csv(hydrologic_summary_path, index=False)
@@ -72,14 +72,14 @@ print('done')
 
 print('subbasin summary')
 subbasin_summary = data.groupby(['Basin_Subb', 'dataset', 'water_year'], as_index=False).aggregate(
-    SUM = ('value', 'sum'),
-    MEAN = ('value', 'mean'),
-    MEDIAN = ('value', 'median'),
-    PCT25 = ('value', pct25),
-    PCT75 = ('value', pct75),
-    LOWER_WHISKER = ('value', lower_whisker),
-    UPPER_WHISKER = ('value', upper_whisker),
-    STDDEV = ('value', 'std')
+    SUM = ('value_acre_ft', 'sum'),
+    MEAN = ('value_acre_ft', 'mean'),
+    MEDIAN = ('value_acre_ft', 'median'),
+    PCT25 = ('value_acre_ft', pct25),
+    PCT75 = ('value_acre_ft', pct75),
+    LOWER_WHISKER = ('value_acre_ft', lower_whisker),
+    UPPER_WHISKER = ('value_acre_ft', upper_whisker),
+    STDDEV = ('value_acre_ft', 'std')
 )
 subbasin_summary_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'subbasin_summary.csv'
 subbasin_summary.to_csv(subbasin_summary_path, index=False)
@@ -88,14 +88,14 @@ print('done')
 
 print('gsa summary')
 gsa_summary = data.groupby(['GSA_ID', 'dataset', 'water_year'], as_index=False).aggregate(
-    SUM = ('value', 'sum'),
-    MEAN = ('value', 'mean'),
-    MEDIAN = ('value', 'median'),
-    PCT25 = ('value', pct25),
-    PCT75 = ('value', pct75),
-    LOWER_WHISKER = ('value', lower_whisker),
-    UPPER_WHISKER = ('value', upper_whisker),
-    STDDEV = ('value', 'std')
+    SUM = ('value_acre_ft', 'sum'),
+    MEAN = ('value_acre_ft', 'mean'),
+    MEDIAN = ('value_acre_ft', 'median'),
+    PCT25 = ('value_acre_ft', pct25),
+    PCT75 = ('value_acre_ft', pct75),
+    LOWER_WHISKER = ('value_acre_ft', lower_whisker),
+    UPPER_WHISKER = ('value_acre_ft', upper_whisker),
+    STDDEV = ('value_acre_ft', 'std')
 )
 gsa_summary['GSA_ID'] = gsa_summary['GSA_ID'].astype(int)
 gsa_summary_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'gsa_summary.csv'

@@ -378,7 +378,7 @@ def get_crop_comparison(selection_type: str, region: str, crops: list[str], valu
         ax.set_yticklabels(wrapped_labels, ha='right', va='center')
 
         plt.title(f'Mean Annual {value} by Crop')
-        plt.xlabel(f'Mean Annual {value} (acre-ft)')
+        plt.xlabel(f'Mean Annual {value} (acre-ft / acre)')
         plt.ylabel('')
         plt.tight_layout()
         return ax
@@ -390,11 +390,38 @@ ui.tags.style('.bslib-value-box .value-box-value { font-size:20px !important; }'
 
 ui.page_opts(fillable=True)
 
-with ui.sidebar():
-    'Filters:'
+with ui.sidebar(open='closed', width='260px', resizable=False):
+    ui.input_radio_buttons(
+        'selection_type',
+        'Boundaries:',
+        {
+            'i03': 'Hydrologic Regions (i03)',
+            'i08': 'Subbasins (i08)',
+            'gsa': 'Groundwater Sustainability Agencies',
+        },
+        selected='i08'
+    )
+
+    ui.input_radio_buttons(
+        'value_type',
+        'Values:',
+        {
+            'ET': 'Evapotranspiration (ET)',
+            'PR': 'Precipitation (PR)',
+            'Net ET': 'Net ET (ET - PR)',
+        },
+    )
+
+    ui.input_checkbox(
+        'show_overdrafted',
+        'Show Critically Overdrafted Subbasins',
+        False,
+    )
+
 
 with ui.layout_columns(col_widths=[4, 8]):
     with ui.layout_columns(col_widths=[12, 12]):
+        #region Map Stuff
         with ui.card(full_screen=True):
             m = Map(center=(37.5, -121.2), zoom=6)
 
@@ -458,40 +485,17 @@ with ui.layout_columns(col_widths=[4, 8]):
                     m.add(subbasin_layer)
                 elif selection_type == 'gsa':
                     m.add(gsa_layer)      
-            
-            ui.input_checkbox(
-                'show_overdrafted',
-                'Show Critically Overdrafted Subbasins',
-                False,
-            )
-
-            with ui.layout_columns(col_widths=[6, 6]):
-                ui.input_radio_buttons(
-                    'selection_type',
-                    'Boundaries:',
-                    {
-                        'i03': ui.span('Hydrologic Regions (i03)'),
-                        'i08': ui.span('Subbasins (i08)'),
-                        'gsa': ui.span('Groundwater Sustainability Agencies'),
-                    },
-                    selected='i08'
-                )
-
-                ui.input_radio_buttons(
-                    'value_type',
-                    'Values:',
-                    {
-                        'ET': ui.span('Evapotranspiration (ET)'),
-                        'PR': ui.span('Precipitation (PR)'),
-                        'Net ET': ui.span('Net Evapotranspiration (ET - PR)'),
-                    },
-                )
-
+        #endregion    
+        
+        # Region Name
         with ui.value_box(height='60px'):
             'Name'
             @render.text
             def name_output():
                 return f'{selection()}'
+
+        # with ui.value_box(height='40px'):
+        #     ''
 
     with ui.navset_pill(id='tab'):
         with ui.nav_panel('Regional Crop Data'):
@@ -515,7 +519,6 @@ with ui.layout_columns(col_widths=[4, 8]):
                             'custom_crops',
                             'Customize Crop Selection',
                             [],
-                            selected=None,
                             multiple=True
                         )
 
@@ -545,6 +548,7 @@ with ui.layout_columns(col_widths=[4, 8]):
                         else:
                             crops = select_crops(selection_type, selection(), crop_display_setting)
                             return get_crop_comparison(selection_type, selection(), crops, value_type)
+
 
         with ui.nav_panel('Water Savings Calculator'):
             with ui.card():
