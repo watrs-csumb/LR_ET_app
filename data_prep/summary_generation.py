@@ -7,8 +7,9 @@ bridge = pd.read_csv('bridge_table.csv')
 bridge = bridge[bridge['crop_2024'].notna()]
 # Also filter out fields that have no crops in any LandIQ 2018 - 2024
 bridge = bridge[bridge['crop_2018'].notna() | bridge['crop_2019'].notna() | bridge['crop_2020'].notna() | bridge['crop_2021'].notna() | bridge['crop_2022'].notna() | bridge['crop_2023'].notna() | bridge['crop_2024'].notna()]
-# Also also filter out fields that have "nursery" in the crop name, as these are likely greenhouses
-bridge = bridge[(~bridge['crop_2018'].str.contains('nursery')) & (~bridge['crop_2019'].str.contains('nursery')) & (~bridge['crop_2020'].str.contains('nursery')) & (~bridge['crop_2021'].str.contains('nursery')) & (~bridge['crop_2022'].str.contains('nursery')) & (~bridge['crop_2023'].str.contains('nursery')) & (~bridge['crop_2024'].str.contains('nursery'))]
+# Also also filter out fields that have are likely greenhouses
+bad_crops = ['Flowers, nursery and Christmas Tree Farms', 'Greenhouse']
+bridge = bridge[(~bridge['crop_2018'].isin(bad_crops)) & (~bridge['crop_2019'].isin(bad_crops)) & (~bridge['crop_2020'].isin(bad_crops)) & (~bridge['crop_2021'].isin(bad_crops)) & (~bridge['crop_2022'].isin(bad_crops)) & (~bridge['crop_2023'].isin(bad_crops)) & (~bridge['crop_2024'].isin(bad_crops))]
 
 
 hydrologic_path = Path(__file__).resolve().parent.parent / 'geodata' / 'hydrologic_regions.geojson'
@@ -23,13 +24,7 @@ gsas = gpd.read_file(gsa_path)
 print('loading csv')
 data_path = Path(__file__).resolve().parent.parent / 'geodata' / 'data.csv'
 data = pd.read_csv(data_path)
-print('done')
-
-print('net et computation')
-net_data = data[data['dataset'] == 'ensemble'].reset_index().copy()
-net_data['value_acre_ft'] = net_data['value_acre_ft'] - data[data['dataset'] == 'gridmet_pr'].reset_index()['value_acre_ft']
-net_data['dataset'] = 'net_et'
-data = pd.concat([data, net_data])
+data.drop(columns=['value_ft'])
 print('done')
 
 def pct25(series):
@@ -54,8 +49,20 @@ print('merging bridge data')
 data = data.merge(bridge[['OPENET_ID', 'HR_NAME', 'Basin_Subb', 'GSA_ID']], on='OPENET_ID', how='left')
 print('done')
 
+water_year_classification = {
+    2018: 'dry',
+    2019: 'dry',
+    2020: 'normal',
+    2021: 'dry',
+    2022: 'normal',
+    2023: 'wet',
+    2024: 'wet'
+}
+
+data['water_year_class'] = data['water_year'].map(water_year_classification)
+
 print('hydrologic summary')
-hydrologic_summary = data.groupby(['HR_NAME', 'dataset', 'water_year'], as_index=False).aggregate(
+hydrologic_summary = data.groupby(['HR_NAME', 'dataset', 'water_year_class'], as_index=False).aggregate(
     SUM = ('value_acre_ft', 'sum'),
     MEAN = ('value_acre_ft', 'mean'),
     MEDIAN = ('value_acre_ft', 'median'),
@@ -71,7 +78,7 @@ print('done')
 
 
 print('subbasin summary')
-subbasin_summary = data.groupby(['Basin_Subb', 'dataset', 'water_year'], as_index=False).aggregate(
+subbasin_summary = data.groupby(['Basin_Subb', 'dataset', 'water_year_class'], as_index=False).aggregate(
     SUM = ('value_acre_ft', 'sum'),
     MEAN = ('value_acre_ft', 'mean'),
     MEDIAN = ('value_acre_ft', 'median'),
@@ -87,7 +94,7 @@ print('done')
 
 
 print('gsa summary')
-gsa_summary = data.groupby(['GSA_ID', 'dataset', 'water_year'], as_index=False).aggregate(
+gsa_summary = data.groupby(['GSA_ID', 'dataset', 'water_year_class'], as_index=False).aggregate(
     SUM = ('value_acre_ft', 'sum'),
     MEAN = ('value_acre_ft', 'mean'),
     MEDIAN = ('value_acre_ft', 'median'),

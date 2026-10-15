@@ -12,6 +12,9 @@ from shiny.express import input, render, ui
 from shinywidgets import render_widget
 
 plt.style.use('bmh')
+# TODO
+PERENNIAL_CROPS = []
+ANNUAL_CROPS = []
 
 # region Map layer and GDF Loading
 hydrologic_path = Path(__file__).resolve().parent / 'geodata' / 'hydrologic_regions.geojson'
@@ -182,24 +185,24 @@ def get_annual_total(selection_type: str, region: str, value: str = 'ET'):
         if value == 'ET':
             summary['SUM'] = summary['SUM'] / 10000  # by 10,000 acre-ft
             fig, ax = plt.subplots()
-            summary[summary['dataset'] == 'ensemble'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
+            summary[summary['dataset'] == 'ensemble'].plot.bar(x='water_year_class', y='SUM', ax=ax, legend=False, rot=0)
             ax.set_ylim(bottom = summary[summary['dataset'] == 'ensemble']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'ensemble']['SUM'].max() * 1.05)
             plt.ylabel(f'Total ET ({"thousands" if selection_type == "gsa" else "ten thousands"} of acre-ft)')
         elif value == 'PR':
             summary['SUM'] = summary['SUM'] / 1000  # by 1,000 acre-ft
             fig, ax = plt.subplots()
-            summary[summary['dataset'] == 'gridmet_pr'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
+            summary[summary['dataset'] == 'gridmet_pr'].plot.bar(x='water_year_class', y='SUM', ax=ax, legend=False, rot=0)
             ax.set_ylim(bottom = summary[summary['dataset'] == 'gridmet_pr']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'gridmet_pr']['SUM'].max() * 1.05)
             plt.ylabel(f'Total PR ({"hundreds" if selection_type == "gsa" else "thousands"} of acre-ft)')
         elif value == 'Net ET':
             summary['SUM'] = summary['SUM'] / 10000  # by 10,000 acre-ft
             fig, ax = plt.subplots()
-            summary[summary['dataset'] == 'net_et'].plot.bar(x='water_year', y='SUM', ax=ax, legend=False, rot=0)
+            summary[summary['dataset'] == 'net_et'].plot.bar(x='water_year_class', y='SUM', ax=ax, legend=False, rot=0)
             ax.set_ylim(bottom = summary[summary['dataset'] == 'net_et']['SUM'].min() * 0.95, top = summary[summary['dataset'] == 'net_et']['SUM'].max() * 1.05)
             plt.ylabel(f'Total Net ET ({"thousands" if selection_type == "gsa" else "ten thousands"} of acre-ft)')
 
         plt.title(f'Annual Total {value}')
-        plt.xlabel('Water Year')
+        plt.xlabel('Water Year Classification')
         # plt.tight_layout()
         return ax
     else:
@@ -224,21 +227,21 @@ def get_annual_dist(selection_type: str, region: str, value: str = 'ET'):
             dataset = 'net_et'
 
         all_stats = []
-        for water_year in range(2018, 2025):
+        for water_year_class in ['wet', 'normal', 'dry']:
             all_stats.append({
-                'label': water_year,
-                'med': summary[(summary['water_year'] == water_year) & (summary['dataset'] == dataset)]['MEDIAN'].iloc[0],
-                'q1': summary[(summary['water_year'] == water_year) & (summary['dataset'] == dataset)]['PCT25'].iloc[0],
-                'q3': summary[(summary['water_year'] == water_year) & (summary['dataset'] == dataset)]['PCT75'].iloc[0],
-                'whislo': summary[(summary['water_year'] == water_year) & (summary['dataset'] == dataset)]['LOWER_WHISKER'].iloc[0],
-                'whishi': summary[(summary['water_year'] == water_year) & (summary['dataset'] == dataset)]['UPPER_WHISKER'].iloc[0]
+                'label': water_year_class,
+                'med': summary[(summary['water_year_class'] == water_year_class) & (summary['dataset'] == dataset)]['MEDIAN'].iloc[0],
+                'q1': summary[(summary['water_year_class'] == water_year_class) & (summary['dataset'] == dataset)]['PCT25'].iloc[0],
+                'q3': summary[(summary['water_year_class'] == water_year_class) & (summary['dataset'] == dataset)]['PCT75'].iloc[0],
+                'whislo': summary[(summary['water_year_class'] == water_year_class) & (summary['dataset'] == dataset)]['LOWER_WHISKER'].iloc[0],
+                'whishi': summary[(summary['water_year_class'] == water_year_class) & (summary['dataset'] == dataset)]['UPPER_WHISKER'].iloc[0]
             })
 
         fig, ax = plt.subplots()
         ax.bxp(all_stats, showfliers=False)
         # ax.axhline(0, style='--')
 
-        plt.xlabel('Water Year')
+        plt.xlabel('Water Year Classification')
         plt.ylabel(f'Total {value} (acre-ft)')
         plt.title(f'Annual {value} Distribution')
         plt.tight_layout()
@@ -246,7 +249,7 @@ def get_annual_dist(selection_type: str, region: str, value: str = 'ET'):
     else:
         return empty_plot()
 
-def get_total(selection_type: str, region: str, value: str = 'ET'):
+def get_avg(selection_type: str, region: str, value: str = 'ET'):
     if selection() != '':
         if selection_type == 'i03':
             summary = hydrologic_summary[hydrologic_summary['HR_NAME'] == region]
@@ -264,40 +267,11 @@ def get_total(selection_type: str, region: str, value: str = 'ET'):
         elif value == 'Net ET':
             dataset = 'net_et'
 
-        total = summary[summary['dataset'] == dataset]['SUM'].sum()
-        mean = summary[summary['dataset'] == dataset]['MEAN'].sum()
+        # Average across years
+        return summary[summary['dataset'] == dataset]['MEAN'].mean()
 
-        fig, ax = plt.subplots(figsize=(6, 4))
-        ax.text(
-            0.5, 0.8, 
-            f'Across all years (2018 - 2024):', 
-            fontsize=22, 
-            color='black',
-            ha='center',
-            va='center'
-        )
-        ax.text(
-            0.5, 0.5, 
-            f'Total {value}: {total:,.2f} acre-ft', 
-            fontsize=22, 
-            color='black',
-            ha='center',
-            va='center'
-        )
-        ax.text(
-            0.5, 0.2, 
-            f'Mean {value}: {mean:,.2f} acre-ft', 
-            fontsize=22, 
-            color='black',
-            ha='center',
-            va='center'
-        )
-        ax.axis('off')
-        return ax
-    else:
-        return empty_plot()
 
-def select_crops(selection_type: str, region: str, crop_display_setting: str = 'most_common') -> list[str]:
+def select_crops(selection_type: str, region: str, value: str = 'ET', crop_display_setting: str = 'most_common') -> list[str]:
     '''
         Return list of 10 crops based on provided setting in a specified region across water years 2018 - 2024
         
@@ -307,28 +281,35 @@ def select_crops(selection_type: str, region: str, crop_display_setting: str = '
         if crop_display_setting == 'custom':
             return ['custom']
 
+        if value == 'ET':
+            dataset = 'ensemble'
+        elif value == 'PR':
+            dataset = 'gridmet_pr'
+        elif value == 'Net ET':
+            dataset = 'net_et'
+
         if selection_type == 'i03':
             selected_region = bridge[bridge['HR_NAME'] == region]
-            summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['dataset'] == 'ensemble') & (hydrologic_crop_summary['water_year'] == 0)]
+            summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['dataset'] == dataset) & (hydrologic_crop_summary['water_year_class'] == 'all')]
         elif selection_type == 'i08':
             code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
             selected_region = bridge[bridge['Basin_Subb'] == code]
-            summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['dataset'] == 'ensemble') & (subbasin_crop_summary['water_year'] == 0)]
+            summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['dataset'] == dataset) & (subbasin_crop_summary['water_year_class'] == 'all')]
         elif selection_type == 'gsa':
             code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
             selected_region = bridge[bridge['GSA_ID'] == code]
-            summary = gsa_crop_summary[(gsa_crop_summary['GSA_ID'] == code) & (gsa_crop_summary['dataset'] == 'ensemble') & (gsa_crop_summary['water_year'] == 0)]
+            summary = gsa_crop_summary[(gsa_crop_summary['GSA_ID'] == code) & (gsa_crop_summary['dataset'] == dataset) & (gsa_crop_summary['water_year_class'] == 'all')]
         else:
             return []
 
         if crop_display_setting == 'most_common':
             return list(selected_region[['crop_2018', 'crop_2019', 'crop_2020', 'crop_2021', 'crop_2022', 'crop_2023', 'crop_2024']].stack().value_counts().head(10).index.values) 
         elif crop_display_setting == 'most_et':
-            return list(summary.sort_values('MEAN', ascending=False).head(10)['crop'].values)
+            return list(summary.sort_values('weighted_mean', ascending=False).head(10)['crop'].values)
         elif crop_display_setting == 'least_et':
-            return list(summary.sort_values('MEAN', ascending=True).head(10)['crop'].values)
+            return list(summary.sort_values('weighted_mean', ascending=True).head(10)['crop'].values)
         elif crop_display_setting == 'mix':
-            return list(summary.sort_values('MEAN', ascending=False).head(5)['crop'].values) + list(summary.sort_values('MEAN', ascending=True).head(5)['crop'].values)
+            return list(summary.sort_values('weighted_mean', ascending=False).head(5)['crop'].values) + list(summary.sort_values('weighted_mean', ascending=True).head(5)['crop'].values)
         elif crop_display_setting == 'custom':
             return []
         else:
@@ -355,23 +336,23 @@ def get_crops_for_selectize(selection_type: str, region: str) -> dict[str, str]:
 def get_crop_comparison(selection_type: str, region: str, crops: list[str], value: str = 'ET'):
     if selection() != '':
         if selection_type == 'i03':
-            summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['crop'].isin(crops)) & (hydrologic_crop_summary['water_year'] == 0)]
+            summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['crop'].isin(crops)) & (hydrologic_crop_summary['water_year_class'] == 'all')]
         if selection_type == 'i08':
             code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
-            summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['crop'].isin(crops)) & (subbasin_crop_summary['water_year'] == 0)]
+            summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['crop'].isin(crops)) & (subbasin_crop_summary['water_year_class'] == 'all')]
         elif selection_type == 'gsa':
             code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
-            summary = gsa_crop_summary[(gsa_crop_summary['GSA_ID'] == code) & (gsa_crop_summary['crop'].isin(crops)) & (gsa_crop_summary['water_year'] == 0)]
+            summary = gsa_crop_summary[(gsa_crop_summary['GSA_ID'] == code) & (gsa_crop_summary['crop'].isin(crops)) & (gsa_crop_summary['water_year_class'] == 'all')]
         
         if value == 'ET':
             fig, ax = plt.subplots()
-            summary[summary['dataset'] == 'ensemble'].sort_values('MEAN', ascending=False).plot.barh(x='crop', y='MEAN', legend=False, ax=ax)
+            summary[summary['dataset'] == 'ensemble'].sort_values('weighted_mean', ascending=False).plot.barh(x='crop', y='weighted_mean', legend=False, ax=ax)
         elif value == 'PR':
             fig, ax = plt.subplots()
-            summary[summary['dataset'] == 'gridmet_pr'].sort_values('MEAN', ascending=False).plot.barh(x='crop', y='MEAN', legend=False, ax=ax)
+            summary[summary['dataset'] == 'gridmet_pr'].sort_values('weighted_mean', ascending=False).plot.barh(x='crop', y='weighted_mean', legend=False, ax=ax)
         elif value == 'Net ET':
             fig, ax = plt.subplots()
-            summary[summary['dataset'] == 'net_et'].sort_values('MEAN', ascending=False).plot.barh(x='crop', y='MEAN', legend=False, ax=ax)
+            summary[summary['dataset'] == 'net_et'].sort_values('weighted_mean', ascending=False).plot.barh(x='crop', y='weighted_mean', legend=False, ax=ax)
 
         # Wrap y-axis tick labels
         wrapped_labels = [textwrap.fill(label.get_text(), 15) for label in ax.get_yticklabels()]
@@ -385,6 +366,93 @@ def get_crop_comparison(selection_type: str, region: str, crops: list[str], valu
     else:
         return empty_plot()
 
+def get_crop_savings(selection_type: str, region: str, curr_crop: str, target_crops: list[str], acreage: float, value: str = 'ET', water_year_class: str = 'all'):
+    if selection() != '':
+        all_crops = target_crops + [curr_crop]
+
+        if selection_type == 'i03':
+            summary = hydrologic_crop_summary[(hydrologic_crop_summary['HR_NAME'] == region) & (hydrologic_crop_summary['crop'].isin(all_crops)) & (hydrologic_crop_summary['water_year_class'] == water_year_class)]
+        if selection_type == 'i08':
+            code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
+            summary = subbasin_crop_summary[(subbasin_crop_summary['Basin_Subb'] == code) & (subbasin_crop_summary['crop'].isin(all_crops)) & (subbasin_crop_summary['water_year_class'] == water_year_class)]
+        elif selection_type == 'gsa':
+            code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
+            summary = gsa_crop_summary[(gsa_crop_summary['GSA_ID'] == code) & (gsa_crop_summary['crop'].isin(all_crops)) & (gsa_crop_summary['water_year_class'] == water_year_class)]
+
+        # Multiply by acreage to get depth
+        summary['estimated_acre_ft'] = summary['weighted_mean'] * acreage
+        
+        if value == 'ET':
+            summary = summary[summary['dataset'] == 'ensemble']
+            current_estimated = summary[summary['crop'] == curr_crop]['estimated_acre_ft'].iloc[0]
+
+            fig, ax = plt.subplots()
+            sorted_summary = summary[summary['crop'] != curr_crop].sort_values('estimated_acre_ft', ascending=False)
+            colors = ['C1' if val > current_estimated else 'C0' for val in sorted_summary['estimated_acre_ft']]
+            sorted_summary.plot.barh(x='crop', y='estimated_acre_ft', color=colors, legend=False, ax=ax)
+        elif value == 'PR':
+            return empty_plot('Precipitation savings are not implemented.')
+        elif value == 'Net ET':
+            summary = summary[summary['dataset'] == 'net_et']
+            current_estimated = summary[summary['crop'] == curr_crop]['estimated_acre_ft'].iloc[0]
+
+            fig, ax = plt.subplots()
+            sorted_summary = summary[summary['crop'] != curr_crop].sort_values('estimated_acre_ft', ascending=False)
+            colors = ['C1' if val > current_estimated else 'C0' for val in sorted_summary['estimated_acre_ft']]
+            sorted_summary.plot.barh(x='crop', y='estimated_acre_ft', color=colors, legend=False, ax=ax)
+
+        # Wrap y-axis tick labels
+        wrapped_labels = [textwrap.fill(label.get_text(), 15) for label in ax.get_yticklabels()]
+        ax.set_yticklabels(wrapped_labels, ha='right', va='center')
+
+        # Reference line at 0
+        ax.axvline(x=current_estimated, linestyle='--', color='black')
+
+        # Bar labels
+        for container in ax.containers:
+            ax.bar_label(container, padding=3, fmt='%.2f')
+        ax.margins(x=0.15)
+
+        # plt.title(f'Annual {value} Savings by Switching from "{curr_crop}"')
+        plt.xlabel(f'Estimated Annual {value} (acre-ft)')
+        plt.ylabel('')
+        plt.tight_layout()
+        return ax
+    else:
+        return empty_plot()
+
+def get_avg_acreage(selection_type: str, region: str, category: str = 'all'):
+    if selection() != '':
+        if selection_type == 'i03':
+            regions = bridge[bridge['HR_NAME'] == region]
+        if selection_type == 'i08':
+            code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
+            regions = bridge[bridge['Basin_Subb'] == code]
+        elif selection_type == 'gsa':
+            code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
+            regions = bridge[bridge['GSA_ID'] == code]
+
+        return regions['ACRES'].sum()
+
+        # if category == 'perennial':
+        #     return 'PERENNIAL'
+        # elif category == 'annual':
+        #     return 'ANNUAL'
+        # elif category == 'all':
+        #     return 'ALL'
+        # else:
+        #     raise ValueError('If specifying a category for acreage calculation, must be either "perennial" or "annual".')
+
+def get_field_count(selection_type: str, region: str):
+    if selection() != '':
+        if selection_type == 'i03':
+            return bridge[bridge['HR_NAME'] == region].shape[0]
+        if selection_type == 'i08':
+            code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
+            return bridge[bridge['Basin_Subb'] == code].shape[0]
+        elif selection_type == 'gsa':
+            code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
+            return bridge[bridge['GSA_ID'] == code].shape[0]
 
 ui.tags.style('.bslib-value-box .value-box-value { font-size:20px !important; }')
 
@@ -420,7 +488,7 @@ with ui.sidebar(open='closed', width='260px', resizable=False):
 
 
 with ui.layout_columns(col_widths=[4, 8]):
-    with ui.layout_columns(col_widths=[12, 12]):
+    with ui.layout_columns(col_widths=[12, 6, 6]):
         #region Map Stuff
         with ui.card(full_screen=True):
             m = Map(center=(37.5, -121.2), zoom=6)
@@ -487,15 +555,79 @@ with ui.layout_columns(col_widths=[4, 8]):
                     m.add(gsa_layer)      
         #endregion    
         
-        # Region Name
-        with ui.value_box(height='60px'):
-            'Name'
-            @render.text
-            def name_output():
-                return f'{selection()}'
+        with ui.layout_columns(col_widths=[12, 12, 12]):
+            # Region Name
+            with ui.card(class_="d-flex align-items-center justify-content-center"):
+                'Name:'
+                @render.text
+                def name_output():
+                    # TODO: Formatting
+                    return f'{selection()}'
 
-        # with ui.value_box(height='40px'):
-        #     ''
+            # Field Count
+            with ui.card(class_="d-flex align-items-center justify-content-center"):
+                'Number of fields:'
+                
+                @render.text
+                def field_count_output():
+                    if selection() == '':
+                        return ''
+                        
+                    selection_type = input.selection_type.get()
+                    count = get_field_count(selection_type, selection())
+                    return f'{count} fields'
+
+            # Mean Values
+            with ui.card(class_="d-flex align-items-center justify-content-center"):
+                @render.text
+                def mean_header():
+                    return f'Mean Field {input.value_type.get()}:'
+                
+                @render.text
+                def mean_output():
+                    if selection() == '':
+                        return ''
+                        
+                    selection_type = input.selection_type.get()
+                    value_type = input.value_type.get()
+                    avg = get_avg(selection_type, selection(), value_type)
+                    return f'{avg:.2f} acre-ft'
+
+        # Acreage
+        with ui.layout_columns(col_widths=[12, 12, 12]):
+            with ui.card(class_="d-flex align-items-center justify-content-center"):
+                'Total Field Acreage: '
+                @render.text
+                def total_acreage_output():
+                    if selection() == '':
+                        return ''
+                    
+                    selection_type = input.selection_type.get()
+                    total_acreage = get_avg_acreage(selection_type, selection())
+                    return f'{total_acreage:.2f} acres'
+
+            with ui.card(class_="d-flex align-items-center justify-content-center"):
+                'Perennial Field Acreage:'
+                @render.text
+                def perennial_acreage_output():
+                    if selection() == '':
+                        return ''
+                    
+                    selection_type = input.selection_type.get()
+                    perennial_acreage = get_avg_acreage(selection_type, selection(), 'perennial')
+                    return f'{perennial_acreage:.2f} acres'
+
+            with ui.card(class_="d-flex align-items-center justify-content-center"):
+                'Annual Field Acreage:'
+                @render.text
+                def annual_acreage_output():
+                    if selection() == '':
+                        return ''
+                    
+                    selection_type = input.selection_type.get()
+                    annual_acreage = get_avg_acreage(selection_type, selection(), 'annual')
+                    return f'{annual_acreage:.2f} acres'
+
 
     with ui.navset_pill(id='tab'):
         with ui.nav_panel('Regional Crop Data'):
@@ -546,13 +678,140 @@ with ui.layout_columns(col_widths=[4, 8]):
                             else:
                                 return get_crop_comparison(selection_type, selection(), custom_crops, value_type)
                         else:
-                            crops = select_crops(selection_type, selection(), crop_display_setting)
+                            crops = select_crops(selection_type, selection(), value_type, crop_display_setting)
                             return get_crop_comparison(selection_type, selection(), crops, value_type)
 
 
         with ui.nav_panel('Water Savings Calculator'):
             with ui.card():
-                'Coming soon to a data visualization app near you!'
+                with ui.layout_columns(col_widths=[6, 6]):
+                    with ui.h6():
+                        'Region (selected from map):'
+                        @render.text
+                        def calc_region_display():
+                            return f'{selection()}'
+
+                    ui.input_numeric(
+                        'calc_acreage',
+                        'Field Acreage:',
+                        25,
+                        min=0.1,
+                        step=0.1
+                    )
+
+            with ui.layout_columns(col_widths=[5, 2, 5]):
+                ui.input_selectize(
+                    'current_crop',
+                    'Your Crop',
+                    []
+                )
+
+                with ui.h3():
+                    '     -->'
+
+                ui.input_selectize(
+                    'target_crops',
+                    'Target Crops',
+                    [],
+                    multiple=True
+                )
+
+                @reactive.effect
+                @reactive.event(input.selection_type, selection)
+                def current_and_target_crop_selection():
+                    new_choices = get_crops_for_selectize(input.selection_type.get(), selection())
+
+                    old_current = input.current_crop.get()
+                    if old_current not in new_choices:
+                        old_current = ''
+                    ui.update_selectize('current_crop', choices=new_choices, selected=old_current)
+
+                    old_targets = list(input.target_crops.get())
+                    for target in old_targets:
+                        if target not in new_choices:
+                            old_targets.remove(target)
+                    ui.update_selectize('target_crops', choices=new_choices, selected=old_targets)
+
+            with ui.navset_card_tab(id='calc_year_classes'):
+                with ui.nav_panel('All Years'):
+                    @render.plot
+                    def crop_savings_plot_all_years():
+                        value_type = input.value_type.get()
+                        selection_type = input.selection_type.get()
+
+                        current_crop = input.current_crop.get()
+                        target_crops = list(input.target_crops.get())
+                        acres = input.calc_acreage.get()
+
+                        if selection() == '':
+                            return empty_plot()
+                        elif len(target_crops) == 0:
+                            return empty_plot('Please select crops to compare (max 9)...')
+                        elif len(target_crops) > 9:
+                            return empty_plot('More than 9 comparison crops selected...')
+                        else:
+                            return get_crop_savings(selection_type, selection(), current_crop, target_crops, acres, value_type, 'all')
+
+                
+                with ui.nav_panel('Wet Years'):
+                    @render.plot
+                    def crop_savings_plot_wet_years():
+                        value_type = input.value_type.get()
+                        selection_type = input.selection_type.get()
+
+                        current_crop = input.current_crop.get()
+                        target_crops = list(input.target_crops.get())
+                        acres = input.calc_acreage.get()
+
+                        if selection() == '':
+                            return empty_plot()
+                        elif len(target_crops) == 0:
+                            return empty_plot('Please select crops to compare (max 9)...')
+                        elif len(target_crops) > 9:
+                            return empty_plot('More than 9 comparison crops selected...')
+                        else:
+                            return get_crop_savings(selection_type, selection(), current_crop, target_crops, acres, value_type, 'wet')
+
+                
+                with ui.nav_panel('Normal Years'):
+                    @render.plot
+                    def crop_savings_plot_normal_years():
+                        value_type = input.value_type.get()
+                        selection_type = input.selection_type.get()
+
+                        current_crop = input.current_crop.get()
+                        target_crops = list(input.target_crops.get())
+                        acres = input.calc_acreage.get()
+
+                        if selection() == '':
+                            return empty_plot()
+                        elif len(target_crops) == 0:
+                            return empty_plot('Please select crops to compare (max 9)...')
+                        elif len(target_crops) > 9:
+                            return empty_plot('More than 9 comparison crops selected...')
+                        else:
+                            return get_crop_savings(selection_type, selection(), current_crop, target_crops, acres, value_type, 'normal')
+                
+                with ui.nav_panel('Dry Years'):
+                    @render.plot
+                    def crop_savings_plot_dry_years():
+                        value_type = input.value_type.get()
+                        selection_type = input.selection_type.get()
+
+                        current_crop = input.current_crop.get()
+                        target_crops = list(input.target_crops.get())
+                        acres = input.calc_acreage.get()
+
+                        if selection() == '':
+                            return empty_plot()
+                        elif len(target_crops) == 0:
+                            return empty_plot('Please select crops to compare (max 9)...')
+                        elif len(target_crops) > 9:
+                            return empty_plot('More than 9 comparison crops selected...')
+                        else:
+                            return get_crop_savings(selection_type, selection(), current_crop, target_crops, acres, value_type, 'dry')
+
+                
 
 
         with ui.nav_panel('Overall Regional Data'):
@@ -571,10 +830,3 @@ with ui.layout_columns(col_widths=[4, 8]):
                             value_type = input.value_type.get()
                             selection_type = input.selection_type.get()
                             return get_annual_dist(selection_type, selection(), value_type)
-
-                    with ui.nav_panel('Overall Values'):
-                        @render.plot
-                        def total_plot():
-                            value_type = input.value_type.get()
-                            selection_type = input.selection_type.get()
-                            return get_total(selection_type, selection(), value_type)

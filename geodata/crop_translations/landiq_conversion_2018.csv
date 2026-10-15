@@ -1,0 +1,294 @@
+landiq_code,crop_name
+1,Citrus
+2,Dates
+3,Avocados
+4,Olives
+5,Subtropical
+6,Kiwis
+7,Apples
+8,Miscellaneous deciduous
+9,Mixed deciduous
+10,Almonds
+11,Walnuts
+12,Pistachios
+13,Pomegranates
+14,Plums
+15,Cherries
+16,Peaches and nectarines
+17,Pears
+18,Cotton
+19,Beans (dry)
+20,Field Misc.
+21,Sunflowers
+22,Corn
+23,Safflower
+24,Grain and Hay
+25,Wheat
+26,Misc. Grain and Hay
+27,Fallow/Idle
+28,Pasture
+29,Alfalfa
+30,Mixed pasture
+31,Native pasture
+32,Miscellaneous grasses
+33,Rice
+34,Wild Rice
+35,Truck Crops
+36,Onions and Garlic
+37,Potatoes
+38,Tomatoes (Processing)
+39,"Flowers, nursery and Christmas Tree Farms"
+40,Truck Crops - Misc.
+41,Blueberries
+42,Strawberries
+43,Peppers
+44,Greenhouse
+45,Lettuce
+46,Potatoes
+47,Broccoli
+48,Carrots
+49,"Melons, Squash, and Cucumbers"
+50,Vineyards
+51,Wine grapes
+52,Fallow/Idle
+53,Young Orchard
+54,Citrus - Young Orchard
+55,"Avocados - Flowers, nursery and Christmas Tree Farms"
+56,Almonds - Corn
+57,Almonds - Potatoes
+58,Almonds - Young Orchard
+59,Walnuts - Corn
+60,Walnuts - Young Orchard
+61,Plums - Miscellaneous grasses
+62,Peaches and nectarines - Misc. Grain and Hay
+63,Peaches and nectarines - Young Orchard
+64,Field Misc. - Cotton
+65,Field Misc. - Beans (dry)
+66,Field Misc. - Corn
+67,Field Misc. - Wheat
+68,Field Misc. - Misc. Grain and Hay
+69,Field Misc. - Alfalfa
+70,Field Misc. - Miscellaneous grasses
+71,Field Misc. - Tomatoes (Processing)
+72,Field Misc. - Truck Crops - Misc.
+73,Field Misc. - Lettuce
+74,Corn
+75,Corn - Wheat
+76,Corn - Misc. Grain and Hay
+77,Corn - Miscellaneous grasses
+78,Corn - Onions and Garlic
+79,Corn - Tomatoes (Processing)
+80,Corn - Truck Crops - Misc.
+81,Corn - Peppers
+82,Corn - Lettuce
+83,Corn - Broccoli
+84,Safflower - Field Crops - No Subclass
+85,Grain and Hay - Corn
+86,Grain and Hay - Mixed pasture
+87,Grain and Hay - Rice
+88,Grain and Hay - Tomatoes (Processing)
+89,Grain and Hay - Truck Crops - Misc.
+90,Grain and Hay - Carrots
+91,"Grain and Hay - Melons, Squash, and Cucumbers"
+92,Grain and Hay - Vineyards
+93,Grain and Hay - Young Orchard
+94,Wheat - Pistachios
+95,Wheat - Cotton
+96,Wheat - Beans (dry)
+97,Wheat - Field Misc.
+98,Wheat - Sunflowers
+99,Wheat - Corn
+100,Wheat - Alfalfa
+101,Wheat - Mixed pasture
+102,Wheat - Miscellaneous grasses
+103,Wheat - Rice
+104,Wheat - Tomatoes (Processing)
+105,Wheat - Truck Crops - Misc.
+106,Wheat - Peppers
+107,Wheat - Lettuce
+108,Wheat - Potatoes
+109,Wheat - Broccoli
+110,"Wheat - Melons, Squash, and Cucumbers"
+111,Wheat - Young Orchard
+112,Misc. Grain and Hay - Cotton
+113,Misc. Grain and Hay - Beans (dry)
+114,Misc. Grain and Hay - Field Misc.
+115,Misc. Grain and Hay - Sunflowers
+116,Misc. Grain and Hay - Corn
+117,Misc. Grain and Hay - Safflower
+118,Misc. Grain and Hay - Grain and Hay
+119,Misc. Grain and Hay - Wheat
+120,Misc. Grain and Hay
+121,Misc. Grain and Hay - Alfalfa
+122,Misc. Grain and Hay - Mixed pasture
+123,Misc. Grain and Hay - Miscellaneous grasses
+124,Misc. Grain and Hay - Rice
+125,Misc. Grain and Hay - Wild Rice
+126,Misc. Grain and Hay - Truck Crops
+127,Misc. Grain and Hay - Onions and Garlic
+128,Misc. Grain and Hay - Tomatoes (Processing)
+129,"Misc. Grain and Hay - Flowers, nursery and Christmas Tree Farms"
+130,Misc. Grain and Hay - Truck Crops - Misc.
+131,Misc. Grain and Hay - Blueberries
+132,Misc. Grain and Hay - Strawberries
+133,Misc. Grain and Hay - Peppers
+134,Misc. Grain and Hay - Lettuce
+135,Misc. Grain and Hay - Potatoes
+136,Misc. Grain and Hay - Broccoli
+137,Misc. Grain and Hay - Carrots
+138,"Misc. Grain and Hay - Melons, Squash, and Cucumbers"
+139,Misc. Grain and Hay - Vineyards
+140,Misc. Grain and Hay - Young Orchard
+141,Alfalfa - Cotton
+142,Alfalfa - Beans (dry)
+143,Alfalfa - Sunflowers
+144,Alfalfa - Corn
+145,Alfalfa - Safflower
+146,Alfalfa - Wheat
+147,Alfalfa - Misc. Grain and Hay
+148,Alfalfa - Miscellaneous grasses
+149,Alfalfa - Rice
+150,Alfalfa - Truck Crops - Misc.
+151,Alfalfa - Lettuce
+152,Alfalfa - Potatoes
+153,"Alfalfa - Melons, Squash, and Cucumbers"
+154,Mixed pasture - Truck Crops - Misc.
+155,Miscellaneous grasses - Cotton
+156,Miscellaneous grasses - Sunflowers
+157,Miscellaneous grasses - Corn
+158,Miscellaneous grasses - Wheat
+159,Miscellaneous grasses - Misc. Grain and Hay
+160,Miscellaneous grasses - Alfalfa
+161,Miscellaneous grasses - Truck Crops - Misc.
+162,Miscellaneous grasses - Potatoes
+163,Miscellaneous grasses - Broccoli
+164,Truck Crops
+165,Truck Crops - Truck Crops - Misc.
+166,Truck Crops - Broccoli
+167,Onions and Garlic - Truck Crops - Misc.
+168,Onions and Garlic - Lettuce
+169,Onions and Garlic - Broccoli
+170,Tomatoes (Processing)
+171,Tomatoes (Processing) - Truck Crops - Misc.
+172,Tomatoes (Processing) - Broccoli
+173,"Tomatoes (Processing) - Melons, Squash, and Cucumbers"
+174,"Flowers, nursery and Christmas Tree Farms - Cotton"
+175,"Flowers, nursery and Christmas Tree Farms - Misc. Grain and Hay"
+176,"Flowers, nursery and Christmas Tree Farms - Broccoli"
+177,Truck Crops - Misc. - Cotton
+178,Truck Crops - Misc. - Beans (dry)
+179,Truck Crops - Misc. - Field Misc.
+180,Truck Crops - Misc. - Corn
+181,Truck Crops - Misc. - Safflower
+182,Truck Crops - Misc. - Wheat
+183,Truck Crops - Misc. - Misc. Grain and Hay
+184,Truck Crops - Misc. - Alfalfa
+185,Truck Crops - Misc. - Mixed pasture
+186,Truck Crops - Misc. - Miscellaneous grasses
+187,Truck Crops - Misc. - Truck Crops
+188,Truck Crops - Misc. - Onions and Garlic
+189,Truck Crops - Misc. - Tomatoes (Processing)
+190,Truck Crops - Misc.
+191,Truck Crops - Misc. - Blueberries
+192,Truck Crops - Misc. - Strawberries
+193,Truck Crops - Misc. - Peppers
+194,Truck Crops - Misc. - Lettuce
+195,Truck Crops - Misc. - Broccoli
+196,Truck Crops - Misc. - Carrots
+197,"Truck Crops - Misc. - Melons, Squash, and Cucumbers"
+198,Truck Crops - Misc. - Young Orchard
+199,Blueberries - Misc. Grain and Hay
+200,Blueberries - Truck Crops - Misc.
+201,Blueberries - Strawberries
+202,Blueberries - Lettuce
+203,Blueberries - Broccoli
+204,Strawberries - Misc. Grain and Hay
+205,Strawberries - Miscellaneous grasses
+206,Strawberries - Truck Crops
+207,Strawberries - Truck Crops - Misc.
+208,Strawberries - Blueberries
+209,Strawberries
+210,Strawberries - Peppers
+211,Strawberries - Lettuce
+212,Strawberries - Broccoli
+213,Strawberries - Carrots
+214,"Strawberries - Melons, Squash, and Cucumbers"
+215,Peppers - Corn
+216,Peppers - Misc. Grain and Hay
+217,Peppers - Truck Crops - Misc.
+218,Peppers
+219,Peppers - Lettuce
+220,Peppers - Broccoli
+221,Peppers - Carrots
+222,"Peppers - Melons, Squash, and Cucumbers"
+223,Lettuce - Cotton
+224,Lettuce - Beans (dry)
+225,Lettuce - Corn
+226,Lettuce - Wheat
+227,Lettuce - Misc. Grain and Hay
+228,Lettuce - Alfalfa
+229,Lettuce - Truck Crops
+230,Lettuce - Onions and Garlic
+231,Lettuce - Tomatoes (Processing)
+232,Lettuce - Truck Crops - Misc.
+233,Lettuce - Peppers
+234,Lettuce
+235,Lettuce - Broccoli
+236,Lettuce - Carrots
+237,"Lettuce - Melons, Squash, and Cucumbers"
+238,Potatoes - Cotton
+239,Potatoes - Field Misc.
+240,Potatoes - Corn
+241,Potatoes - Wheat
+242,Potatoes - Misc. Grain and Hay
+243,Potatoes - Alfalfa
+244,Potatoes - Onions and Garlic
+245,Potatoes - Truck Crops - Misc.
+246,Potatoes - Peppers
+247,Potatoes - Lettuce
+248,Potatoes
+249,Potatoes - Carrots
+250,Broccoli - Cotton
+251,Broccoli - Beans (dry)
+252,Broccoli - Corn
+253,Broccoli - Wheat
+254,Broccoli - Misc. Grain and Hay
+255,Broccoli - Miscellaneous grasses
+256,Broccoli - Truck Crops
+257,Broccoli - Onions and Garlic
+258,Broccoli - Tomatoes (Processing)
+259,Broccoli - Truck Crops - Misc.
+260,Broccoli - Blueberries
+261,Broccoli - Strawberries
+262,Broccoli - Peppers
+263,Broccoli - Lettuce
+264,Broccoli
+265,Broccoli - Carrots
+266,"Broccoli - Melons, Squash, and Cucumbers"
+267,Carrots - Cotton
+268,Carrots - Beans (dry)
+269,Carrots - Corn
+270,Carrots - Wheat
+271,Carrots - Misc. Grain and Hay
+272,Carrots - Miscellaneous grasses
+273,Carrots - Onions and Garlic
+274,Carrots - Tomatoes (Processing)
+275,Carrots - Truck Crops - Misc.
+276,Carrots - Peppers
+277,Carrots - Lettuce
+278,Carrots - Potatoes
+279,Carrots - Broccoli
+280,Carrots
+281,"Carrots - Melons, Squash, and Cucumbers"
+282,"Melons, Squash, and Cucumbers - Beans (dry)"
+283,"Melons, Squash, and Cucumbers - Misc. Grain and Hay"
+284,"Melons, Squash, and Cucumbers - Truck Crops"
+285,"Melons, Squash, and Cucumbers - Tomatoes (Processing)"
+286,"Melons, Squash, and Cucumbers - Truck Crops - Misc."
+287,"Melons, Squash, and Cucumbers - Potatoes"
+288,"Melons, Squash, and Cucumbers - Broccoli"
+289,"Melons, Squash, and Cucumbers - Carrots"
+290,"Melons, Squash, and Cucumbers"
+291,"Vineyards - Melons, Squash, and Cucumbers"
+292,Fallow/Idle - Broccoli
+0,NA

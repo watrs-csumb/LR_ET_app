@@ -51,8 +51,21 @@ fields = gpd.read_file(fields_path)
 data = pd.merge(data, fields[['OPENET_ID', 'ACRES']], on='OPENET_ID', how='left')
 data['value_acre_ft'] = data['value_ft'] * data['ACRES']
 
+# Simplify to water yearly values
+data = data.groupby(['OPENET_ID', 'dataset', 'water_year'], as_index=False).aggregate(
+    value_ft=('value_ft', 'sum'),
+    value_acre_ft=('value_acre_ft', 'sum')
+)
+
+# Add "net_et" dataset
+net_data = data[data['dataset'] == 'ensemble'].reset_index().copy()
+net_data['value_ft'] = net_data['value_ft'] - data[data['dataset'] == 'gridmet_pr'].reset_index()['value_ft']
+net_data['value_acre_ft'] = net_data['value_acre_ft'] - data[data['dataset'] == 'gridmet_pr'].reset_index()['value_acre_ft']
+net_data['dataset'] = 'net_et'
+data = pd.concat([data, net_data])
+
 path = Path(__file__).resolve().parent.parent / 'geodata' / 'data.csv'
-data[['OPENET_ID', 'dataset', 'month', 'value_ft', 'value_acre_ft', 'month_date', 'water_year', 'year']].to_csv(path, index=False)
+data[['OPENET_ID', 'dataset', 'water_year', 'value_ft', 'value_acre_ft']].to_csv(path, index=False)
 
 # TODO: Pivot table to make more sense
 # TODO: More unit-specific column names

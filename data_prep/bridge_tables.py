@@ -34,37 +34,49 @@ def set_default_mode(feature):
     default_value = ee.Algorithms.If(mode_value, mode_value, 0)
     return feature.set('mode', default_value)
 
-landiq_conversion_path = Path(__file__).resolve().parent.parent / 'landiq_conversion.csv'
-if landiq_conversion_path.is_file():
-    landiq_conversion = pd.read_csv(landiq_conversion_path).set_index('landiq_code')['crop_name'].to_dict()
-else:
-    landiq_cropland_path = Path(__file__).resolve().parent.parent / 'landiq_to_cropland.csv'
-    landiq_conversion = pd.read_csv(landiq_cropland_path).set_index('code')['cropland'].to_dict()
-    landiq_conversion[0] = 'default'
+landiq_conversions = {}
+cropland_to_name = None
 
-    cropland_name_path = Path(__file__).resolve().parent.parent / 'cropland_to_name.csv'
-    cropland_to_name = pd.read_csv(cropland_name_path).set_index('code')['cadwr_crop'].to_dict()
-    cropland_to_name['default'] = 'NA'
+for year in range(2018, 2025):
+    landiq_conversion_path = Path(__file__).resolve().parent.parent / 'geodata' / 'crop_translations' / f'landiq_conversion_{year}.csv'
+    if landiq_conversion_path.is_file():
+        conversion = pd.read_csv(landiq_conversion_path).set_index('landiq_code')['crop_name'].to_dict()
+        landiq_conversions[year] = conversion
+    else:
+        landiq_cropland_path = Path(__file__).resolve().parent.parent / 'geodata' / 'crop_translations' / f'landiq_to_cropland_{year}.csv'
+        conversion = pd.read_csv(landiq_cropland_path).set_index('code')['cropland'].to_dict()
+        conversion[0] = 'default'
 
-    for landiq_code, cropland in landiq_conversion.items():
-        crop_name = ''
-        crops: list[str] = cropland.split('-')
+        # Only read cropland to name conversion if needed, and only do so once.
+        if cropland_to_name is None:
+            cropland_name_path = Path(__file__).resolve().parent.parent / 'geodata' / 'crop_translations' / 'cropland_to_name.csv'
+            cropland_to_name = pd.read_csv(cropland_name_path).set_index('code')['cadwr_crop'].to_dict()
+            cropland_to_name['default'] = 'NA'
 
-        for crop in crops:
-            if '*' in crop:
-                continue
+        for landiq_code, cropland in conversion.items():
+            crop_name = ''
+            crops: list[str] = cropland.split('-')
 
-            if crop_name != '':
-                crop_name = crop_name + ', '
+            if len(crops) == 2 and crops[0] == crops[1]:
+                crop_name = cropland_to_name[crops[0]]
+            else:
+                for crop in crops:
+                    # Skip empty crops
+                    if '*' in crop:
+                        continue
 
-            crop_name = crop_name + cropland_to_name[crop]
+                    if crop_name != '':
+                        crop_name = crop_name + ' - '
 
-        landiq_conversion[landiq_code] = crop_name
+                    crop_name = crop_name + cropland_to_name[crop]
 
-    df = pd.DataFrame(list(landiq_conversion.items()), columns=['landiq_code', 'cropland'])
-    df = df.rename(columns={'cropland': 'crop_name'})
-    
-    df.to_csv(landiq_conversion_path, index=False)
+            conversion[landiq_code] = crop_name
+
+        df = pd.DataFrame(list(conversion.items()), columns=['landiq_code', 'cropland'])
+        df = df.rename(columns={'cropland': 'crop_name'})
+        
+        df.to_csv(landiq_conversion_path, index=False)
+        landiq_conversions[year] = conversion
 
 # Fields
 fields = ee.FeatureCollection(f'projects/{project_id}/assets/land_repurposing_app/openet_geodatabase_v2_clipped')
@@ -74,15 +86,24 @@ if fields_path.is_file():
     print('Loading Field GDF')
     field_gdf = gpd.read_file(fields_path)
 else:
-    print('Computing Features to make Field GDF')
-    field_gdf: gpd.GeoDataFrame = ee.data.computeFeatures({'expression': fields, 'fileFormat': 'GEOPANDAS_GEODATAFRAME'})
-    field_gdf = field_gdf[['ACRES', 'HUC12', 'OPENET_ID', 'geometry']]
+    unmodified_fields_path = Path(__file__).resolve().parent.parent / 'geodata' / 'unmodified_fields.geojson'
+    if unmodified_fields_path.is_file():
+        print('Loading unmodified Field GDF')
+        field_gdf = gpd.read_file(unmodified_fields_path)
+    else:
+        print('Computing Features to make Field GDF')
+        field_gdf: gpd.GeoDataFrame = ee.data.computeFeatures({'expression': fields, 'fileFormat': 'GEOPANDAS_GEODATAFRAME'})
+        field_gdf = field_gdf[['ACRES', 'HUC12', 'OPENET_ID', 'geometry']]
+        print('Done')
+        print('Saving')
+        field_gdf.to_file(unmodified_fields_path, index=False)
     print('Done')
 
     # Add LandIQ Annual Crop Types
     print('Adding LandIQ data')
     for year in range(2018, 2025):
         print(f'    Adding {year} data')
+        landiq_conversion = landiq_conversions[year]
 
         landiq_path = Path(__file__).resolve().parent.parent / 'geodata' / f'landiq_results_{year}.geojson'
         if landiq_path.is_file():
