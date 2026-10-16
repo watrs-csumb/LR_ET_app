@@ -49,20 +49,15 @@ print('merging bridge data')
 data = data.merge(bridge[['OPENET_ID', 'HR_NAME', 'Basin_Subb', 'GSA_ID']], on='OPENET_ID', how='left')
 print('done')
 
-water_year_classification = {
-    2018: 'dry',
-    2019: 'dry',
-    2020: 'normal',
-    2021: 'dry',
-    2022: 'normal',
-    2023: 'wet',
-    2024: 'wet'
-}
-
-data['water_year_class'] = data['water_year'].map(water_year_classification)
+print('merging water year classifications')
+water_year_class_path = Path(__file__).resolve().parent.parent / 'geodata' / 'hr_regions_wateryear_type.csv'
+water_year_class = pd.read_csv(water_year_class_path)
+data = data.merge(water_year_class[['HR_NAME', 'water_year', 'wb_class']], how='left', on=['HR_NAME', 'water_year'])
+data = data.rename(columns={'wb_class': 'water_year_class'})
+print('done')
 
 print('hydrologic summary')
-hydrologic_summary = data.groupby(['HR_NAME', 'dataset', 'water_year_class'], as_index=False).aggregate(
+hydrologic_summary = data.groupby(['HR_NAME', 'dataset', 'water_year', 'water_year_class'], as_index=False).aggregate(
     SUM = ('value_acre_ft', 'sum'),
     MEAN = ('value_acre_ft', 'mean'),
     MEDIAN = ('value_acre_ft', 'median'),
@@ -78,7 +73,7 @@ print('done')
 
 
 print('subbasin summary')
-subbasin_summary = data.groupby(['Basin_Subb', 'dataset', 'water_year_class'], as_index=False).aggregate(
+subbasin_summary = data.groupby(['Basin_Subb', 'dataset', 'water_year', 'water_year_class'], as_index=False).aggregate(
     SUM = ('value_acre_ft', 'sum'),
     MEAN = ('value_acre_ft', 'mean'),
     MEDIAN = ('value_acre_ft', 'median'),
@@ -94,7 +89,7 @@ print('done')
 
 
 print('gsa summary')
-gsa_summary = data.groupby(['GSA_ID', 'dataset', 'water_year_class'], as_index=False).aggregate(
+gsa_summary = data.groupby(['GSA_ID', 'dataset', 'water_year', 'water_year_class'], as_index=False).aggregate(
     SUM = ('value_acre_ft', 'sum'),
     MEAN = ('value_acre_ft', 'mean'),
     MEDIAN = ('value_acre_ft', 'median'),

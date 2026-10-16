@@ -160,6 +160,16 @@ print('Adding GSAs')
 field_points = gpd.sjoin(field_points, gsa_gdf[['GSA_ID', 'geometry']], how='left', predicate='intersects').drop(columns='index_right')
 print('Done')
 
+# Purging fields that aren't in a Hydrologic Region, Subbasin, or GSA
+print('Filtering out fields not in any regions')
+bad_fields = field_points[(field_points['HR_NAME'].isna()) & (field_points['Basin_Subb'].isna()) & (field_points['GSA_ID'].isna())]['OPENET_ID'].values
+field_points = field_points[~field_points['OPENET_ID'].isin(bad_fields)]
+data_path = Path(__file__).resolve().parent.parent / 'geodata' / 'data.csv'
+data_df = pd.read_csv(data_path)
+data_df = data_df[~data_df['OPENET_ID'].isin(bad_fields)]
+data_df.to_csv(data_path, index=False)
+print('Done')
+
 # Saving
 print('Saving')
 path = Path(__file__).resolve().parent.parent / 'bridge_table.csv'
@@ -168,6 +178,7 @@ field_points[[
     'crop_2018', 'crop_2019', 'crop_2020', 'crop_2021', 'crop_2022', 'crop_2023', 'crop_2024'
 ]].to_csv(path, index=False)
 print('Done')
+
 
 # Filter out fields less than 5 acres
 # Filter out fields that have no crop ids
