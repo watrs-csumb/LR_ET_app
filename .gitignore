@@ -9,6 +9,7 @@ znotes.txt
 geodata/data.csv
 geodata/data_with_crops.csv
 geodata/fields.geojson
+geodata/unmodified_fields.geojson
 geodata/landiq_results_2018.geojson
 geodata/landiq_results_2019.geojson
 geodata/landiq_results_2020.geojson
