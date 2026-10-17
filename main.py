@@ -331,8 +331,11 @@ def get_crop_comparison(selection_type: str, region: str, crops: list[str], valu
     else:
         return empty_plot()
 
-def get_crop_savings(selection_type: str, region: str, curr_crop: str, target_crops: list[str], acreage: float, value: str = 'ET', water_year_class: str = 'all'):
+def get_crop_calculator_comparison(selection_type: str, region: str, curr_crop: str, target_crops: list[str], acreage: float, display_relative: str, value: str = 'ET', water_year_class: str = 'all'):
     if selection() != '':
+        if value == 'PR':
+            return empty_plot('Calculator not available for precipitation data.')
+
         all_crops = target_crops + [curr_crop]
 
         if selection_type == 'i03':
@@ -352,23 +355,31 @@ def get_crop_savings(selection_type: str, region: str, curr_crop: str, target_cr
         
         if value == 'ET':
             summary = summary[summary['dataset'] == 'ensemble']
-            current_estimated = summary[summary['crop'] == curr_crop]['estimated_acre_ft'].mean()
-
-            fig, ax = plt.subplots()
-            target_summary = summary[summary['crop'] != curr_crop].groupby('crop')['estimated_acre_ft'].mean() - current_estimated
-            sorted_summary = target_summary.sort_values(ascending=False)
-            colors = ['C1' if val > 0 else 'C0' for val in sorted_summary.values]
-            sorted_summary.plot.barh(color=colors, legend=False, ax=ax)
-        elif value == 'PR':
-            return empty_plot('"Precipitation Savings" not available.')
         elif value == 'Net ET':
             summary = summary[summary['dataset'] == 'net_et']
-            current_estimated = summary[summary['crop'] == curr_crop]['estimated_acre_ft'].iloc[0]
 
-            fig, ax = plt.subplots()
-            sorted_summary = summary[summary['crop'] != curr_crop].sort_values('estimated_acre_ft', ascending=False)
-            colors = ['C1' if val > current_estimated else 'C0' for val in sorted_summary['estimated_acre_ft']]
-            sorted_summary.plot.barh(x='crop', y='estimated_acre_ft', color=colors, legend=False, ax=ax)
+        current_estimated = summary[summary['crop'] == curr_crop]['estimated_acre_ft'].mean()
+        fig, ax = plt.subplots()
+
+        if display_relative:
+            target_summary = summary[summary['crop'] != curr_crop].groupby('crop')['estimated_acre_ft'].mean() - current_estimated
+            sorted_summary = target_summary.sort_values(ascending=False)
+
+            colors = ['C1' if val > 0 else 'C0' for val in sorted_summary.values]
+            sorted_summary.plot.barh(color=colors, legend=False, ax=ax)
+            
+            ax.axvline(x=0, linestyle='--', color='black', label=f'current: {current_estimated:.2f}')
+            plt.title(f'Annual {value} Relative to Current Crop')
+            plt.xlabel(f'Estimated Annual {value} Relative to Current Crop (acre-ft)')
+        else:
+            sorted_summary = summary.groupby('crop')['estimated_acre_ft'].mean().sort_values(ascending=False)
+
+            colors = ['C1' if val > current_estimated else 'C0' for val in sorted_summary.values]
+            sorted_summary.plot.barh(color=colors, legend=False, ax=ax)
+            
+            ax.axvline(x=current_estimated, linestyle='--', color='black')
+            plt.title(f'Mean Annual {value} by Crop')
+            plt.xlabel(f'Estimated Annual {value} (acre-ft)')
 
         # Wrap y-axis tick labels
         wrapped_labels = [textwrap.fill(label.get_text(), 15) for label in ax.get_yticklabels()]
@@ -382,8 +393,6 @@ def get_crop_savings(selection_type: str, region: str, curr_crop: str, target_cr
             ax.bar_label(container, padding=3, fmt='%+.2f')
         ax.margins(x=0.15)
 
-        # plt.title(f'Annual {value} Savings by Switching from "{curr_crop}"')
-        plt.xlabel(f'Estimated Annual {value} Relative to Current Crop (acre-ft)')
         plt.ylabel('')
         plt.tight_layout()
         return ax
@@ -524,6 +533,7 @@ with ui.layout_columns(col_widths=[4, 8]):
                     m.add(gsa_layer)      
         #endregion    
         
+        #region Region Info Stuff
         with ui.layout_columns(col_widths=[12, 12, 12]):
             # Region Name
             with ui.card(class_="d-flex align-items-center justify-content-center"):
@@ -596,7 +606,7 @@ with ui.layout_columns(col_widths=[4, 8]):
                     selection_type = input.selection_type.get()
                     annual_acreage = get_avg_acreage(selection_type, selection(), 'annual')
                     return f'{annual_acreage:.2f} acres'
-
+        #endregion
 
     with ui.navset_pill(id='tab'):
         with ui.nav_panel('Regional Crop Data'):
@@ -609,26 +619,10 @@ with ui.layout_columns(col_widths=[4, 8]):
                             'most_common': 'Most Common',
                             'most_et':     'Highest Mean',
                             'least_et':    'Lowest Mean',
-                            'mix':         'Highest/Lowest Mean',
-                            'custom':      'Custom Selected'
+                            'mix':         'Highest/Lowest Mean'
                         },
                         selected='most_common'
                     )
-
-                    with ui.panel_conditional('input.crop_display_setting === "custom"'):
-                        ui.input_selectize(
-                            'custom_crops',
-                            'Customize Crop Selection',
-                            [],
-                            multiple=True
-                        )
-
-                    @reactive.effect
-                    @reactive.event(input.crop_display_setting)
-                    def custom_crop_selection():
-                        if input.crop_display_setting.get() == 'custom':
-                            new_choices = get_crops_for_selectize(input.selection_type.get(), selection())
-                            ui.update_selectize('custom_crops', choices=new_choices, selected=input.custom_crops.get())
                 
                 with ui.card(height=798.5, full_screen=True):
                     @render.plot
@@ -637,18 +631,8 @@ with ui.layout_columns(col_widths=[4, 8]):
                         selection_type = input.selection_type.get()
                         crop_display_setting = input.crop_display_setting.get()
 
-                        if crop_display_setting == 'custom':
-                            custom_crops = input.custom_crops.get()
-
-                            if len(custom_crops) == 0:
-                                return empty_plot('Please select crops to display (max 10)...')
-                            elif len(custom_crops) > 10:
-                                return empty_plot('More than 10 crops selected...')
-                            else:
-                                return get_crop_comparison(selection_type, selection(), custom_crops, value_type)
-                        else:
-                            crops = select_crops(selection_type, selection(), value_type, crop_display_setting)
-                            return get_crop_comparison(selection_type, selection(), crops, value_type)
+                        crops = select_crops(selection_type, selection(), value_type, crop_display_setting)
+                        return get_crop_comparison(selection_type, selection(), crops, value_type)
 
 
         with ui.nav_panel('Water Savings Calculator'):
@@ -707,6 +691,7 @@ with ui.layout_columns(col_widths=[4, 8]):
                     def crop_savings_plot_all_years():
                         value_type = input.value_type.get()
                         selection_type = input.selection_type.get()
+                        display_relative = input.calculator_display_relative.get()
 
                         current_crop = input.current_crop.get()
                         target_crops = list(input.target_crops.get())
@@ -719,7 +704,7 @@ with ui.layout_columns(col_widths=[4, 8]):
                         elif len(target_crops) > 9:
                             return empty_plot('More than 9 comparison crops selected...')
                         else:
-                            return get_crop_savings(selection_type, selection(), current_crop, target_crops, acres, value_type, 'all')
+                            return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'all')
 
                 
                 with ui.nav_panel('Wet Years'):
@@ -727,6 +712,7 @@ with ui.layout_columns(col_widths=[4, 8]):
                     def crop_savings_plot_wet_years():
                         value_type = input.value_type.get()
                         selection_type = input.selection_type.get()
+                        display_relative = input.calculator_display_relative.get()
 
                         current_crop = input.current_crop.get()
                         target_crops = list(input.target_crops.get())
@@ -739,14 +725,15 @@ with ui.layout_columns(col_widths=[4, 8]):
                         elif len(target_crops) > 9:
                             return empty_plot('More than 9 comparison crops selected...')
                         else:
-                            return get_crop_savings(selection_type, selection(), current_crop, target_crops, acres, value_type, 'Wet')
+                            return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'Wet')
 
                 
                 with ui.nav_panel('Average Years'):
                     @render.plot
-                    def crop_savings_plot_normal_years():
+                    def crop_relative_plot_normal_years():
                         value_type = input.value_type.get()
                         selection_type = input.selection_type.get()
+                        display_relative = input.calculator_display_relative.get()
 
                         current_crop = input.current_crop.get()
                         target_crops = list(input.target_crops.get())
@@ -759,13 +746,14 @@ with ui.layout_columns(col_widths=[4, 8]):
                         elif len(target_crops) > 9:
                             return empty_plot('More than 9 comparison crops selected...')
                         else:
-                            return get_crop_savings(selection_type, selection(), current_crop, target_crops, acres, value_type, 'Average')
+                            return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'Average')
                 
                 with ui.nav_panel('Dry Years'):
                     @render.plot
                     def crop_savings_plot_dry_years():
                         value_type = input.value_type.get()
                         selection_type = input.selection_type.get()
+                        display_relative = input.calculator_display_relative.get()
 
                         current_crop = input.current_crop.get()
                         target_crops = list(input.target_crops.get())
@@ -778,7 +766,23 @@ with ui.layout_columns(col_widths=[4, 8]):
                         elif len(target_crops) > 9:
                             return empty_plot('More than 9 comparison crops selected...')
                         else:
-                            return get_crop_savings(selection_type, selection(), current_crop, target_crops, acres, value_type, 'Dry')
+                            return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'Dry')
+                        
+            ui.input_switch(
+                'calculator_display_relative',
+                'Display Type',
+                True
+            )
+
+            @render.text
+            def calculator_display_setting_type():
+                display_relative = input.calculator_display_relative.get()
+                value_type = input.value_type.get()
+
+                if display_relative:
+                    return f'Current Display Setting: Relative {value_type}'
+                else:
+                    return f'Current Display Setting: Raw {value_type}'
 
         with ui.nav_panel('Regional Distribution'):
             @render.plot
