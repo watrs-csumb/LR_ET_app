@@ -7,3 +7,4 @@ python-dotenv==1.2.4
 Shapely==2.2.0
 shiny==1.6.1
 shinywidgets==0.8.1
+htmltools==0.6.0
