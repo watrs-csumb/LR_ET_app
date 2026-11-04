@@ -2,13 +2,14 @@ import pandas as pd
 import geopandas as gpd
 from pathlib import Path
 
+SHARD_COUNT = 250
 MM_TO_INCHES = 25.4
 INCHES_TO_FEET = 12
 
 
 shards = []
-for i in range(1, 202):
-    shard = pd.read_csv(f'geodata/shards/cal_i08_ensemble_pr_2018_2024_{i}_200.csv')
+for i in range(1, SHARD_COUNT + 1):
+    shard = pd.read_csv(f'geodata/shards/cal_i08_ensemble_pr_2018_2024_{i}_{SHARD_COUNT}.csv')
     shards.append(shard)
 
 data = pd.concat(shards)

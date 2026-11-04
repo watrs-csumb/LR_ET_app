@@ -5,6 +5,7 @@ import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 import textwrap
+import copy
 
 from ipyleaflet import GeoJSON, Map
 from shiny import reactive
@@ -12,29 +13,54 @@ from shiny.express import input, render, ui
 from shinywidgets import render_widget
 
 plt.style.use('bmh')
-# TODO
-PERENNIAL_CROPS = []
-ANNUAL_CROPS = []
+
+selection_coords = reactive.Value((-1, -1))
+selection = reactive.Value('')
 
 # region Map layer and GDF Loading
+def get_style(feature_id):
+    with reactive.isolate():
+        selected_id = selection.get()
+
+    print(f'{feature_id}  --==--  {selected_id}')
+    
+    if feature_id == selected_id:
+        return {
+            'opacity': 1, 
+            'fillOpacity': 0.8,
+            'weight': 1,
+            'color': 'black',
+            'fillColor': 'black',
+        }
+    else:
+        return {
+            'opacity': 1, 
+            'fillOpacity': 0.1,
+            'weight': 1,
+            'color': 'black',
+            'fillColor': 'black',
+        }
+
+def get_hydrologic_region_style(feature):
+    return get_style(feature['properties'].get('HR_NAME'))
+
 hydrologic_path = Path(__file__).resolve().parent / 'geodata' / 'hydrologic_regions.geojson'
 with open(hydrologic_path, 'r') as f:
     hydrologic_regions = json.load(f)
 
 hydrologic_layer = GeoJSON(
     data=hydrologic_regions,
-    style={  
-        'opacity': 1, 
-        'fillOpacity': 0.1,
-        'weight': 1,
-        'color': 'black',
-        'fillColor': 'black',
-    },
+    style_callback=get_hydrologic_region_style,
     hover_style={'fillOpacity': 0.5},
 )
+hydrologic_data = copy.deepcopy(hydrologic_layer.data)
 
 hydrologic_gdf = gpd.read_file(hydrologic_path)
 hydrologic_gdf.set_geometry('geometry', inplace=True)
+
+
+def get_subbasin_style(feature):
+    return get_style(feature['properties'].get('Basin_Su_1'))
 
 subbasin_path = Path(__file__).resolve().parent / 'geodata' / 'subbasins.geojson'
 with open(subbasin_path, 'r') as f:
@@ -42,18 +68,14 @@ with open(subbasin_path, 'r') as f:
 
 subbasin_layer = GeoJSON(
     data=subbasins,
-    style={  
-        'opacity': 1, 
-        'fillOpacity': 0.1,
-        'weight': 1,
-        'color': 'black',
-        'fillColor': 'black',
-    },
+    style_callback=get_subbasin_style,
     hover_style={'fillOpacity': 0.5},
 )
+subbasin_data = copy.deepcopy(subbasin_layer.data)
 
 subbasin_gdf = gpd.read_file(subbasin_path)
 subbasin_gdf.set_geometry('geometry', inplace=True)
+
 
 overdrafted_path = Path(__file__).resolve().parent / 'geodata' / 'overdrafted_subbasins.geojson'
 with open(overdrafted_path, 'r') as f:
@@ -72,19 +94,17 @@ overdrafted_layer = GeoJSON(
 overdrafted_gdf = gpd.read_file(overdrafted_path)
 overdrafted_gdf.set_geometry('geometry', inplace=True)
 
+
+def get_gsa_style(feature):
+    return get_style(feature['properties'].get('GSA_ID'))
+
 gsa_path = Path(__file__).resolve().parent / 'geodata' / 'groundwater_sustainability_agencies.geojson'
 with open(gsa_path, 'r') as f:
     gsa_regions = json.load(f)
 
 gsa_layer = GeoJSON(
     data=gsa_regions,
-    style={  
-        'opacity': 1, 
-        'fillOpacity': 0.1,
-        'weight': 1,
-        'color': 'black',
-        'fillColor': 'black',
-    },
+    style_callback=get_gsa_style,
     point_style={
         'radius': 0,
         'fillOpacity': 0,
@@ -93,6 +113,7 @@ gsa_layer = GeoJSON(
     },
     hover_style={'fillOpacity': 0.5},
 )
+gsa_data = copy.deepcopy(gsa_layer.data)
 
 gsa_gdf = gpd.read_file(gsa_path)
 gsa_gdf.set_geometry('geometry', inplace=True)
@@ -121,10 +142,6 @@ gsa_crop_summary = pd.read_csv(gsa_crop_summary_path)
 
 bridge_path = Path(__file__).resolve().parent / 'bridge_table.csv'
 bridge = pd.read_csv(bridge_path)
-
-
-selection_coords = reactive.Value((-1, -1))
-selection = reactive.Value('')
 
 def empty_plot(message: str = 'Please select a region...'):
     '''Displays a message in place of an actual plot.'''
@@ -235,12 +252,9 @@ def get_avg(selection_type: str, region: str, value: str = 'ET'):
         # Average across years
         return summary[summary['dataset'] == dataset]['MEAN'].mean()
 
-
 def select_crops(selection_type: str, region: str, value: str = 'ET', crop_display_setting: str = 'most_common') -> list[str]:
     '''
         Return list of 10 crops based on provided setting in a specified region across water years 2018 - 2024
-        
-        For "custom", returns a list of exactly one value: "custom"
     '''
     if selection() != '':
         if crop_display_setting == 'custom':
@@ -275,8 +289,6 @@ def select_crops(selection_type: str, region: str, value: str = 'ET', crop_displ
             return list(summary.sort_values('weighted_mean', ascending=True).head(10)['crop'].values)
         elif crop_display_setting == 'mix':
             return list(summary.sort_values('weighted_mean', ascending=False).head(5)['crop'].values) + list(summary.sort_values('weighted_mean', ascending=True).head(5)['crop'].values)
-        elif crop_display_setting == 'custom':
-            return []
         else:
             return []
     else:
@@ -362,6 +374,8 @@ def get_crop_calculator_comparison(selection_type: str, region: str, curr_crop: 
         fig, ax = plt.subplots()
 
         if display_relative:
+            fmt = '%+.2f'
+
             target_summary = summary[summary['crop'] != curr_crop].groupby('crop')['estimated_acre_ft'].mean() - current_estimated
             sorted_summary = target_summary.sort_values(ascending=False)
 
@@ -372,6 +386,8 @@ def get_crop_calculator_comparison(selection_type: str, region: str, curr_crop: 
             plt.title(f'Annual {value} Relative to Current Crop')
             plt.xlabel(f'Estimated Annual {value} Relative to Current Crop (acre-ft)')
         else:
+            fmt = '%.2f'
+
             sorted_summary = summary.groupby('crop')['estimated_acre_ft'].mean().sort_values(ascending=False)
 
             colors = ['C1' if val > current_estimated else 'C0' for val in sorted_summary.values]
@@ -390,7 +406,7 @@ def get_crop_calculator_comparison(selection_type: str, region: str, curr_crop: 
 
         # Bar labels
         for container in ax.containers:
-            ax.bar_label(container, padding=3, fmt='%+.2f')
+            ax.bar_label(container, padding=3, fmt=fmt)
         ax.margins(x=0.15)
 
         plt.ylabel('')
@@ -410,16 +426,18 @@ def get_avg_acreage(selection_type: str, region: str, category: str = 'all'):
             code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
             regions = bridge[bridge['GSA_ID'] == code]
 
-        return regions['ACRES'].sum()
+        total_acres = regions['ACRES'].sum()
 
-        # if category == 'perennial':
-        #     return 'PERENNIAL'
-        # elif category == 'annual':
-        #     return 'ANNUAL'
-        # elif category == 'all':
-        #     return 'ALL'
-        # else:
-        #     raise ValueError('If specifying a category for acreage calculation, must be either "perennial" or "annual".')
+        if category == 'perennial':
+            return (regions[regions['category_2024'] == 'Perennial']['ACRES'].sum() / total_acres) * 100
+        elif category == 'annual':
+            return (regions[regions['category_2024'] == 'Annual']['ACRES'].sum() / total_acres) * 100
+        elif category == 'fallow':
+            return (1 - (regions[regions['category_2024'] == 'Perennial']['ACRES'].sum() / total_acres) - (regions[regions['category_2024'] == 'Annual']['ACRES'].sum() / total_acres)) * 100
+        elif category == 'all':
+            return total_acres
+        else:
+            raise ValueError('If specifying a category for acreage calculation, must be either "perennial" or "annual".')
 
 def get_field_count(selection_type: str, region: str):
     if selection() != '':
@@ -437,38 +455,46 @@ ui.tags.style('.bslib-value-box .value-box-value { font-size:20px !important; }'
 ui.page_opts(fillable=True)
 
 with ui.sidebar(open='closed', width='260px', resizable=False):
-    ui.input_radio_buttons(
-        'selection_type',
-        'Boundaries:',
-        {
-            'i03': 'Hydrologic Regions (i03)',
-            'i08': 'Subbasins (i08)',
-            'gsa': 'Groundwater Sustainability Agencies',
-        },
-        selected='i08'
-    )
-
-    ui.input_radio_buttons(
-        'value_type',
-        'Values:',
-        {
-            'ET': 'Evapotranspiration (ET)',
-            'PR': 'Precipitation (PR)',
-            'Net ET': 'Net ET (ET - PR)',
-        },
-    )
-
-    ui.input_checkbox(
-        'show_overdrafted',
-        'Show Critically Overdrafted Subbasins',
-        False,
-    )
+    pass
 
 
 with ui.layout_columns(col_widths=[4, 8]):
-    with ui.layout_columns(col_widths=[12, 6, 6]):
+    with ui.layout_columns(col_widths=[12, 12, 12]):
+        # region Map Control Stuff
+        with ui.card():
+            with ui.layout_columns(col_widths=[6, 6, 12]):
+                ui.input_select(
+                    'selection_type',
+                    'Boundaries:',
+                    {
+                        'i03': 'Hydrologic Regions (i03)',
+                        'i08': 'Subbasins (i08)',
+                        'gsa': 'Groundwater Sustainability Agencies',
+                    },
+                    selected='i08'
+                )
+            
+                ui.input_select(
+                    'value_type',
+                    'Values:',
+                    {
+                        'ET': 'Evapotranspiration (ET)',
+                        'PR': 'Precipitation (PR)',
+                        'Net ET': 'Net ET (ET - PR)',
+                    },
+                    selected='ET'
+                )
+            
+                ui.input_checkbox(
+                    'show_overdrafted',
+                    'Show Critically Overdrafted Subbasins',
+                    False,
+                )
+        # endregion
+
+
         #region Map Stuff
-        with ui.card(full_screen=True):
+        with ui.card(full_screen=True, fill=True):
             m = Map(center=(37.5, -121.2), zoom=6)
 
             def map_click(**kwargs):
@@ -490,6 +516,14 @@ with ui.layout_columns(col_widths=[4, 8]):
                         selection.set(click_results.iloc[0])
                     else:
                         selection.set('')
+                    
+                    # refresh styles
+                    if selection_type == 'i03':
+                        hydrologic_layer._update_data(None)
+                    elif selection_type == 'i08':
+                        subbasin_layer._update_data(None)
+                    elif selection_type == 'gsa':
+                        gsa_layer._update_data(None)
 
             m.on_interaction(map_click)
 
@@ -534,78 +568,43 @@ with ui.layout_columns(col_widths=[4, 8]):
         #endregion    
         
         #region Region Info Stuff
-        with ui.layout_columns(col_widths=[12, 12, 12]):
-            # Region Name
-            with ui.card(class_="d-flex align-items-center justify-content-center"):
-                'Name:'
+        with ui.card(style='white-space: pre-wrap;', fill=True):
+            with ui.card_body():
                 @render.text
                 def name_output():
                     # TODO: Formatting
-                    return f'{selection()}'
-
-            # Field Count
-            with ui.card(class_="d-flex align-items-center justify-content-center"):
-                'Number of fields:'
+                    return f'Region: {selection()}'
                 
                 @render.text
-                def field_count_output():
+                def field_count_total_acreage_output():
                     if selection() == '':
-                        return ''
+                        return f'Total Acreage:                     Field Count:     '
                         
                     selection_type = input.selection_type.get()
                     count = get_field_count(selection_type, selection())
-                    return f'{count} fields'
+                    total_acreage = get_avg_acreage(selection_type, selection())
+                    return f'Total Acreage: {total_acreage:.2f} acres       Field Count: {count}'
 
-            # Mean Values
-            with ui.card(class_="d-flex align-items-center justify-content-center"):
                 @render.text
-                def mean_header():
-                    return f'Mean Field {input.value_type.get()}:'
-                
+                def perennial_annual_acreage_output():
+                    if selection() == '':
+                        return f'Perennial:  XX %                   Annual  XX %                   Fallow  XX %'
+                    
+                    selection_type = input.selection_type.get()
+                    perennial_acreage = get_avg_acreage(selection_type, selection(), 'perennial')
+                    annual_acreage = get_avg_acreage(selection_type, selection(), 'annual')
+                    fallow_acreage = get_avg_acreage(selection_type, selection(), 'fallow')
+                    return f'Perennial: {perennial_acreage:.2f}%                  Annual {annual_acreage:.2f}%                  Fallow {fallow_acreage:.2f}%'
+
                 @render.text
                 def mean_output():
                     if selection() == '':
-                        return ''
+                        return f'Mean Field {input.value_type.get()}:'
                         
                     selection_type = input.selection_type.get()
                     value_type = input.value_type.get()
                     avg = get_avg(selection_type, selection(), value_type)
-                    return f'{avg:.2f} acre-ft'
-
-        # Acreage
-        with ui.layout_columns(col_widths=[12, 12, 12]):
-            with ui.card(class_="d-flex align-items-center justify-content-center"):
-                'Total Field Acreage: '
-                @render.text
-                def total_acreage_output():
-                    if selection() == '':
-                        return ''
-                    
-                    selection_type = input.selection_type.get()
-                    total_acreage = get_avg_acreage(selection_type, selection())
-                    return f'{total_acreage:.2f} acres'
-
-            with ui.card(class_="d-flex align-items-center justify-content-center"):
-                'Perennial Field Acreage:'
-                @render.text
-                def perennial_acreage_output():
-                    if selection() == '':
-                        return ''
-                    
-                    selection_type = input.selection_type.get()
-                    perennial_acreage = get_avg_acreage(selection_type, selection(), 'perennial')
-                    return f'{perennial_acreage:.2f} acres'
-
-            with ui.card(class_="d-flex align-items-center justify-content-center"):
-                'Annual Field Acreage:'
-                @render.text
-                def annual_acreage_output():
-                    if selection() == '':
-                        return ''
-                    
-                    selection_type = input.selection_type.get()
-                    annual_acreage = get_avg_acreage(selection_type, selection(), 'annual')
-                    return f'{annual_acreage:.2f} acres'
+                    return f'Mean Field {input.value_type.get()}: {avg:.2f} acre-ft'
         #endregion
 
     with ui.navset_pill(id='tab'):

@@ -3,6 +3,8 @@ import pandas as pd
 import geopandas as gpd
 from pathlib import Path
 
+YEAR_COUNT = 7
+
 hydrologic_path = Path(__file__).resolve().parent.parent / 'geodata' / 'hydrologic_regions.geojson'
 hydrologic_regions = gpd.read_file(hydrologic_path)
 
@@ -18,30 +20,69 @@ data = pd.read_csv(data_path)
 data = data.drop(columns=['value_acre_ft'])
 print('done')
 
+print('Loading bridge table')
+bridge_path = Path(__file__).resolve().parent.parent / 'bridge_table.csv'
+bridge = pd.read_csv(bridge_path)
+# Actual summary based on 2024 LandIQ boundaries, so filter out fields without a crop in LandIQ 2024
+bridge = bridge[bridge['crop_2024'].notna()]
+# Also filter out fields that have no crops in any LandIQ 2018 - 2024
+bridge = bridge[bridge['crop_2018'].notna() | bridge['crop_2019'].notna() | bridge['crop_2020'].notna() | bridge['crop_2021'].notna() | bridge['crop_2022'].notna() | bridge['crop_2023'].notna() | bridge['crop_2024'].notna()]
+# Also also filter out fields that have are likely greenhouses
+bridge = bridge[
+    (~bridge['crop_2018'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2018'].str.contains('Greenhouse')) & 
+    (~bridge['crop_2019'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2019'].str.contains('Greenhouse')) & 
+    (~bridge['crop_2020'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2020'].str.contains('Greenhouse')) & 
+    (~bridge['crop_2021'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2021'].str.contains('Greenhouse')) & 
+    (~bridge['crop_2022'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2022'].str.contains('Greenhouse')) & 
+    (~bridge['crop_2023'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2023'].str.contains('Greenhouse')) & 
+    (~bridge['crop_2024'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2024'].str.contains('Greenhouse'))
+]
+print('Done')
+
+hydrologic_region_acreage_path = Path(__file__).resolve().parent.parent / 'geodata' / 'hydrologic_region_acreage.csv'
+if hydrologic_region_acreage_path.is_file():
+    print('Loading Hydrologic Region acreage data')
+    hydrologic_region_acreage = pd.read_csv(hydrologic_region_acreage_path).set_index('HR_NAME')['ACRES'].to_dict()
+else:
+    print('Building Hydrologic Region acreage data')
+    hydrologic_region_acreage_df = bridge.groupby('HR_NAME')['ACRES'].sum()
+    hydrologic_region_acreage_df.to_csv(hydrologic_region_acreage_path)
+    
+    hydrologic_region_acreage = hydrologic_region_acreage_df.to_dict()
+print('Done')
+
+subbasin_acreage_path = Path(__file__).resolve().parent.parent / 'geodata' / 'subbasin_acreage.csv'
+if subbasin_acreage_path.is_file():
+    print('Loading Subbasin acreage data')
+    subbasin_acreage = pd.read_csv(subbasin_acreage_path).set_index('Basin_Subb')['ACRES'].to_dict()
+else:
+    print('Building Subbasin acreage data')
+    subbasin_acreage_df = bridge.groupby('Basin_Subb')['ACRES'].sum()
+    subbasin_acreage_df.to_csv(subbasin_acreage_path)
+    
+    subbasin_acreage = subbasin_acreage_df.to_dict()
+print('Done')
+
+gsa_acreage_path = Path(__file__).resolve().parent.parent / 'geodata' / 'gsa_acreage.csv'
+if gsa_acreage_path.is_file():
+    print('Loading GSA acreage data')
+    gsa_acreage = pd.read_csv(gsa_acreage_path).set_index('GSA_ID')['ACRES'].to_dict()
+else:
+    print('Building GSA acreage data')
+    gsa_acreage_df = bridge.groupby('GSA_ID')['ACRES'].sum()
+    gsa_acreage_df.to_csv(gsa_acreage_path)
+    
+    gsa_acreage = gsa_acreage_df.to_dict()
+print('Done')
+
+
 data_with_crops_path = Path('geodata/data_with_crops.csv')
 if data_with_crops_path.is_file():
     print('Reading data with crops file')
     data = pd.read_csv(data_with_crops_path)
 else:
     print('merging bridge data')
-    bridge_path = Path(__file__).resolve().parent.parent / 'bridge_table.csv'
-    bridge = pd.read_csv(bridge_path)
-    # Actual summary based on 2024 LandIQ boundaries, so filter out fields without a crop in LandIQ 2024
-    bridge = bridge[bridge['crop_2024'].notna()]
-    # Also filter out fields that have no crops in any LandIQ 2018 - 2024
-    bridge = bridge[bridge['crop_2018'].notna() | bridge['crop_2019'].notna() | bridge['crop_2020'].notna() | bridge['crop_2021'].notna() | bridge['crop_2022'].notna() | bridge['crop_2023'].notna() | bridge['crop_2024'].notna()]
-    # Also also filter out fields that have are likely greenhouses
-    bridge = bridge[
-        (~bridge['crop_2018'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2018'].str.contains('Greenhouse')) & 
-        (~bridge['crop_2019'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2019'].str.contains('Greenhouse')) & 
-        (~bridge['crop_2020'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2020'].str.contains('Greenhouse')) & 
-        (~bridge['crop_2021'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2021'].str.contains('Greenhouse')) & 
-        (~bridge['crop_2022'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2022'].str.contains('Greenhouse')) & 
-        (~bridge['crop_2023'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2023'].str.contains('Greenhouse')) & 
-        (~bridge['crop_2024'].str.contains('Flowers, nursery and Christmas Tree Farms')) & (~bridge['crop_2024'].str.contains('Greenhouse'))
-    ]
-
-    bridge = bridge.melt(id_vars=['OPENET_ID', 'ACRES', 'HR_NAME', 'Basin_Subb', 'GSA_ID'], var_name='water_year', value_name='crop')
+    bridge = bridge.melt(id_vars=['OPENET_ID', 'ACRES', 'HR_NAME', 'Basin_Subb', 'GSA_ID', 'category_2024'], var_name='water_year', value_name='crop')
     bridge['water_year'] = bridge['water_year'].str.replace('crop_', '', regex=False)
     bridge['water_year'] = bridge['water_year'].astype(int)
 
@@ -75,49 +116,60 @@ hydrologic_summary = hydrologic_summary.drop(columns=['weighted_sum', 'total_acr
 
 hydrologic_summary_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'hydrologic_crop_summary.csv'
 hydrologic_summary.to_csv(hydrologic_summary_path, index=False)
+
+print(data[(data['dataset'] == 'ensemble')].groupby(['HR_NAME', 'crop']).head(5))
+# print(data[(data['HR_NAME'] == 'Tulare Lake') & (data['crop'] == 'Citrus')])
+acre_data = data[(data['dataset'] == 'ensemble')].groupby(['HR_NAME', 'crop', 'water_year'], as_index=False).aggregate(year_acres=('ACRES', 'sum'))
+acre_data['year_acres_frac'] = acre_data['year_acres'] / acre_data['HR_NAME'].map(hydrologic_region_acreage)
+acre_data = acre_data.groupby(['HR_NAME', 'crop'], as_index=False).aggregate(avg_acre_fraction=('year_acres_frac', 'mean'))
+acre_data[['HR_NAME', 'crop', 'avg_acre_fraction']].to_csv('testtest.csv')
+
 print('done')
 
 
-print('subbasin summary')
-subbasin_summary = data.assign(weighted_value=data['value_ft'] * data['ACRES']).groupby(['Basin_Subb', 'dataset', 'water_year', 'water_year_class', 'crop'], as_index=False).aggregate(
-    weighted_sum=('weighted_value', 'sum'),
-    total_acres=('ACRES', 'sum')
-)
-subbasin_summary['weighted_mean'] = subbasin_summary['weighted_sum'] / subbasin_summary['total_acres']
+# print('subbasin summary')
+# subbasin_summary = data.assign(weighted_value=data['value_ft'] * data['ACRES']).groupby(['Basin_Subb', 'dataset', 'water_year', 'water_year_class', 'crop'], as_index=False).aggregate(
+#     weighted_sum=('weighted_value', 'sum'),
+#     total_acres=('ACRES', 'sum')
+# )
+# subbasin_summary['weighted_mean'] = subbasin_summary['weighted_sum'] / subbasin_summary['total_acres']
 
-all_water_year_classes = data.assign(weighted_value=data['value_ft'] * data['ACRES']).groupby(['Basin_Subb', 'dataset', 'crop'], as_index=False).aggregate(
-    weighted_sum=('weighted_value', 'sum'),
-    total_acres=('ACRES', 'sum')
-)
-all_water_year_classes['weighted_mean'] = all_water_year_classes['weighted_sum'] / all_water_year_classes['total_acres']
-all_water_year_classes['water_year_class'] = 'all'
+# all_water_year_classes = data.assign(weighted_value=data['value_ft'] * data['ACRES']).groupby(['Basin_Subb', 'dataset', 'crop'], as_index=False).aggregate(
+#     weighted_sum=('weighted_value', 'sum'),
+#     total_acres=('ACRES', 'sum')
+# )
+# all_water_year_classes['weighted_mean'] = all_water_year_classes['weighted_sum'] / all_water_year_classes['total_acres']
+# all_water_year_classes['water_year_class'] = 'all'
 
-subbasin_summary = pd.concat([subbasin_summary, all_water_year_classes], ignore_index=True)
-subbasin_summary = subbasin_summary.drop(columns=['weighted_sum', 'total_acres'])
+# subbasin_summary = pd.concat([subbasin_summary, all_water_year_classes], ignore_index=True)
+# subbasin_summary = subbasin_summary.drop(columns=['weighted_sum', 'total_acres'])
 
-subbasin_summary_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'subbasin_crop_summary.csv'
-subbasin_summary.to_csv(subbasin_summary_path, index=False)
-print('done')
+# subbasin_summary_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'subbasin_crop_summary.csv'
+# subbasin_summary.to_csv(subbasin_summary_path, index=False)
 
 
-print('gsa summary')
-gsa_summary = data.assign(weighted_value=data['value_ft'] * data['ACRES']).groupby(['GSA_ID', 'dataset', 'water_year', 'water_year_class', 'crop'], as_index=False).aggregate(
-    weighted_sum=('weighted_value', 'sum'),
-    total_acres=('ACRES', 'sum')
-)
-gsa_summary['weighted_mean'] = gsa_summary['weighted_sum'] / gsa_summary['total_acres']
+# # acre_data = data[data['dataset'] == 'ensemble'].groupby(['Basin_Subb', 'crop'], as_index=False).aggregate(total_acres=('ACRES', 'sum'))
+# print('done')
 
-all_water_year_classes = data.assign(weighted_value=data['value_ft'] * data['ACRES']).groupby(['GSA_ID', 'dataset', 'crop'], as_index=False).aggregate(
-    weighted_sum=('weighted_value', 'sum'),
-    total_acres=('ACRES', 'sum')
-)
-all_water_year_classes['weighted_mean'] = all_water_year_classes['weighted_sum'] / all_water_year_classes['total_acres']
-all_water_year_classes['water_year_class'] = 'all'
 
-gsa_summary = pd.concat([gsa_summary, all_water_year_classes], ignore_index=True)
-gsa_summary = gsa_summary.drop(columns=['weighted_sum', 'total_acres'])
+# print('gsa summary')
+# gsa_summary = data.assign(weighted_value=data['value_ft'] * data['ACRES']).groupby(['GSA_ID', 'dataset', 'water_year', 'water_year_class', 'crop'], as_index=False).aggregate(
+#     weighted_sum=('weighted_value', 'sum'),
+#     total_acres=('ACRES', 'sum')
+# )
+# gsa_summary['weighted_mean'] = gsa_summary['weighted_sum'] / gsa_summary['total_acres']
 
-gsa_summary['GSA_ID'] = gsa_summary['GSA_ID'].astype(int)
-gsa_summary_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'gsa_crop_summary.csv'
-gsa_summary.to_csv(gsa_summary_path, index=False)
-print('done')
+# all_water_year_classes = data.assign(weighted_value=data['value_ft'] * data['ACRES']).groupby(['GSA_ID', 'dataset', 'crop'], as_index=False).aggregate(
+#     weighted_sum=('weighted_value', 'sum'),
+#     total_acres=('ACRES', 'sum')
+# )
+# all_water_year_classes['weighted_mean'] = all_water_year_classes['weighted_sum'] / all_water_year_classes['total_acres']
+# all_water_year_classes['water_year_class'] = 'all'
+
+# gsa_summary = pd.concat([gsa_summary, all_water_year_classes], ignore_index=True)
+# gsa_summary = gsa_summary.drop(columns=['weighted_sum', 'total_acres'])
+
+# gsa_summary['GSA_ID'] = gsa_summary['GSA_ID'].astype(int)
+# gsa_summary_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'gsa_crop_summary.csv'
+# gsa_summary.to_csv(gsa_summary_path, index=False)
+# print('done')

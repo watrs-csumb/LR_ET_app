@@ -1,0 +1,326 @@
+crop,plant_type
+Citrus,Perennial
+Eucalyptus,Perennial
+Dates,Perennial
+Avocados,Perennial
+Olives,Perennial
+Subtropical,Perennial
+Kiwis,Perennial
+Apples,Perennial
+Miscellaneous deciduous,Perennial
+Almonds,Perennial
+Walnuts,Perennial
+Pistachios,Perennial
+Pomegranates,Perennial
+Pecans,Perennial
+Apricots,Perennial
+Cherries,Perennial
+Peaches and nectarines,Perennial
+Pears,Perennial
+Plums,Perennial
+Prunes,Perennial
+Cotton,Annual
+Beans (dry),Annual
+Field Misc.,Annual
+Sunflowers,Annual
+Corn,Annual
+Safflower,Annual
+Sugar beets,Annual
+Wheat,Annual
+Misc. Grain and Hay,Annual
+Fallow/Idle,Fallow
+Alfalfa,Annual
+Mixed pasture,Annual
+Native pasture,Annual
+Induced high water table native pasture,Annual
+Miscellaneous grasses,Annual
+Turf Farms,Annual
+Rice,Annual
+Wild Rice,Annual
+Onions and Garlic,Annual
+Potatoes,Annual
+Sweet Potatoes,Annual
+"Flowers, nursery and Christmas Tree Farms",Annual
+Truck Crops - Misc.,Annual
+Blueberries,Annual
+Strawberries,Annual
+Peppers,Annual
+Greenhouse,Annual
+Lettuce,Annual
+Tomatoes (all),Annual
+Broccoli,Annual
+Carrots,Annual
+"Melons, Squash, and Cucumbers",Annual
+Vineyards,Perennial
+Young Orchard,Perennial
+"Citrus - Flowers, nursery and Christmas Tree Farms",Annual
+Citrus - Truck Crops - Misc.,Annual
+Citrus - Young Orchard,Perennial
+Olives - Wheat,Annual
+Olives - Young Orchard,Perennial
+"Apples - Melons, Squash, and Cucumbers",Annual
+Apples - Young Orchard,Perennial
+Miscellaneous deciduous - Field Misc.,Annual
+Almonds - Pistachios,Perennial
+Almonds - Beans (dry),Annual
+Almonds - Corn,Annual
+Almonds - Wheat,Annual
+Almonds - Misc. Grain and Hay,Annual
+Almonds - Alfalfa,Annual
+Almonds - Miscellaneous grasses,Annual
+Almonds - Potatoes,Annual
+Almonds - Sweet Potatoes,Annual
+Almonds - Truck Crops - Misc.,Annual
+Almonds - Tomatoes (all),Annual
+Almonds - Carrots,Annual
+"Almonds - Melons, Squash, and Cucumbers",Annual
+Almonds - Young Orchard,Perennial
+Walnuts - Beans (dry),Annual
+Walnuts - Sunflowers,Annual
+Walnuts - Corn,Annual
+Walnuts - Wheat,Annual
+Walnuts - Misc. Grain and Hay,Annual
+Walnuts - Mixed pasture,Annual
+"Walnuts - Flowers, nursery and Christmas Tree Farms",Annual
+Walnuts - Truck Crops - Misc.,Annual
+Walnuts - Lettuce,Annual
+Walnuts - Tomatoes (all),Annual
+"Walnuts - Melons, Squash, and Cucumbers",Annual
+Walnuts - Young Orchard,Perennial
+Apricots - Corn,Annual
+Cherries - Misc. Grain and Hay,Annual
+"Cherries - Melons, Squash, and Cucumbers",Annual
+Peaches and nectarines - Corn,Annual
+Peaches and nectarines - Young Orchard,Perennial
+Plums - Corn,Annual
+Prunes - Young Orchard,Perennial
+Beans (dry) - Corn,Annual
+Beans (dry) - Misc. Grain and Hay,Annual
+Field Misc. - Wheat,Annual
+Field Misc. - Misc. Grain and Hay,Annual
+Field Misc. - Potatoes,Annual
+Corn - Cotton,Annual
+Corn - Beans (dry),Annual
+Corn - Field Misc.,Annual
+Corn - Sugar beets,Annual
+Corn - Wheat,Annual
+Corn - Misc. Grain and Hay,Annual
+Corn - Alfalfa,Annual
+Corn - Potatoes,Annual
+Corn - Truck Crops - Misc.,Annual
+Corn - Peppers,Annual
+Corn - Lettuce,Annual
+Corn - Tomatoes (all),Annual
+Corn - Broccoli,Annual
+"Corn - Melons, Squash, and Cucumbers",Annual
+Safflower - Tomatoes (all),Annual
+Sugar beets - Corn,Annual
+Sugar beets - Alfalfa,Annual
+Sugar beets - Miscellaneous grasses,Annual
+Wheat - Cotton,Annual
+Wheat - Beans (dry),Annual
+Wheat - Field Misc.,Annual
+Wheat - Sunflowers,Annual
+Wheat - Corn,Annual
+Wheat - Alfalfa,Annual
+Wheat - Miscellaneous grasses,Annual
+Wheat - Sweet Potatoes,Annual
+Wheat - Truck Crops - Misc.,Annual
+Wheat - Peppers,Annual
+Wheat - Tomatoes (all),Annual
+"Wheat - Melons, Squash, and Cucumbers",Annual
+Wheat - Young Orchard,Perennial
+Misc. Grain and Hay - Cotton,Annual
+Misc. Grain and Hay - Beans (dry),Annual
+Misc. Grain and Hay - Field Misc.,Annual
+Misc. Grain and Hay - Sunflowers,Annual
+Misc. Grain and Hay - Corn,Annual
+Misc. Grain and Hay - Safflower,Annual
+Misc. Grain and Hay - Alfalfa,Annual
+Misc. Grain and Hay - Mixed pasture,Annual
+Misc. Grain and Hay - Miscellaneous grasses,Annual
+Misc. Grain and Hay - Rice,Annual
+Misc. Grain and Hay - Onions and Garlic,Annual
+Misc. Grain and Hay - Potatoes,Annual
+Misc. Grain and Hay - Sweet Potatoes,Annual
+"Misc. Grain and Hay - Flowers, nursery and Christmas Tree Farms",Annual
+Misc. Grain and Hay - Truck Crops - Misc.,Annual
+Misc. Grain and Hay - Blueberries,Annual
+Misc. Grain and Hay - Strawberries,Annual
+Misc. Grain and Hay - Peppers,Annual
+Misc. Grain and Hay - Lettuce,Annual
+Misc. Grain and Hay - Tomatoes (all),Annual
+Misc. Grain and Hay - Broccoli,Annual
+Misc. Grain and Hay - Carrots,Annual
+"Misc. Grain and Hay - Melons, Squash, and Cucumbers",Annual
+Misc. Grain and Hay - Vineyards,Perennial
+Misc. Grain and Hay - Young Orchard,Perennial
+Alfalfa - Cotton,Annual
+Alfalfa - Beans (dry),Annual
+Alfalfa - Field Misc.,Annual
+Alfalfa - Sunflowers,Annual
+Alfalfa - Corn,Annual
+Alfalfa - Safflower,Annual
+Alfalfa - Wheat,Annual
+Alfalfa - Misc. Grain and Hay,Annual
+Alfalfa - Miscellaneous grasses,Annual
+Alfalfa - Rice,Annual
+Alfalfa - Onions and Garlic,Annual
+Alfalfa - Potatoes,Annual
+Alfalfa - Tomatoes (all),Annual
+Alfalfa - Broccoli,Annual
+"Alfalfa - Melons, Squash, and Cucumbers",Annual
+Alfalfa - Young Orchard,Perennial
+Mixed pasture - Field Misc.,Annual
+Mixed pasture - Corn,Annual
+Mixed pasture - Wheat,Annual
+Mixed pasture - Misc. Grain and Hay,Annual
+Mixed pasture - Sweet Potatoes,Annual
+Miscellaneous grasses - Beans (dry),Annual
+Miscellaneous grasses - Corn,Annual
+Miscellaneous grasses - Safflower,Annual
+Miscellaneous grasses - Wheat,Annual
+Miscellaneous grasses - Misc. Grain and Hay,Annual
+Miscellaneous grasses - Truck Crops - Misc.,Annual
+Miscellaneous grasses - Peppers,Annual
+Miscellaneous grasses - Tomatoes (all),Annual
+"Miscellaneous grasses - Melons, Squash, and Cucumbers",Annual
+Miscellaneous grasses - Young Orchard,Perennial
+Turf Farms - Corn,Annual
+Turf Farms - Alfalfa,Annual
+Turf Farms - Rice,Annual
+Turf Farms - Potatoes,Annual
+Onions and Garlic - Corn,Annual
+Onions and Garlic - Miscellaneous grasses,Annual
+Onions and Garlic - Truck Crops - Misc.,Annual
+Onions and Garlic - Lettuce,Annual
+Onions and Garlic - Broccoli,Annual
+Potatoes - Corn,Annual
+Potatoes - Misc. Grain and Hay,Annual
+Potatoes - Sweet Potatoes,Annual
+Potatoes - Truck Crops - Misc.,Annual
+Potatoes - Lettuce,Annual
+Potatoes - Tomatoes (all),Annual
+Potatoes - Carrots,Annual
+"Flowers, nursery and Christmas Tree Farms - Sunflowers",Annual
+"Flowers, nursery and Christmas Tree Farms - Misc. Grain and Hay",Annual
+"Flowers, nursery and Christmas Tree Farms - Truck Crops - Misc.",Annual
+"Flowers, nursery and Christmas Tree Farms - Lettuce",Annual
+"Flowers, nursery and Christmas Tree Farms - Carrots",Annual
+"Flowers, nursery and Christmas Tree Farms - Melons, Squash, and Cucumbers",Annual
+Truck Crops - Misc. - Cotton,Annual
+Truck Crops - Misc. - Beans (dry),Annual
+Truck Crops - Misc. - Field Misc.,Annual
+Truck Crops - Misc. - Sunflowers,Annual
+Truck Crops - Misc. - Corn,Annual
+Truck Crops - Misc. - Wheat,Annual
+Truck Crops - Misc. - Misc. Grain and Hay,Annual
+Truck Crops - Misc. - Turf Farms,Annual
+Truck Crops - Misc. - Rice,Annual
+Truck Crops - Misc. - Onions and Garlic,Annual
+Truck Crops - Misc. - Potatoes,Annual
+"Truck Crops - Misc. - Flowers, nursery and Christmas Tree Farms",Annual
+Truck Crops - Misc. - Blueberries,Annual
+Truck Crops - Misc. - Strawberries,Annual
+Truck Crops - Misc. - Peppers,Annual
+Truck Crops - Misc. - Lettuce,Annual
+Truck Crops - Misc. - Tomatoes (all),Annual
+Truck Crops - Misc. - Broccoli,Annual
+Truck Crops - Misc. - Carrots,Annual
+"Truck Crops - Misc. - Melons, Squash, and Cucumbers",Annual
+Truck Crops - Misc. - Young Orchard,Perennial
+Blueberries - Lettuce,Annual
+Strawberries - Corn,Annual
+Strawberries - Wheat,Annual
+Strawberries - Misc. Grain and Hay,Annual
+Strawberries - Onions and Garlic,Annual
+"Strawberries - Flowers, nursery and Christmas Tree Farms",Annual
+Strawberries - Truck Crops - Misc.,Annual
+Strawberries - Peppers,Annual
+Strawberries - Lettuce,Annual
+Strawberries - Tomatoes (all),Annual
+Strawberries - Broccoli,Annual
+"Strawberries - Melons, Squash, and Cucumbers",Annual
+Strawberries - Young Orchard,Perennial
+Peppers - Cotton,Annual
+Peppers - Corn,Annual
+Peppers - Wheat,Annual
+Peppers - Misc. Grain and Hay,Annual
+Peppers - Truck Crops - Misc.,Annual
+Peppers - Blueberries,Annual
+Peppers - Strawberries,Annual
+Peppers - Lettuce,Annual
+Peppers - Tomatoes (all),Annual
+Peppers - Broccoli,Annual
+"Peppers - Melons, Squash, and Cucumbers",Annual
+Lettuce - Cotton,Annual
+Lettuce - Beans (dry),Annual
+Lettuce - Sunflowers,Annual
+Lettuce - Corn,Annual
+Lettuce - Wheat,Annual
+Lettuce - Misc. Grain and Hay,Annual
+Lettuce - Alfalfa,Annual
+Lettuce - Turf Farms,Annual
+Lettuce - Onions and Garlic,Annual
+Lettuce - Potatoes,Annual
+Lettuce - Truck Crops - Misc.,Annual
+Lettuce - Blueberries,Annual
+Lettuce - Strawberries,Annual
+Lettuce - Peppers,Annual
+Lettuce - Tomatoes (all),Annual
+Lettuce - Broccoli,Annual
+Lettuce - Carrots,Annual
+"Lettuce - Melons, Squash, and Cucumbers",Annual
+Tomatoes (all) - Cotton,Annual
+Tomatoes (all) - Corn,Annual
+Tomatoes (all) - Truck Crops - Misc.,Annual
+Tomatoes (all) - Lettuce,Annual
+Broccoli - Cotton,Annual
+Broccoli - Beans (dry),Annual
+Broccoli - Corn,Annual
+Broccoli - Wheat,Annual
+Broccoli - Misc. Grain and Hay,Annual
+Broccoli - Alfalfa,Annual
+Broccoli - Onions and Garlic,Annual
+Broccoli - Potatoes,Annual
+Broccoli - Truck Crops - Misc.,Annual
+Broccoli - Blueberries,Annual
+Broccoli - Strawberries,Annual
+Broccoli - Peppers,Annual
+Broccoli - Lettuce,Annual
+Broccoli - Tomatoes (all),Annual
+Broccoli - Carrots,Annual
+"Broccoli - Melons, Squash, and Cucumbers",Annual
+Broccoli - Young Orchard,Perennial
+Carrots - Cotton,Annual
+Carrots - Beans (dry),Annual
+Carrots - Corn,Annual
+Carrots - Wheat,Annual
+Carrots - Misc. Grain and Hay,Annual
+Carrots - Onions and Garlic,Annual
+Carrots - Potatoes,Annual
+Carrots - Sweet Potatoes,Annual
+Carrots - Truck Crops - Misc.,Annual
+Carrots - Peppers,Annual
+Carrots - Lettuce,Annual
+Carrots - Tomatoes (all),Annual
+Carrots - Broccoli,Annual
+"Carrots - Melons, Squash, and Cucumbers",Annual
+"Melons, Squash, and Cucumbers - Corn",Annual
+"Melons, Squash, and Cucumbers - Wheat",Annual
+"Melons, Squash, and Cucumbers - Misc. Grain and Hay",Annual
+"Melons, Squash, and Cucumbers - Alfalfa",Annual
+"Melons, Squash, and Cucumbers - Onions and Garlic",Annual
+"Melons, Squash, and Cucumbers - Truck Crops - Misc.",Annual
+"Melons, Squash, and Cucumbers - Peppers",Annual
+"Melons, Squash, and Cucumbers - Broccoli",Annual
+Vineyards - Corn,Annual
+Vineyards - Wheat,Annual
+Vineyards - Misc. Grain and Hay,Annual
+Vineyards - Truck Crops - Misc.,Annual
+Vineyards - Blueberries,Annual
+Vineyards - Peppers,Annual
+"Vineyards - Melons, Squash, and Cucumbers",Annual
+Vineyards - Young Orchard,Perennial
+Fallow/Idle - Alfalfa,Annual
+Fallow/Idle - Mixed pasture,Annual

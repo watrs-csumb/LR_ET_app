@@ -11,6 +11,9 @@ project_id = os.getenv('PROJECT_ID')
 ee.Authenticate()
 ee.Initialize(project=project_id)
 
+START_YEAR = 2018
+END_YEAR = 2024
+
 # Hydrologic Regions
 hydrologic_path = Path(__file__).resolve().parent.parent / 'geodata' / 'hydrologic_regions.geojson'
 hydrologic_gdf = gpd.read_file(hydrologic_path)
@@ -34,14 +37,26 @@ def set_default_mode(feature):
     default_value = ee.Algorithms.If(mode_value, mode_value, 0)
     return feature.set('mode', default_value)
 
-landiq_conversions = {}
-cropland_to_name = None
+cropland_name_path = Path(__file__).resolve().parent.parent / 'geodata' / 'crop_translations' / 'cropland_to_name.csv'
+cropland_to_name = pd.read_csv(cropland_name_path).set_index('code')['cadwr_crop'].to_dict()
+cropland_to_name['default'] = 'NA'
 
-for year in range(2018, 2025):
+crop_categories_path = Path(__file__).resolve().parent.parent / 'geodata' / 'crop_translations' / 'crop_categories.csv'
+crop_categories = pd.read_csv(crop_categories_path).set_index('code')['plant_type'].to_dict()
+
+crop_to_category_path = Path(__file__).resolve().parent.parent / 'geodata' / 'crop_translations' / 'crop_to_category.csv'
+
+landiq_conversions = {}
+crop_to_category = {}
+
+for year in range(START_YEAR, END_YEAR + 1):
     landiq_conversion_path = Path(__file__).resolve().parent.parent / 'geodata' / 'crop_translations' / f'landiq_conversion_{year}.csv'
     if landiq_conversion_path.is_file():
         conversion = pd.read_csv(landiq_conversion_path).set_index('landiq_code')['crop_name'].to_dict()
         landiq_conversions[year] = conversion
+
+        if year == END_YEAR:
+            crop_to_category = pd.read_csv(crop_to_category).set_index['']
     else:
         landiq_cropland_path = Path(__file__).resolve().parent.parent / 'geodata' / 'crop_translations' / f'landiq_to_cropland_{year}.csv'
         conversion = pd.read_csv(landiq_cropland_path).set_index('code')['cropland'].to_dict()
@@ -60,7 +75,7 @@ for year in range(2018, 2025):
             if len(crops) == 2 and crops[0] == crops[1]:
                 crop_name = cropland_to_name[crops[0]]
             else:
-                for crop in crops:
+                for i, crop in enumerate(crops): #enum
                     # Skip empty crops
                     if '*' in crop:
                         continue
@@ -70,7 +85,14 @@ for year in range(2018, 2025):
 
                     crop_name = crop_name + cropland_to_name[crop]
 
+                    # Store this crop combo (either one crop or two crops) with the category of the second (or only) crop
+                    if year == END_YEAR and i == 1:
+                        crop_to_category[crop_name] = crop_categories[crop]
+
             conversion[landiq_code] = crop_name
+
+        if year == END_YEAR:
+            pd.DataFrame(list(crop_to_category.items()), columns=['crop', 'plant_type']).to_csv(crop_to_category_path, index=False)
 
         df = pd.DataFrame(list(conversion.items()), columns=['landiq_code', 'cropland'])
         df = df.rename(columns={'cropland': 'crop_name'})
@@ -101,7 +123,7 @@ else:
 
     # Add LandIQ Annual Crop Types
     print('Adding LandIQ data')
-    for year in range(2018, 2025):
+    for year in range(START_YEAR, END_YEAR + 1):
         print(f'    Adding {year} data')
         landiq_conversion = landiq_conversions[year]
 
@@ -170,12 +192,17 @@ data_df = data_df[~data_df['OPENET_ID'].isin(bad_fields)]
 data_df.to_csv(data_path, index=False)
 print('Done')
 
+# Adding crop category (perennial vs annual) for last year
+print('Adding crop category for 2024')
+field_points['category_2024'] = field_points[f'crop_{END_YEAR}'].map(crop_to_category)
+print('Done')
+
 # Saving
 print('Saving')
 path = Path(__file__).resolve().parent.parent / 'bridge_table.csv'
 field_points[[
     'OPENET_ID', 'ACRES', 'GSA_ID', 'Basin_Subb', 'HR_NAME', 
-    'crop_2018', 'crop_2019', 'crop_2020', 'crop_2021', 'crop_2022', 'crop_2023', 'crop_2024'
+    'crop_2018', 'crop_2019', 'crop_2020', 'crop_2021', 'crop_2022', 'crop_2023', 'crop_2024', 'category_2024'
 ]].to_csv(path, index=False)
 print('Done')
 

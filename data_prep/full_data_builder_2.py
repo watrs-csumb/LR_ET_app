@@ -8,14 +8,13 @@ project_id = os.getenv('PROJECT_ID')
 ee.Authenticate()
 ee.Initialize(project=project_id)
 
-# SHAPE_ASSET= f'projects/{old_project_id}/assets/land_repurposing_app/openet_geodatabase_v2_clipped'
-SHAPE_ASSET= f'projects/{project_id}/assets/land_repurposing_app/openet_geodatabase_v2_new_basin' 
+SHAPE_ASSET= f'projects/{project_id}/assets/land_repurposing_app/openet_geodatabase_v2_clipped'
 START_DATE='2017-10-01' # Start water year 2018 
 END_DATE='2024-10-01' # End water year 2024
 DRIVE_FOLDER='cal_i08_stats'
 FILENAME='cal_i08_ensemble_pr_2018_2024'
 ID_PROP='OPENET_ID' 
-SHARD_COUNT=1 # Originally 20
+SHARD_COUNT=250 # Originally 20
 FIELD_ID=None
 
 OPENET_ASSET='projects/openet/assets/ensemble/conus/gridmet/monthly/v2_1'

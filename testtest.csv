@@ -1,0 +1,912 @@
+,HR_NAME,crop,avg_acre_fraction
+0,Central Coast,Alfalfa,0.0005303053974750877
+1,Central Coast,Alfalfa - Corn,0.00013395834371486985
+2,Central Coast,"Alfalfa - Melons, Squash, and Cucumbers",1.3376872137140134e-05
+3,Central Coast,Alfalfa - Misc. Grain and Hay,0.00012142236996575191
+4,Central Coast,Almonds,0.0031461513156020335
+5,Central Coast,Apples,0.0028575803896511904
+6,Central Coast,Avocados,1.4663284291634554e-05
+7,Central Coast,Beans (dry),0.0003050797548413735
+8,Central Coast,Blueberries,0.007470989686142024
+9,Central Coast,Blueberries - Broccoli,1.338163421443831e-05
+10,Central Coast,Blueberries - Lettuce,2.138638745261842e-05
+11,Central Coast,"Blueberries - Melons, Squash, and Cucumbers",1.0188228465574666e-05
+12,Central Coast,Blueberries - Misc. Grain and Hay,5.879089963760088e-05
+13,Central Coast,Blueberries - Truck Crops - Misc.,9.06052452580609e-06
+14,Central Coast,Broccoli,0.022990480716868707
+15,Central Coast,Broccoli - Carrots,0.00012484980359746457
+16,Central Coast,Broccoli - Lettuce,0.02655784228124424
+17,Central Coast,"Broccoli - Melons, Squash, and Cucumbers",2.84153882317573e-05
+18,Central Coast,Broccoli - Misc. Grain and Hay,0.0007668739879174013
+19,Central Coast,Broccoli - Onions and Garlic,5.549999069345134e-05
+20,Central Coast,Broccoli - Strawberries,5.379365757411941e-05
+21,Central Coast,Broccoli - Sunflowers,1.717938139754433e-05
+22,Central Coast,Broccoli - Tomatoes (all),3.150392832449957e-05
+23,Central Coast,Broccoli - Truck Crops - Misc.,0.002036502215824693
+24,Central Coast,Carrots,0.0008353396091598222
+25,Central Coast,Carrots - Broccoli,6.590132326190901e-05
+26,Central Coast,Carrots - Lettuce,7.89650077634342e-05
+27,Central Coast,Carrots - Misc. Grain and Hay,7.693081086542327e-05
+28,Central Coast,Carrots - Truck Crops - Misc.,4.248142705139287e-05
+29,Central Coast,Citrus,0.0003358825941760176
+30,Central Coast,Corn,3.416146815117342e-05
+31,Central Coast,Fallow/Idle,0.027182892583951405
+32,Central Coast,Fallow/Idle - Alfalfa,8.907610666044431e-05
+33,Central Coast,Fallow/Idle - Miscellaneous grasses,1.982167729651297e-05
+34,Central Coast,Field Misc.,1.2416987970282024e-05
+35,Central Coast,Grain and Hay,1.4904493843711042e-05
+36,Central Coast,Lettuce,0.04101102199887035
+37,Central Coast,Lettuce - Beans (dry),5.194885544357053e-05
+38,Central Coast,Lettuce - Broccoli,0.01767896636515475
+39,Central Coast,Lettuce - Carrots,0.00013375049536531108
+40,Central Coast,Lettuce - Misc. Grain and Hay,0.0007689172570691527
+41,Central Coast,Lettuce - Miscellaneous grasses,3.651361440330893e-05
+42,Central Coast,Lettuce - Onions and Garlic,8.767822470203276e-05
+43,Central Coast,Lettuce - Strawberries,4.2975516355471396e-05
+44,Central Coast,Lettuce - Tomatoes (all),9.055567515759513e-05
+45,Central Coast,Lettuce - Truck Crops - Misc.,0.0028482291616129113
+46,Central Coast,"Melons, Squash, and Cucumbers",5.885921711578279e-05
+47,Central Coast,"Melons, Squash, and Cucumbers - Lettuce",3.572129807422821e-05
+48,Central Coast,Misc. Grain and Hay,0.017218526739724408
+49,Central Coast,Misc. Grain and Hay - Blueberries,1.1879352137218676e-05
+50,Central Coast,Misc. Grain and Hay - Broccoli,0.0018078996509567713
+51,Central Coast,Misc. Grain and Hay - Carrots,5.931264069092769e-05
+52,Central Coast,Misc. Grain and Hay - Corn,7.441362928440693e-05
+53,Central Coast,Misc. Grain and Hay - Lettuce,0.002174559754585646
+54,Central Coast,"Misc. Grain and Hay - Melons, Squash, and Cucumbers",1.4350974113465848e-05
+55,Central Coast,Misc. Grain and Hay - Miscellaneous grasses,9.598110196407279e-05
+56,Central Coast,Misc. Grain and Hay - Onions and Garlic,2.403107118956141e-05
+57,Central Coast,Misc. Grain and Hay - Strawberries,2.767534687942166e-05
+58,Central Coast,Misc. Grain and Hay - Tomatoes (all),4.514938835066001e-05
+59,Central Coast,Misc. Grain and Hay - Truck Crops - Misc.,0.000716944891857669
+60,Central Coast,Miscellaneous deciduous,0.00016945262255674252
+61,Central Coast,Miscellaneous grasses,0.00024293129200148535
+62,Central Coast,Miscellaneous grasses - Lettuce,1.982167729651297e-05
+63,Central Coast,Miscellaneous grasses - Misc. Grain and Hay,1.0907834548611097e-05
+64,Central Coast,Miscellaneous grasses - Onions and Garlic,9.68212948951583e-05
+65,Central Coast,Miscellaneous grasses - Safflower,3.2318659775679434e-05
+66,Central Coast,Mixed pasture,0.0010397396177404552
+67,Central Coast,Olives,0.0007221850406197587
+68,Central Coast,Onions and Garlic,0.0005851105914848723
+69,Central Coast,Onions and Garlic - Broccoli,1.7885522619565384e-05
+70,Central Coast,Onions and Garlic - Lettuce,6.391236270213648e-05
+71,Central Coast,Onions and Garlic - Truck Crops - Misc.,3.672585171562007e-05
+72,Central Coast,Peaches and nectarines,3.4238465548964004e-06
+73,Central Coast,Peppers,5.432874670243894e-05
+74,Central Coast,Peppers - Misc. Grain and Hay,2.3649899887906142e-05
+75,Central Coast,Pistachios,0.000547499662270059
+76,Central Coast,Pomegranates,5.488508139158583e-05
+77,Central Coast,Potatoes,0.0002209715673855264
+78,Central Coast,Prunes,4.9379043836583006e-06
+79,Central Coast,Safflower,0.00020295786971570505
+80,Central Coast,Strawberries,0.0266218854955628
+81,Central Coast,Strawberries - Blueberries,2.2820097485185853e-05
+82,Central Coast,Strawberries - Broccoli,0.0021046577615241066
+83,Central Coast,Strawberries - Carrots,3.308426214203812e-05
+84,Central Coast,Strawberries - Lettuce,0.00586043949741851
+85,Central Coast,"Strawberries - Melons, Squash, and Cucumbers",4.486430081577193e-05
+86,Central Coast,Strawberries - Misc. Grain and Hay,0.002989541647570972
+87,Central Coast,Strawberries - Peppers,2.9436874747254812e-05
+88,Central Coast,Strawberries - Truck Crops - Misc.,0.000585546262560752
+89,Central Coast,Subtropical,0.00017797715917073002
+90,Central Coast,Sunflowers,4.5052306979131054e-05
+91,Central Coast,Tomatoes (all),0.0001322993699530353
+92,Central Coast,Truck Crops,0.00012120099197417917
+93,Central Coast,Truck Crops - Misc.,0.009395117601616683
+94,Central Coast,Truck Crops - Misc. - Beans (dry),2.9122035898351257e-05
+95,Central Coast,Truck Crops - Misc. - Broccoli,0.001940138945074468
+96,Central Coast,Truck Crops - Misc. - Carrots,0.0001196417369987949
+97,Central Coast,Truck Crops - Misc. - Corn,1.4359299927148324e-05
+98,Central Coast,Truck Crops - Misc. - Lettuce,0.003602854515159417
+99,Central Coast,"Truck Crops - Misc. - Melons, Squash, and Cucumbers",1.5644352250103138e-05
+100,Central Coast,Truck Crops - Misc. - Misc. Grain and Hay,0.00020724182268338866
+101,Central Coast,Truck Crops - Misc. - Onions and Garlic,3.1697782890767865e-05
+102,Central Coast,Truck Crops - Misc. - Peppers,2.120395099560908e-05
+103,Central Coast,Truck Crops - Misc. - Strawberries,2.8426730994495175e-05
+104,Central Coast,Turf Farms,1.2473495389908872e-05
+105,Central Coast,Vineyards,0.07169650963354113
+106,Central Coast,Vineyards - Misc. Grain and Hay,4.0815415469151136e-05
+107,Central Coast,Walnuts,7.662763784040294e-05
+108,Central Coast,Wheat,9.420133321802396e-05
+109,Central Coast,Young Orchard,0.000168931347484931
+110,Sacramento River,Alfalfa,0.03033361155102623
+111,Sacramento River,Alfalfa - Beans (dry),0.00014142481223925613
+112,Sacramento River,Alfalfa - Corn,0.00042761981063048403
+113,Sacramento River,Alfalfa - Field Misc.,3.9042492118206744e-05
+114,Sacramento River,"Alfalfa - Melons, Squash, and Cucumbers",7.674036979991053e-05
+115,Sacramento River,Alfalfa - Misc. Grain and Hay,0.0003011719278202198
+116,Sacramento River,Alfalfa - Miscellaneous grasses,0.00012419838158879374
+117,Sacramento River,Alfalfa - Mixed pasture,2.3191135654522545e-06
+118,Sacramento River,Alfalfa - Onions and Garlic,1.285098774086798e-05
+119,Sacramento River,Alfalfa - Rice,9.55748387887772e-05
+120,Sacramento River,Alfalfa - Safflower,0.0002489004769300384
+121,Sacramento River,Alfalfa - Sunflowers,0.00023762806644470497
+122,Sacramento River,Alfalfa - Tomatoes (all),0.0003057160268118295
+123,Sacramento River,Alfalfa - Truck Crops - Misc.,1.7770914272637197e-06
+124,Sacramento River,Alfalfa - Wheat,0.00019687716103236394
+125,Sacramento River,Alfalfa - Young Orchard,1.6103881517975272e-05
+126,Sacramento River,Almonds,0.1452661827987558
+127,Sacramento River,Almonds - Beans (dry),4.262299951219227e-05
+128,Sacramento River,Almonds - Corn,3.8095121610743326e-05
+129,Sacramento River,"Almonds - Melons, Squash, and Cucumbers",5.366707286863788e-05
+130,Sacramento River,Almonds - Misc. Grain and Hay,1.1330992843490637e-05
+131,Sacramento River,Almonds - Miscellaneous grasses,5.42772655973676e-05
+132,Sacramento River,Almonds - Rice,5.0973812306509595e-05
+133,Sacramento River,Almonds - Sunflowers,8.71738490368206e-06
+134,Sacramento River,Almonds - Tomatoes (all),1.2588714788762808e-05
+135,Sacramento River,Almonds - Wheat,5.3217694494544287e-05
+136,Sacramento River,Almonds - Young Orchard,0.00018032574503789128
+137,Sacramento River,Apples,0.00020804545133972177
+138,Sacramento River,Apricots,2.682264967691861e-05
+139,Sacramento River,Avocados,6.200456652760281e-06
+140,Sacramento River,Beans (dry),0.004281190370437409
+141,Sacramento River,Beans (dry) - Corn,2.4732741841187647e-05
+142,Sacramento River,"Beans (dry) - Melons, Squash, and Cucumbers",2.7481820594191864e-05
+143,Sacramento River,Beans (dry) - Tomatoes (all),9.423619263266031e-05
+144,Sacramento River,Beans (dry) - Truck Crops - Misc.,6.973028349364736e-06
+145,Sacramento River,Blueberries,4.693093577198534e-05
+146,Sacramento River,Blueberries - Tomatoes (all),3.886862324189929e-05
+147,Sacramento River,Broccoli,6.79846096792111e-05
+148,Sacramento River,"Broccoli - Melons, Squash, and Cucumbers",2.5930873493671163e-05
+149,Sacramento River,Broccoli - Sunflowers,1.779693843191979e-05
+150,Sacramento River,Broccoli - Tomatoes (all),7.497926515952112e-06
+151,Sacramento River,Broccoli - Truck Crops - Misc.,1.0818566597317345e-05
+152,Sacramento River,Carrots,0.00016830674535849512
+153,Sacramento River,Cherries,0.0006732841812800237
+154,Sacramento River,Citrus,0.0003115509188774524
+155,Sacramento River,Corn,0.018332811068572912
+156,Sacramento River,Corn - Beans (dry),4.153081780341658e-05
+157,Sacramento River,Corn - Field Misc.,2.0537264329596317e-06
+158,Sacramento River,"Corn - Melons, Squash, and Cucumbers",2.4705633894821838e-05
+159,Sacramento River,Corn - Misc. Grain and Hay,0.00013669228023644014
+160,Sacramento River,Corn - Safflower,6.132920574867707e-05
+161,Sacramento River,Corn - Tomatoes (all),0.0001010002540893784
+162,Sacramento River,Corn - Wheat,1.4036257091137422e-05
+163,Sacramento River,Cotton,0.00104093510925418
+164,Sacramento River,Dates,1.8721343406581595e-06
+165,Sacramento River,Eucalyptus,0.005384666794803786
+166,Sacramento River,Fallow/Idle,0.10305956666271825
+167,Sacramento River,Fallow/Idle - Alfalfa,0.00257564078558295
+168,Sacramento River,Fallow/Idle - Miscellaneous grasses,6.513376577817385e-05
+169,Sacramento River,Field Misc.,0.00045861853232666077
+170,Sacramento River,Field Misc. - Alfalfa,3.543915913651904e-05
+171,Sacramento River,Field Misc. - Corn,8.55939738359381e-05
+172,Sacramento River,"Field Misc. - Melons, Squash, and Cucumbers",2.0130014584861007e-05
+173,Sacramento River,Field Misc. - Misc. Grain and Hay,3.082255083406937e-05
+174,Sacramento River,Field Misc. - Sunflowers,2.6726176043435266e-05
+175,Sacramento River,Field Misc. - Tomatoes (Processing),2.288540547127043e-05
+176,Sacramento River,Field Misc. - Wheat,1.0852193936711615e-05
+177,Sacramento River,Grain and Hay,0.00022244428530053482
+178,Sacramento River,Grain and Hay - Rice,2.7190998206761205e-05
+179,Sacramento River,Kiwis,0.0010852549416273348
+180,Sacramento River,Kiwis - Young Orchard,2.1456690044719946e-06
+181,Sacramento River,Lettuce,0.0001560640092299652
+182,Sacramento River,Lettuce - Cotton,1.3988980311332252e-05
+183,Sacramento River,Lettuce - Sunflowers,1.3840115637140439e-05
+184,Sacramento River,"Melons, Squash, and Cucumbers",0.00687821708833364
+185,Sacramento River,"Melons, Squash, and Cucumbers - Beans (dry)",3.758152704126002e-05
+186,Sacramento River,"Melons, Squash, and Cucumbers - Carrots",3.348966138174873e-05
+187,Sacramento River,"Melons, Squash, and Cucumbers - Misc. Grain and Hay",2.7728857815083848e-05
+188,Sacramento River,"Melons, Squash, and Cucumbers - Wheat",2.7194743716205757e-05
+189,Sacramento River,Misc. Grain and Hay,0.04286513250159247
+190,Sacramento River,Misc. Grain and Hay - Alfalfa,5.5352828476538005e-05
+191,Sacramento River,Misc. Grain and Hay - Beans (dry),0.0005606378009362437
+192,Sacramento River,Misc. Grain and Hay - Corn,0.008520389232818941
+193,Sacramento River,Misc. Grain and Hay - Cotton,7.02761953852891e-05
+194,Sacramento River,Misc. Grain and Hay - Field Misc.,0.00013196216819607435
+195,Sacramento River,"Misc. Grain and Hay - Melons, Squash, and Cucumbers",0.0008476558559576468
+196,Sacramento River,Misc. Grain and Hay - Miscellaneous grasses,0.0005171838365309929
+197,Sacramento River,Misc. Grain and Hay - Mixed pasture,4.040132549719133e-05
+198,Sacramento River,Misc. Grain and Hay - Onions and Garlic,2.3625453734974108e-05
+199,Sacramento River,Misc. Grain and Hay - Peppers,2.471227589864966e-05
+200,Sacramento River,Misc. Grain and Hay - Pistachios,1.3217656300365849e-05
+201,Sacramento River,Misc. Grain and Hay - Plums,3.041796750503223e-06
+202,Sacramento River,Misc. Grain and Hay - Rice,0.0011822543770402844
+203,Sacramento River,Misc. Grain and Hay - Safflower,0.00026954757663932133
+204,Sacramento River,Misc. Grain and Hay - Sunflowers,0.0005984318011895261
+205,Sacramento River,Misc. Grain and Hay - Tomatoes (Processing),0.0008261214665499964
+206,Sacramento River,Misc. Grain and Hay - Tomatoes (all),0.0009413054110337239
+207,Sacramento River,Misc. Grain and Hay - Truck Crops - Misc.,0.00013612601750305028
+208,Sacramento River,Misc. Grain and Hay - Vineyards,2.815383989969047e-05
+209,Sacramento River,Misc. Grain and Hay - Walnuts,3.326738108055342e-05
+210,Sacramento River,Misc. Grain and Hay - Wild Rice,5.5189644052998084e-05
+211,Sacramento River,Misc. Grain and Hay - Young Orchard,0.0001659808081536651
+212,Sacramento River,Miscellaneous deciduous,0.0015015311089156577
+213,Sacramento River,Miscellaneous grasses,0.004559096947859264
+214,Sacramento River,Miscellaneous grasses - Corn,5.442176399849276e-05
+215,Sacramento River,"Miscellaneous grasses - Melons, Squash, and Cucumbers",2.542634670668801e-05
+216,Sacramento River,Miscellaneous grasses - Misc. Grain and Hay,3.131664456582749e-05
+217,Sacramento River,Miscellaneous grasses - Tomatoes (all),6.963320592239584e-05
+218,Sacramento River,Miscellaneous grasses - Truck Crops - Misc.,1.2607721549943123e-06
+219,Sacramento River,Miscellaneous grasses - Wheat,6.042780311005952e-05
+220,Sacramento River,Mixed deciduous,5.292923280543593e-07
+221,Sacramento River,Mixed pasture,0.05374041403678988
+222,Sacramento River,Mixed pasture - Corn,1.5262491790085977e-05
+223,Sacramento River,Mixed pasture - Misc. Grain and Hay,8.661037463240271e-05
+224,Sacramento River,Mixed pasture - Miscellaneous grasses,1.0703412302842975e-05
+225,Sacramento River,Mixed pasture - Rice,2.1108916172152305e-05
+226,Sacramento River,Mixed pasture - Sunflowers,4.9516209543614134e-06
+227,Sacramento River,Native pasture,9.73461614122581e-05
+228,Sacramento River,Olives,0.014100607377506059
+229,Sacramento River,"Olives - Melons, Squash, and Cucumbers",5.1088756811169165e-06
+230,Sacramento River,Olives - Young Orchard,1.53533852844185e-05
+231,Sacramento River,Onions and Garlic,0.0004805242624891745
+232,Sacramento River,"Onions and Garlic - Melons, Squash, and Cucumbers",5.190288548127893e-06
+233,Sacramento River,Onions and Garlic - Tomatoes (Processing),1.240727870981991e-05
+234,Sacramento River,Oranges,7.09985418213575e-06
+235,Sacramento River,Peaches and nectarines,0.005630110997371586
+236,Sacramento River,Peaches and nectarines - Truck Crops - Misc.,1.0504783263707223e-06
+237,Sacramento River,Peaches and nectarines - Walnuts,1.1931458720524881e-05
+238,Sacramento River,Peaches and nectarines - Young Orchard,1.7381371234332424e-05
+239,Sacramento River,Pears,0.002844420451655201
+240,Sacramento River,Pecans,0.0016014634609930307
+241,Sacramento River,Peppers,0.000642389446796272
+242,Sacramento River,Pistachios,0.008488904261471152
+243,Sacramento River,Pistachios - Young Orchard,2.9869764084720162e-06
+244,Sacramento River,Plums,0.007249414548431678
+245,Sacramento River,Plums - Young Orchard,2.966267689238528e-05
+246,Sacramento River,Pomegranates,6.228179675994762e-05
+247,Sacramento River,Potatoes,0.000108646355876955
+248,Sacramento River,Prunes,0.016948720484979866
+249,Sacramento River,Prunes - Beans (dry),2.192694896943126e-05
+250,Sacramento River,"Prunes - Melons, Squash, and Cucumbers",3.597697917897918e-05
+251,Sacramento River,Prunes - Misc. Grain and Hay,2.0061132925789784e-05
+252,Sacramento River,Prunes - Sunflowers,4.8438194025440055e-05
+253,Sacramento River,Prunes - Young Orchard,2.9141326975183855e-05
+254,Sacramento River,Rice,0.23608423180011204
+255,Sacramento River,Safflower,0.007462499463652595
+256,Sacramento River,"Safflower - Melons, Squash, and Cucumbers",4.5985188065490306e-05
+257,Sacramento River,Strawberries,6.220390529550572e-05
+258,Sacramento River,Strawberries - Truck Crops - Misc.,2.583567104006569e-06
+259,Sacramento River,Subtropical,0.0007291902395117812
+260,Sacramento River,Sunflowers,0.020207156511693133
+261,Sacramento River,Tomatoes (Processing),0.03495441743177105
+262,Sacramento River,Tomatoes (all),0.03987107661024482
+263,Sacramento River,Truck Crops,4.718387261370411e-06
+264,Sacramento River,Truck Crops - Misc.,0.0021971451911172537
+265,Sacramento River,Truck Crops - Misc. - Beans (dry),5.517655364094839e-05
+266,Sacramento River,Truck Crops - Misc. - Corn,8.088816092830154e-06
+267,Sacramento River,Truck Crops - Misc. - Field Misc.,2.6068759044731427e-06
+268,Sacramento River,"Truck Crops - Misc. - Melons, Squash, and Cucumbers",3.5463097995048825e-05
+269,Sacramento River,Truck Crops - Misc. - Misc. Grain and Hay,1.2036491804262904e-05
+270,Sacramento River,Truck Crops - Misc. - Onions and Garlic,3.3133178649559335e-06
+271,Sacramento River,Truck Crops - Misc. - Peppers,3.601179754287894e-05
+272,Sacramento River,Truck Crops - Misc. - Rice,2.192925150856295e-05
+273,Sacramento River,Truck Crops - Misc. - Safflower,3.311892978433149e-05
+274,Sacramento River,Truck Crops - Misc. - Sunflowers,1.0770907097254083e-05
+275,Sacramento River,Truck Crops - Misc. - Tomatoes (Processing),2.2351777474415218e-05
+276,Sacramento River,Truck Crops - Misc. - Tomatoes (all),9.26957543172608e-06
+277,Sacramento River,Truck Crops - Misc. - Wheat,3.2467982792911784e-06
+278,Sacramento River,Truck Crops Mix,1.3610287125947812e-06
+279,Sacramento River,Turf Farms,0.00034153900632028823
+280,Sacramento River,Vineyards,0.01962046189371796
+281,Sacramento River,Vineyards - Misc. Grain and Hay,1.4794072868530145e-05
+282,Sacramento River,Vineyards - Wheat,7.5410005533571795e-06
+283,Sacramento River,Walnuts,0.12845906305934549
+284,Sacramento River,Walnuts - Alfalfa,7.717404363726169e-06
+285,Sacramento River,Walnuts - Almonds,5.2136834404897305e-06
+286,Sacramento River,Walnuts - Beans (dry),1.680887243145235e-05
+287,Sacramento River,Walnuts - Corn,1.0033933109817158e-05
+288,Sacramento River,"Walnuts - Melons, Squash, and Cucumbers",2.1559900269498803e-05
+289,Sacramento River,Walnuts - Misc. Grain and Hay,2.1079672630449517e-05
+290,Sacramento River,Walnuts - Miscellaneous grasses,1.0319977649394899e-05
+291,Sacramento River,Walnuts - Olives,3.576471704593333e-06
+292,Sacramento River,Walnuts - Sunflowers,3.770727697784486e-05
+293,Sacramento River,Walnuts - Tomatoes (all),3.878643182591802e-05
+294,Sacramento River,Walnuts - Truck Crops - Misc.,1.1925686482961268e-05
+295,Sacramento River,Walnuts - Wheat,2.657972702404395e-05
+296,Sacramento River,Walnuts - Young Orchard,4.691968268175226e-05
+297,Sacramento River,Wheat,0.027923350060763692
+298,Sacramento River,Wheat - Alfalfa,4.7543537116781914e-05
+299,Sacramento River,Wheat - Beans (dry),0.00032652950889366835
+300,Sacramento River,Wheat - Corn,0.0019193631420405355
+301,Sacramento River,Wheat - Field Misc.,5.812421608047573e-05
+302,Sacramento River,"Wheat - Melons, Squash, and Cucumbers",0.0002579472300303564
+303,Sacramento River,Wheat - Miscellaneous grasses,1.573445220672247e-05
+304,Sacramento River,Wheat - Mixed pasture,1.5169666407807651e-05
+305,Sacramento River,Wheat - Onions and Garlic,7.914540054424104e-06
+306,Sacramento River,Wheat - Peppers,1.5474237607600094e-05
+307,Sacramento River,Wheat - Rice,7.016739441776765e-05
+308,Sacramento River,Wheat - Safflower,3.383959126720109e-05
+309,Sacramento River,Wheat - Sunflowers,7.413762395042087e-05
+310,Sacramento River,Wheat - Tomatoes (Processing),0.00015933056430776318
+311,Sacramento River,Wheat - Tomatoes (all),0.00014322021350724105
+312,Sacramento River,Wheat - Truck Crops - Misc.,7.122491316687916e-05
+313,Sacramento River,Wheat - Young Orchard,4.377334570752262e-05
+314,Sacramento River,Wild Rice,0.0012699238446909776
+315,Sacramento River,Young Orchard,0.015539172868440865
+316,San Francisco Bay,Almonds,0.0736701081460646
+317,San Francisco Bay,Fallow/Idle,0.1490573065245549
+318,San Francisco Bay,Misc. Grain and Hay,0.08874268088860794
+319,San Francisco Bay,Mixed pasture,0.028573284134011875
+320,San Francisco Bay,Safflower,0.013108840833361439
+321,San Francisco Bay,Wheat,0.04474404372829012
+322,San Francisco Bay,Young Orchard,0.01677260173991688
+323,San Joaquin River,Alfalfa,0.041830048673635524
+324,San Joaquin River,Alfalfa - Beans (dry),6.766962459365461e-05
+325,San Joaquin River,Alfalfa - Carrots,5.9116467132949206e-05
+326,San Joaquin River,Alfalfa - Cherries,4.9631804777808704e-05
+327,San Joaquin River,Alfalfa - Corn,0.0010110284472775858
+328,San Joaquin River,Alfalfa - Cotton,5.308736729981307e-05
+329,San Joaquin River,"Alfalfa - Melons, Squash, and Cucumbers",0.00015377550233479373
+330,San Joaquin River,Alfalfa - Misc. Grain and Hay,0.0005044758561374479
+331,San Joaquin River,Alfalfa - Miscellaneous grasses,7.776569333830033e-05
+332,San Joaquin River,Alfalfa - Onions and Garlic,2.502112261681078e-05
+333,San Joaquin River,Alfalfa - Potatoes,5.9808513652050046e-05
+334,San Joaquin River,Alfalfa - Rice,0.00011154675978007328
+335,San Joaquin River,Alfalfa - Safflower,8.662888548108082e-05
+336,San Joaquin River,Alfalfa - Tomatoes (Processing),0.00019843568035381686
+337,San Joaquin River,Alfalfa - Tomatoes (all),0.0004240523690936034
+338,San Joaquin River,Alfalfa - Wheat,0.00042185279046386544
+339,San Joaquin River,Alfalfa - Young Orchard,4.8274875042810135e-05
+340,San Joaquin River,Almonds,0.3031818091895463
+341,San Joaquin River,Almonds - Alfalfa,1.3803118731025022e-05
+342,San Joaquin River,Almonds - Beans (dry),2.2123751905164465e-05
+343,San Joaquin River,Almonds - Broccoli,3.7577331803102764e-05
+344,San Joaquin River,Almonds - Carrots,1.8821784262544096e-05
+345,San Joaquin River,Almonds - Corn,0.00022073845199858139
+346,San Joaquin River,"Almonds - Melons, Squash, and Cucumbers",7.203534402084649e-05
+347,San Joaquin River,Almonds - Misc. Grain and Hay,9.061515397489647e-05
+348,San Joaquin River,Almonds - Miscellaneous grasses,1.6204783688904237e-05
+349,San Joaquin River,Almonds - Olives,2.4195464005211703e-05
+350,San Joaquin River,Almonds - Pistachios,9.37445066083227e-06
+351,San Joaquin River,Almonds - Potatoes,1.550452477187449e-05
+352,San Joaquin River,Almonds - Sweet Potatoes,0.00024371549551386606
+353,San Joaquin River,Almonds - Tomatoes (all),0.00011548046525002125
+354,San Joaquin River,Almonds - Truck Crops - Misc.,2.42021715049e-05
+355,San Joaquin River,Almonds - Wheat,3.0818318228466746e-05
+356,San Joaquin River,Almonds - Young Orchard,0.0003305216273355077
+357,San Joaquin River,Apples,0.0008757037121489596
+358,San Joaquin River,Apples - Corn,1.2532328769970881e-05
+359,San Joaquin River,Apples - Young Orchard,2.2968723336547716e-06
+360,San Joaquin River,Apricots,0.0007920729398868338
+361,San Joaquin River,Avocados,2.5205906181184924e-07
+362,San Joaquin River,Beans (dry),0.003158846326217622
+363,San Joaquin River,Beans (dry) - Corn,6.3811621465014e-05
+364,San Joaquin River,"Beans (dry) - Melons, Squash, and Cucumbers",2.1859551799058713e-06
+365,San Joaquin River,Beans (dry) - Misc. Grain and Hay,2.1801587138630358e-05
+366,San Joaquin River,Blueberries,0.001058948944808838
+367,San Joaquin River,Broccoli,0.0005121205154334262
+368,San Joaquin River,Broccoli - Beans (dry),0.00013263871212464964
+369,San Joaquin River,Broccoli - Corn,0.00024296267822392672
+370,San Joaquin River,"Broccoli - Melons, Squash, and Cucumbers",8.007337624614472e-05
+371,San Joaquin River,Broccoli - Misc. Grain and Hay,3.2159732695704484e-05
+372,San Joaquin River,Broccoli - Peppers,7.219736143363233e-05
+373,San Joaquin River,Broccoli - Tomatoes (Processing),7.441409363282076e-05
+374,San Joaquin River,Broccoli - Tomatoes (all),0.00010732724560056994
+375,San Joaquin River,Broccoli - Truck Crops - Misc.,4.4457586020892096e-05
+376,San Joaquin River,Broccoli - Wheat,7.376388166644342e-05
+377,San Joaquin River,Carrots,0.00031950737013162995
+378,San Joaquin River,Carrots - Corn,7.275480295517657e-05
+379,San Joaquin River,Carrots - Misc. Grain and Hay,9.160286153266505e-05
+380,San Joaquin River,Carrots - Potatoes,1.2365932909227265e-05
+381,San Joaquin River,Carrots - Tomatoes (all),0.00011984861357529036
+382,San Joaquin River,Cherries,0.01210057338318297
+383,San Joaquin River,"Cherries - Melons, Squash, and Cucumbers",3.89648914216687e-06
+384,San Joaquin River,Cherries - Misc. Grain and Hay,2.753567069986102e-06
+385,San Joaquin River,Cherries - Truck Crops - Misc.,6.071403278665356e-07
+386,San Joaquin River,Cherries - Young Orchard,5.419885740415153e-06
+387,San Joaquin River,Citrus,0.0035361032784511992
+388,San Joaquin River,Corn,0.02537302094620123
+389,San Joaquin River,Corn - Alfalfa,0.0001936394891308538
+390,San Joaquin River,Corn - Beans (dry),1.5610715314915158e-05
+391,San Joaquin River,Corn - Field Misc.,1.5420207573833323e-05
+392,San Joaquin River,"Corn - Melons, Squash, and Cucumbers",7.517067426755208e-05
+393,San Joaquin River,Corn - Misc. Grain and Hay,0.0006845224099907963
+394,San Joaquin River,Corn - Mixed pasture,2.502012933166049e-06
+395,San Joaquin River,Corn - Safflower,0.00011000909280404834
+396,San Joaquin River,Corn - Sunflowers,3.857130116210617e-06
+397,San Joaquin River,Corn - Tomatoes (all),0.00010090198383286259
+398,San Joaquin River,Corn - Wheat,0.0004314605332190367
+399,San Joaquin River,Cotton,0.01751970661646468
+400,San Joaquin River,Eucalyptus,0.00045407101658149205
+401,San Joaquin River,Fallow/Idle,0.04873099556386423
+402,San Joaquin River,Fallow/Idle - Alfalfa,0.0031390547077486783
+403,San Joaquin River,Fallow/Idle - Miscellaneous grasses,6.0420046417327495e-05
+404,San Joaquin River,Fallow/Idle - Mixed pasture,8.085498918150232e-06
+405,San Joaquin River,Field Misc.,0.00030675454597995516
+406,San Joaquin River,Field Misc. - Beans (dry),4.281948913348128e-05
+407,San Joaquin River,Field Misc. - Corn,0.00014127571832114698
+408,San Joaquin River,Field Misc. - Cotton,1.7320465870901247e-05
+409,San Joaquin River,Field Misc. - Sunflowers,3.0971517233503205e-05
+410,San Joaquin River,Field Misc. - Tomatoes (Processing),8.113768339807167e-05
+411,San Joaquin River,Field Misc. - Tomatoes (all),3.751087794352855e-05
+412,San Joaquin River,Grain and Hay,0.00010385439986090124
+413,San Joaquin River,Grain and Hay - Carrots,1.5281784139631148e-05
+414,San Joaquin River,Grain and Hay - Corn,0.0004110249485316435
+415,San Joaquin River,"Grain and Hay - Melons, Squash, and Cucumbers",9.599988444613333e-05
+416,San Joaquin River,Grain and Hay - Tomatoes (Processing),0.00010931137067167968
+417,San Joaquin River,Grain and Hay - Young Orchard,4.041403915667662e-05
+418,San Joaquin River,Kiwis,6.265290563753656e-05
+419,San Joaquin River,Lettuce,0.00022741462791643434
+420,San Joaquin River,Lettuce - Corn,6.717233059864996e-05
+421,San Joaquin River,Lettuce - Cotton,1.935898780347235e-05
+422,San Joaquin River,Lettuce - Misc. Grain and Hay,2.00181282265187e-05
+423,San Joaquin River,Lettuce - Potatoes,8.500608387033951e-06
+424,San Joaquin River,Lettuce - Tomatoes (Processing),3.9911800344560914e-05
+425,San Joaquin River,Lettuce - Truck Crops - Misc.,1.820311849068793e-05
+426,San Joaquin River,"Melons, Squash, and Cucumbers",0.007122910007926629
+427,San Joaquin River,"Melons, Squash, and Cucumbers - Alfalfa",4.431354692357854e-05
+428,San Joaquin River,"Melons, Squash, and Cucumbers - Beans (dry)",8.309634609265773e-06
+429,San Joaquin River,"Melons, Squash, and Cucumbers - Corn",8.315894337092313e-05
+430,San Joaquin River,"Melons, Squash, and Cucumbers - Misc. Grain and Hay",4.375344484259953e-05
+431,San Joaquin River,"Melons, Squash, and Cucumbers - Onions and Garlic",4.2723325420961964e-05
+432,San Joaquin River,"Melons, Squash, and Cucumbers - Peppers",3.329653049268809e-05
+433,San Joaquin River,"Melons, Squash, and Cucumbers - Potatoes",2.3095928981403896e-05
+434,San Joaquin River,"Melons, Squash, and Cucumbers - Tomatoes (Processing)",5.768372026001915e-05
+435,San Joaquin River,"Melons, Squash, and Cucumbers - Tomatoes (all)",6.214103340037833e-05
+436,San Joaquin River,"Melons, Squash, and Cucumbers - Truck Crops - Misc.",1.612462604705799e-05
+437,San Joaquin River,"Melons, Squash, and Cucumbers - Wheat",3.279867499529493e-05
+438,San Joaquin River,Misc. Grain and Hay,0.027610091890146782
+439,San Joaquin River,Misc. Grain and Hay - Alfalfa,7.716871410826692e-05
+440,San Joaquin River,Misc. Grain and Hay - Almonds,1.4419933557768556e-05
+441,San Joaquin River,Misc. Grain and Hay - Beans (dry),0.0006940781859441014
+442,San Joaquin River,Misc. Grain and Hay - Carrots,0.00012057857736545544
+443,San Joaquin River,Misc. Grain and Hay - Corn,0.03376765073967496
+444,San Joaquin River,Misc. Grain and Hay - Cotton,0.00020963545952951842
+445,San Joaquin River,Misc. Grain and Hay - Field Misc.,6.395875676557608e-05
+446,San Joaquin River,Misc. Grain and Hay - Lettuce,2.3064194488013325e-05
+447,San Joaquin River,"Misc. Grain and Hay - Melons, Squash, and Cucumbers",0.0009879940566567748
+448,San Joaquin River,Misc. Grain and Hay - Miscellaneous grasses,0.0002199947027642507
+449,San Joaquin River,Misc. Grain and Hay - Mixed pasture,2.6670496002280152e-05
+450,San Joaquin River,Misc. Grain and Hay - Peppers,4.063898652666433e-05
+451,San Joaquin River,Misc. Grain and Hay - Potatoes,0.002123837249771186
+452,San Joaquin River,Misc. Grain and Hay - Rice,9.092520297802686e-05
+453,San Joaquin River,Misc. Grain and Hay - Safflower,0.00011952181123345938
+454,San Joaquin River,Misc. Grain and Hay - Strawberries,1.1106659662536645e-05
+455,San Joaquin River,Misc. Grain and Hay - Sunflowers,3.467407301088031e-05
+456,San Joaquin River,Misc. Grain and Hay - Sweet Potatoes,0.00291593287087434
+457,San Joaquin River,Misc. Grain and Hay - Tomatoes (Processing),0.001173898553824485
+458,San Joaquin River,Misc. Grain and Hay - Tomatoes (all),0.0013901867268093088
+459,San Joaquin River,Misc. Grain and Hay - Truck Crops - Misc.,7.424955643968098e-05
+460,San Joaquin River,Misc. Grain and Hay - Vineyards,8.237785525263621e-05
+461,San Joaquin River,Misc. Grain and Hay - Wheat,0.00020039800374799864
+462,San Joaquin River,Misc. Grain and Hay - Young Orchard,0.0001365360349374533
+463,San Joaquin River,Miscellaneous deciduous,0.004031097532832189
+464,San Joaquin River,Miscellaneous deciduous - Misc. Grain and Hay,1.6969653795429148e-06
+465,San Joaquin River,Miscellaneous deciduous - Young Orchard,6.392343512870829e-07
+466,San Joaquin River,Miscellaneous grasses,0.0034797240029157913
+467,San Joaquin River,Miscellaneous grasses - Beans (dry),1.7138505238186172e-05
+468,San Joaquin River,Miscellaneous grasses - Corn,8.224177388437623e-05
+469,San Joaquin River,Miscellaneous grasses - Field Misc.,1.4169728792599824e-05
+470,San Joaquin River,"Miscellaneous grasses - Melons, Squash, and Cucumbers",3.754454639342312e-05
+471,San Joaquin River,Miscellaneous grasses - Misc. Grain and Hay,2.9550783175969904e-05
+472,San Joaquin River,Miscellaneous grasses - Potatoes,4.706060514293306e-05
+473,San Joaquin River,Miscellaneous grasses - Safflower,1.7239182802129034e-05
+474,San Joaquin River,Miscellaneous grasses - Sunflowers,1.2309829871833982e-05
+475,San Joaquin River,Miscellaneous grasses - Tomatoes (Processing),1.1342395127551381e-05
+476,San Joaquin River,Miscellaneous grasses - Truck Crops - Misc.,2.990644052712103e-06
+477,San Joaquin River,Miscellaneous grasses - Wheat,1.1058574780423266e-05
+478,San Joaquin River,Miscellaneous grasses - Young Orchard,1.0510041138952041e-05
+479,San Joaquin River,Mixed pasture,0.039843986498924774
+480,San Joaquin River,Mixed pasture - Corn,8.734010787800704e-05
+481,San Joaquin River,"Mixed pasture - Melons, Squash, and Cucumbers",3.331611030796625e-05
+482,San Joaquin River,Mixed pasture - Misc. Grain and Hay,5.681261846466289e-05
+483,San Joaquin River,Mixed pasture - Miscellaneous grasses,1.8471669315971482e-05
+484,San Joaquin River,Mixed pasture - Safflower,1.3495046527646709e-05
+485,San Joaquin River,Mixed pasture - Sweet Potatoes,8.145574664771316e-06
+486,San Joaquin River,Mixed pasture - Tomatoes (all),0.00014962142544190432
+487,San Joaquin River,Mixed pasture - Truck Crops - Misc.,2.0474354988632982e-05
+488,San Joaquin River,Mixed pasture - Wheat,3.425687520800454e-05
+489,San Joaquin River,Olives,0.0033406781837799146
+490,San Joaquin River,Olives - Corn,1.817939309432092e-05
+491,San Joaquin River,Olives - Sweet Potatoes,2.933420190941731e-05
+492,San Joaquin River,Olives - Wheat,1.2836817973271785e-05
+493,San Joaquin River,Onions and Garlic,0.0030708416380946166
+494,San Joaquin River,Onions and Garlic - Corn,2.4639149412398678e-05
+495,San Joaquin River,"Onions and Garlic - Melons, Squash, and Cucumbers",1.296362456814037e-05
+496,San Joaquin River,Onions and Garlic - Peppers,3.6304906024463675e-05
+497,San Joaquin River,Onions and Garlic - Tomatoes (Processing),3.6304516135036894e-05
+498,San Joaquin River,Onions and Garlic - Young Orchard,9.194458682104362e-06
+499,San Joaquin River,Peaches and nectarines,0.004030219393804124
+500,San Joaquin River,Peaches and nectarines - Citrus,3.3768982613256996e-06
+501,San Joaquin River,Peaches and nectarines - Sweet Potatoes,2.4890777730664982e-05
+502,San Joaquin River,Peaches and nectarines - Young Orchard,8.423820960756585e-06
+503,San Joaquin River,Pears,0.00010899500128938389
+504,San Joaquin River,Pecans,0.00020751385042351727
+505,San Joaquin River,Pecans - Corn,1.7866492188286998e-06
+506,San Joaquin River,Pecans - Sweet Potatoes,8.83971910001973e-06
+507,San Joaquin River,Peppers,0.00039826278722972024
+508,San Joaquin River,Peppers - Tomatoes (all),1.9547338096739974e-05
+509,San Joaquin River,Peppers - Wheat,2.7565121369516353e-05
+510,San Joaquin River,Pistachios,0.040189020217048475
+511,San Joaquin River,Plums,0.0007487297739722056
+512,San Joaquin River,Pomegranates,0.0017247197644094316
+513,San Joaquin River,Potatoes,0.0032628421303233963
+514,San Joaquin River,Prunes,0.000561165320414758
+515,San Joaquin River,Prunes - Young Orchard,3.413159236105481e-05
+516,San Joaquin River,Rice,0.004336998824240279
+517,San Joaquin River,Safflower,0.001348620474633595
+518,San Joaquin River,Safflower - Tomatoes (all),3.0262693257988192e-05
+519,San Joaquin River,Strawberries,0.00013815726203797433
+520,San Joaquin River,Strawberries - Corn,2.2219771753288725e-05
+521,San Joaquin River,Strawberries - Misc. Grain and Hay,3.4739013498771254e-05
+522,San Joaquin River,Strawberries - Truck Crops - Misc.,9.926798630879532e-06
+523,San Joaquin River,Strawberries - Young Orchard,7.415610477205059e-06
+524,San Joaquin River,Subtropical,0.00010546429410983923
+525,San Joaquin River,Sunflowers,0.00022524474913528455
+526,San Joaquin River,Sweet Potatoes,0.0047255792494488484
+527,San Joaquin River,"Sweet Potatoes - Melons, Squash, and Cucumbers",3.484975042524127e-06
+528,San Joaquin River,Tomatoes (Processing),0.028351509662654303
+529,San Joaquin River,Tomatoes (Processing) - Miscellaneous grasses,5.5597957486884656e-05
+530,San Joaquin River,Tomatoes (all),0.028061117203168305
+531,San Joaquin River,Tomatoes (all) - Corn,0.00012251175812834952
+532,San Joaquin River,Tomatoes (all) - Cotton,6.457038984151976e-05
+533,San Joaquin River,"Tomatoes (all) - Melons, Squash, and Cucumbers",1.4204973733577338e-05
+534,San Joaquin River,Tomatoes (all) - Misc. Grain and Hay,1.780028237172338e-05
+535,San Joaquin River,Tomatoes (all) - Wheat,5.282046197655266e-05
+536,San Joaquin River,Truck Crops - Misc.,0.002661182477478352
+537,San Joaquin River,Truck Crops - Misc. - Beans (dry),2.1859551799058713e-06
+538,San Joaquin River,Truck Crops - Misc. - Broccoli,1.7645181710080818e-05
+539,San Joaquin River,Truck Crops - Misc. - Corn,6.572357035147966e-05
+540,San Joaquin River,Truck Crops - Misc. - Cotton,8.91577503473947e-05
+541,San Joaquin River,Truck Crops - Misc. - Lettuce,5.4370548202689274e-05
+542,San Joaquin River,"Truck Crops - Misc. - Melons, Squash, and Cucumbers",5.932895509913569e-05
+543,San Joaquin River,Truck Crops - Misc. - Misc. Grain and Hay,2.72422863976302e-05
+544,San Joaquin River,Truck Crops - Misc. - Onions and Garlic,1.3769734897763207e-05
+545,San Joaquin River,Truck Crops - Misc. - Peppers,7.624325997436106e-06
+546,San Joaquin River,Truck Crops - Misc. - Potatoes,5.484844788031801e-05
+547,San Joaquin River,Truck Crops - Misc. - Tomatoes (Processing),0.00017314512503776355
+548,San Joaquin River,Truck Crops - Misc. - Tomatoes (all),9.104297445235946e-05
+549,San Joaquin River,Truck Crops - Misc. - Wheat,6.483322889322006e-05
+550,San Joaquin River,Turf Farms,0.001486657765240909
+551,San Joaquin River,Turf Farms - Alfalfa,1.8908545864259094e-05
+552,San Joaquin River,Turf Farms - Corn,5.208592927045112e-05
+553,San Joaquin River,"Turf Farms - Melons, Squash, and Cucumbers",1.8767809307150553e-05
+554,San Joaquin River,Turf Farms - Potatoes,3.505123583288206e-05
+555,San Joaquin River,Turf Farms - Rice,4.489618392975453e-05
+556,San Joaquin River,Turf Farms - Sunflowers,9.800701208302404e-06
+557,San Joaquin River,Turf Farms - Wheat,9.73154028302476e-06
+558,San Joaquin River,Vineyards,0.09290359099859558
+559,San Joaquin River,Vineyards - Beans (dry),2.7369365077574882e-05
+560,San Joaquin River,Vineyards - Corn,2.45812718076199e-05
+561,San Joaquin River,"Vineyards - Melons, Squash, and Cucumbers",1.7329074369997766e-05
+562,San Joaquin River,Vineyards - Misc. Grain and Hay,5.557808750304024e-05
+563,San Joaquin River,Vineyards - Safflower,0.00014229633291857854
+564,San Joaquin River,Vineyards - Sweet Potatoes,3.482899900841472e-05
+565,San Joaquin River,Vineyards - Tomatoes (Processing),4.236711263465047e-05
+566,San Joaquin River,Vineyards - Tomatoes (all),0.00011196642861572378
+567,San Joaquin River,Vineyards - Truck Crops - Misc.,2.213565658200291e-06
+568,San Joaquin River,Vineyards - Wheat,1.6845090470092713e-05
+569,San Joaquin River,Vineyards - Young Orchard,0.00012694695819450862
+570,San Joaquin River,Walnuts,0.057587368571639694
+571,San Joaquin River,Walnuts - Alfalfa,4.9465592809740115e-06
+572,San Joaquin River,Walnuts - Beans (dry),2.091356525317595e-05
+573,San Joaquin River,Walnuts - Corn,7.972697657749453e-05
+574,San Joaquin River,Walnuts - Fallow/Idle,5.641947990168937e-06
+575,San Joaquin River,"Walnuts - Melons, Squash, and Cucumbers",8.798876602521755e-05
+576,San Joaquin River,Walnuts - Misc. Grain and Hay,2.2681839852456503e-05
+577,San Joaquin River,Walnuts - Miscellaneous grasses,4.271126483392469e-06
+578,San Joaquin River,Walnuts - Safflower,1.0941319095499094e-05
+579,San Joaquin River,Walnuts - Sweet Potatoes,1.3119901203965561e-05
+580,San Joaquin River,Walnuts - Tomatoes (all),8.342869444019879e-05
+581,San Joaquin River,Walnuts - Truck Crops - Misc.,4.292205098613036e-07
+582,San Joaquin River,Walnuts - Young Orchard,2.42911489731038e-05
+583,San Joaquin River,Wheat,0.02010459675510901
+584,San Joaquin River,Wheat - Alfalfa,4.454273122349515e-05
+585,San Joaquin River,Wheat - Beans (dry),0.00039060011294539035
+586,San Joaquin River,Wheat - Carrots,9.66094680049561e-05
+587,San Joaquin River,Wheat - Corn,0.022286529666756105
+588,San Joaquin River,Wheat - Cotton,0.00013958736702736
+589,San Joaquin River,Wheat - Field Misc.,3.047762626431035e-05
+590,San Joaquin River,"Wheat - Melons, Squash, and Cucumbers",0.0008702240971625707
+591,San Joaquin River,Wheat - Miscellaneous grasses,5.5008670734466374e-05
+592,San Joaquin River,Wheat - Onions and Garlic,1.4206375466372402e-05
+593,San Joaquin River,Wheat - Peppers,4.229828395244989e-05
+594,San Joaquin River,Wheat - Pistachios,0.00040091645765376506
+595,San Joaquin River,Wheat - Potatoes,0.0001925109333013842
+596,San Joaquin River,Wheat - Rice,2.9306688934672633e-05
+597,San Joaquin River,Wheat - Safflower,2.4338241777122943e-05
+598,San Joaquin River,Wheat - Sweet Potatoes,6.1904479104742e-05
+599,San Joaquin River,Wheat - Tomatoes (Processing),0.0007822151482901144
+600,San Joaquin River,Wheat - Tomatoes (all),0.0011087722287380693
+601,San Joaquin River,Wheat - Truck Crops - Misc.,4.999789254326117e-05
+602,San Joaquin River,Wheat - Young Orchard,1.465785543339199e-05
+603,San Joaquin River,Young Orchard,0.016830745006852506
+604,Tulare Lake,Alfalfa,0.025901002326007345
+605,Tulare Lake,Alfalfa - Almonds,3.947254969316611e-05
+606,Tulare Lake,Alfalfa - Beans (dry),3.5337041228042374e-05
+607,Tulare Lake,Alfalfa - Corn,0.0009011556321933059
+608,Tulare Lake,Alfalfa - Cotton,0.000146332287688636
+609,Tulare Lake,Alfalfa - Lettuce,4.653910707571419e-05
+610,Tulare Lake,"Alfalfa - Melons, Squash, and Cucumbers",6.399307214666764e-05
+611,Tulare Lake,Alfalfa - Misc. Grain and Hay,0.00034510395718040734
+612,Tulare Lake,Alfalfa - Miscellaneous grasses,4.551271731587639e-06
+613,Tulare Lake,Alfalfa - Pistachios,2.1391099645640784e-05
+614,Tulare Lake,Alfalfa - Potatoes,3.454625191870075e-05
+615,Tulare Lake,Alfalfa - Tomatoes (Processing),2.194419345053084e-05
+616,Tulare Lake,Alfalfa - Tomatoes (all),5.530832438276292e-05
+617,Tulare Lake,Alfalfa - Wheat,0.00041951450578340117
+618,Tulare Lake,Alfalfa - Young Orchard,6.776857139148582e-06
+619,Tulare Lake,Almonds,0.17804549247984713
+620,Tulare Lake,Almonds - Alfalfa,4.5304775114916735e-05
+621,Tulare Lake,Almonds - Beans (dry),2.428187281788135e-05
+622,Tulare Lake,Almonds - Carrots,1.6517063374046897e-05
+623,Tulare Lake,Almonds - Corn,0.00031580459553981065
+624,Tulare Lake,Almonds - Cotton,1.1895898056402332e-05
+625,Tulare Lake,Almonds - Misc. Grain and Hay,3.9336262527785675e-05
+626,Tulare Lake,Almonds - Pistachios,2.9438720230282452e-05
+627,Tulare Lake,Almonds - Potatoes,2.379035527807399e-05
+628,Tulare Lake,Almonds - Tomatoes (all),0.0001301576276706417
+629,Tulare Lake,Almonds - Truck Crops - Misc.,2.0749123121183253e-05
+630,Tulare Lake,Almonds - Vineyards,3.8867559640843886e-05
+631,Tulare Lake,Almonds - Young Orchard,0.00015672004975158645
+632,Tulare Lake,Apples,0.00022672327343506045
+633,Tulare Lake,Apples - Young Orchard,6.4039977163571334e-06
+634,Tulare Lake,Apricots,0.0005167319473225337
+635,Tulare Lake,Apricots - Corn,1.5137155735468247e-05
+636,Tulare Lake,Apricots - Young Orchard,1.909161337831329e-06
+637,Tulare Lake,Avocados,1.4741264218518333e-05
+638,Tulare Lake,Beans (dry),0.0017017301303023798
+639,Tulare Lake,"Beans (dry) - Melons, Squash, and Cucumbers",1.043814500089465e-05
+640,Tulare Lake,Beans (dry) - Misc. Grain and Hay,5.590769036685027e-06
+641,Tulare Lake,Blueberries,0.0015901934739567362
+642,Tulare Lake,Blueberries - Misc. Grain and Hay,1.4340747352522099e-05
+643,Tulare Lake,Blueberries - Young Orchard,6.036397648967081e-06
+644,Tulare Lake,Broccoli,0.0006068810943180407
+645,Tulare Lake,Broccoli - Alfalfa,1.2249590269666987e-05
+646,Tulare Lake,Broccoli - Beans (dry),2.7957862264733315e-06
+647,Tulare Lake,Broccoli - Carrots,3.1533311601779506e-05
+648,Tulare Lake,Broccoli - Corn,5.396017932838096e-05
+649,Tulare Lake,Broccoli - Cotton,6.616719687061913e-06
+650,Tulare Lake,Broccoli - Lettuce,3.959583126267013e-05
+651,Tulare Lake,"Broccoli - Melons, Squash, and Cucumbers",3.075134622047606e-05
+652,Tulare Lake,Broccoli - Misc. Grain and Hay,7.971834227158946e-05
+653,Tulare Lake,Broccoli - Onions and Garlic,1.8742765749010253e-05
+654,Tulare Lake,Broccoli - Peppers,1.1358201115787576e-05
+655,Tulare Lake,Broccoli - Potatoes,3.0276670138743555e-05
+656,Tulare Lake,Broccoli - Safflower,2.5407041092634906e-05
+657,Tulare Lake,Broccoli - Sweet Potatoes,8.738753795998861e-06
+658,Tulare Lake,Broccoli - Tomatoes (Processing),3.812853193943199e-05
+659,Tulare Lake,Broccoli - Tomatoes (all),5.329302854910222e-05
+660,Tulare Lake,Broccoli - Truck Crops - Misc.,2.5238162115983396e-05
+661,Tulare Lake,Broccoli - Wheat,5.0781320549770904e-05
+662,Tulare Lake,Carrots,0.00431069296308389
+663,Tulare Lake,Carrots - Alfalfa,3.540425546357514e-05
+664,Tulare Lake,Carrots - Beans (dry),7.610557523147147e-05
+665,Tulare Lake,Carrots - Broccoli,3.0829017257948453e-05
+666,Tulare Lake,Carrots - Corn,0.00011308999403573286
+667,Tulare Lake,Carrots - Cotton,0.00017097519967482688
+668,Tulare Lake,Carrots - Field Misc.,5.150761226934387e-05
+669,Tulare Lake,Carrots - Lettuce,0.00016668775213181595
+670,Tulare Lake,"Carrots - Melons, Squash, and Cucumbers",6.990414604320166e-05
+671,Tulare Lake,Carrots - Misc. Grain and Hay,0.0004728841113612244
+672,Tulare Lake,Carrots - Miscellaneous grasses,1.785360734892038e-05
+673,Tulare Lake,Carrots - Onions and Garlic,7.002998251092742e-05
+674,Tulare Lake,Carrots - Peppers,4.743440968391245e-05
+675,Tulare Lake,Carrots - Potatoes,0.0008750857198579767
+676,Tulare Lake,Carrots - Safflower,4.027481010856072e-05
+677,Tulare Lake,Carrots - Sweet Potatoes,0.00016332268941086084
+678,Tulare Lake,Carrots - Tomatoes (Processing),0.00016168040660118025
+679,Tulare Lake,Carrots - Tomatoes (all),0.0006540195686396361
+680,Tulare Lake,Carrots - Truck Crops - Misc.,0.00013477153427042158
+681,Tulare Lake,Carrots - Wheat,0.0002788739970198431
+682,Tulare Lake,Carrots - Young Orchard,3.2790274372591056e-05
+683,Tulare Lake,Cherries,0.0035241402390729557
+684,Tulare Lake,Cherries - Corn,1.6408466494016538e-05
+685,Tulare Lake,"Cherries - Melons, Squash, and Cucumbers",2.9165497606721814e-07
+686,Tulare Lake,Cherries - Young Orchard,2.713210994736811e-07
+687,Tulare Lake,Citrus,0.07371922642705912
+688,Tulare Lake,Citrus - Young Orchard,1.8320428989627334e-05
+689,Tulare Lake,Corn,0.013760795158717235
+690,Tulare Lake,Corn - Alfalfa,1.3642150033551766e-05
+691,Tulare Lake,Corn - Beans (dry),2.357496734019929e-05
+692,Tulare Lake,Corn - Broccoli,3.291877602756052e-05
+693,Tulare Lake,Corn - Carrots,4.018124225043509e-05
+694,Tulare Lake,Corn - Cotton,0.00014290762202169596
+695,Tulare Lake,"Corn - Melons, Squash, and Cucumbers",9.063349021262198e-05
+696,Tulare Lake,Corn - Misc. Grain and Hay,0.00022171964343443726
+697,Tulare Lake,Corn - Miscellaneous grasses,3.883446519454239e-05
+698,Tulare Lake,Corn - Sugar beets,2.4553129650848746e-05
+699,Tulare Lake,Corn - Tomatoes (all),0.00010427508757273907
+700,Tulare Lake,Corn - Truck Crops - Misc.,4.698683560573197e-06
+701,Tulare Lake,Corn - Wheat,0.0003173942636507025
+702,Tulare Lake,Corn - Young Orchard,4.851858898433253e-06
+703,Tulare Lake,Cotton,0.03136484297211272
+704,Tulare Lake,Cotton - Field Misc.,1.3919067525585681e-06
+705,Tulare Lake,Dates,1.6349006378776043e-05
+706,Tulare Lake,Deciduous fruits and nuts,6.186399971542662e-06
+707,Tulare Lake,Eucalyptus,2.2865596103774163e-05
+708,Tulare Lake,Fallow/Idle,0.1504110802602881
+709,Tulare Lake,Fallow/Idle - Alfalfa,0.0026138967357900614
+710,Tulare Lake,Fallow/Idle - Miscellaneous grasses,4.65563173665214e-05
+711,Tulare Lake,Field Misc.,0.00024058119671869715
+712,Tulare Lake,Field Misc. - Beans (dry),2.3864980578053255e-05
+713,Tulare Lake,Field Misc. - Carrots,2.5052774825140067e-05
+714,Tulare Lake,Field Misc. - Corn,2.180125568289146e-05
+715,Tulare Lake,Field Misc. - Lettuce,1.7338983411700213e-05
+716,Tulare Lake,Field Misc. - Misc. Grain and Hay,6.322724840443993e-06
+717,Tulare Lake,Field Misc. - Potatoes,4.7022934316185276e-05
+718,Tulare Lake,Field Misc. - Tomatoes (Processing),2.3345874884256513e-05
+719,Tulare Lake,Field Misc. - Truck Crops - Misc.,8.556890358063186e-05
+720,Tulare Lake,Field Misc. - Wheat,2.3454748498317888e-05
+721,Tulare Lake,Kiwis,0.0009660505621169479
+722,Tulare Lake,Kiwis - Corn,1.9877669826735696e-05
+723,Tulare Lake,Lettuce,0.0026964663126283045
+724,Tulare Lake,Lettuce - Beans (dry),7.416126195419099e-05
+725,Tulare Lake,Lettuce - Broccoli,2.8517389147456e-05
+726,Tulare Lake,Lettuce - Carrots,8.517015018313561e-05
+727,Tulare Lake,Lettuce - Corn,8.998642654631112e-05
+728,Tulare Lake,Lettuce - Cotton,5.0201455291339036e-05
+729,Tulare Lake,"Lettuce - Melons, Squash, and Cucumbers",0.00022819534423677504
+730,Tulare Lake,Lettuce - Misc. Grain and Hay,0.00021478040548637955
+731,Tulare Lake,Lettuce - Onions and Garlic,1.2986428993024171e-05
+732,Tulare Lake,Lettuce - Peppers,2.0458856000953466e-05
+733,Tulare Lake,Lettuce - Potatoes,3.281577821511495e-05
+734,Tulare Lake,Lettuce - Sweet Potatoes,4.5466853697595825e-05
+735,Tulare Lake,Lettuce - Tomatoes (Processing),0.0003323425104347749
+736,Tulare Lake,Lettuce - Tomatoes (all),0.00010510118133998121
+737,Tulare Lake,Lettuce - Truck Crops - Misc.,5.818462244491455e-05
+738,Tulare Lake,Lettuce - Wheat,0.00018772920076007036
+739,Tulare Lake,"Melons, Squash, and Cucumbers",0.004720085325061918
+740,Tulare Lake,"Melons, Squash, and Cucumbers - Corn",2.5304495711111784e-05
+741,Tulare Lake,"Melons, Squash, and Cucumbers - Field Misc.",5.804137431308228e-06
+742,Tulare Lake,"Melons, Squash, and Cucumbers - Misc. Grain and Hay",4.915444996568622e-05
+743,Tulare Lake,"Melons, Squash, and Cucumbers - Onions and Garlic",2.717586248140481e-05
+744,Tulare Lake,"Melons, Squash, and Cucumbers - Peppers",9.298354231951546e-06
+745,Tulare Lake,"Melons, Squash, and Cucumbers - Pistachios",3.6653202041434814e-05
+746,Tulare Lake,"Melons, Squash, and Cucumbers - Tomatoes (Processing)",1.5819271502266408e-05
+747,Tulare Lake,"Melons, Squash, and Cucumbers - Tomatoes (all)",4.8249397597874565e-05
+748,Tulare Lake,"Melons, Squash, and Cucumbers - Truck Crops - Misc.",1.46066881965385e-05
+749,Tulare Lake,Misc. Grain and Hay,0.022194792506378718
+750,Tulare Lake,Misc. Grain and Hay - Alfalfa,5.3880006006330286e-05
+751,Tulare Lake,Misc. Grain and Hay - Beans (dry),8.334038593830944e-05
+752,Tulare Lake,Misc. Grain and Hay - Broccoli,2.4860640486176037e-05
+753,Tulare Lake,Misc. Grain and Hay - Carrots,0.00010247156285200089
+754,Tulare Lake,Misc. Grain and Hay - Corn,0.013801313742405853
+755,Tulare Lake,Misc. Grain and Hay - Cotton,0.00016591575321788486
+756,Tulare Lake,Misc. Grain and Hay - Field Misc.,5.80184085027361e-05
+757,Tulare Lake,Misc. Grain and Hay - Lettuce,1.1629693287379108e-05
+758,Tulare Lake,"Misc. Grain and Hay - Melons, Squash, and Cucumbers",0.00010580530129248735
+759,Tulare Lake,Misc. Grain and Hay - Miscellaneous grasses,0.00010459364933211205
+760,Tulare Lake,Misc. Grain and Hay - Mixed pasture,9.991214730955659e-06
+761,Tulare Lake,Misc. Grain and Hay - Onions and Garlic,6.650556900330639e-05
+762,Tulare Lake,Misc. Grain and Hay - Peppers,1.122156918826331e-05
+763,Tulare Lake,Misc. Grain and Hay - Potatoes,8.326755834536201e-05
+764,Tulare Lake,Misc. Grain and Hay - Safflower,8.695433107303067e-06
+765,Tulare Lake,Misc. Grain and Hay - Sweet Potatoes,0.00015342138682506319
+766,Tulare Lake,Misc. Grain and Hay - Tomatoes (Processing),9.556202956434121e-05
+767,Tulare Lake,Misc. Grain and Hay - Tomatoes (all),0.0004103622934387049
+768,Tulare Lake,Misc. Grain and Hay - Truck Crops - Misc.,7.08347526784721e-05
+769,Tulare Lake,Misc. Grain and Hay - Vineyards,1.8350463696957424e-05
+770,Tulare Lake,Misc. Grain and Hay - Wheat,8.492490498387698e-05
+771,Tulare Lake,Misc. Grain and Hay - Young Orchard,3.2453609074493676e-05
+772,Tulare Lake,Miscellaneous deciduous,0.00156347574692968
+773,Tulare Lake,Miscellaneous deciduous - Corn,1.3391699555960458e-05
+774,Tulare Lake,Miscellaneous deciduous - Field Misc.,9.584074260809004e-07
+775,Tulare Lake,Miscellaneous deciduous - Young Orchard,1.3031142395314032e-06
+776,Tulare Lake,Miscellaneous grasses,0.0006943176838625967
+777,Tulare Lake,Miscellaneous grasses - Beans (dry),2.4586124862325337e-06
+778,Tulare Lake,Miscellaneous grasses - Corn,6.0764324442209037e-05
+779,Tulare Lake,Miscellaneous grasses - Misc. Grain and Hay,0.00012494861840572775
+780,Tulare Lake,Miscellaneous grasses - Onions and Garlic,2.386691354113498e-05
+781,Tulare Lake,Miscellaneous grasses - Tomatoes (Processing),4.8836264731126504e-05
+782,Tulare Lake,Miscellaneous grasses - Wheat,5.686861731663182e-05
+783,Tulare Lake,Mixed pasture,0.003775616054290308
+784,Tulare Lake,Mixed pasture - Young Orchard,5.245384490049123e-06
+785,Tulare Lake,Olives,0.0024840530069796083
+786,Tulare Lake,Olives - Young Orchard,5.650416633185873e-06
+787,Tulare Lake,Onions and Garlic,0.010175115299155778
+788,Tulare Lake,Onions and Garlic - Corn,2.6654651633380088e-05
+789,Tulare Lake,"Onions and Garlic - Melons, Squash, and Cucumbers",5.629794306127359e-05
+790,Tulare Lake,Onions and Garlic - Potatoes,4.7730460627817714e-05
+791,Tulare Lake,Onions and Garlic - Truck Crops - Misc.,2.0547183672864263e-05
+792,Tulare Lake,Onions and Garlic - Wheat,5.264676099972166e-06
+793,Tulare Lake,Peaches and nectarines,0.01479772365970335
+794,Tulare Lake,Peaches and nectarines - Almonds,7.264262326487768e-06
+795,Tulare Lake,Peaches and nectarines - Corn,1.776937537057653e-05
+796,Tulare Lake,Peaches and nectarines - Misc. Grain and Hay,1.7951978198414724e-06
+797,Tulare Lake,Peaches and nectarines - Pistachios,9.127762870443483e-06
+798,Tulare Lake,Peaches and nectarines - Young Orchard,4.110446544524575e-05
+799,Tulare Lake,Pears,0.0001623343040535846
+800,Tulare Lake,Pecans,0.0005681491895672681
+801,Tulare Lake,Peppers,0.0006865332596480599
+802,Tulare Lake,Peppers - Tomatoes (all),2.040149308512834e-05
+803,Tulare Lake,Peppers - Truck Crops - Misc.,5.856537065856202e-06
+804,Tulare Lake,Pistachios,0.10709500014084804
+805,Tulare Lake,Pistachios - Field Misc.,1.481137131696499e-06
+806,Tulare Lake,Pistachios - Young Orchard,1.063662589758031e-05
+807,Tulare Lake,Plums,0.005867189743935595
+808,Tulare Lake,Plums - Corn,1.8470553041077768e-05
+809,Tulare Lake,Plums - Miscellaneous grasses,1.3387915952661194e-06
+810,Tulare Lake,Plums - Young Orchard,2.484000023102921e-05
+811,Tulare Lake,Pomegranates,0.005043753991976568
+812,Tulare Lake,Potatoes,0.004322412650283071
+813,Tulare Lake,Potatoes - Alfalfa,5.120949822826442e-05
+814,Tulare Lake,Potatoes - Almonds,3.928129641808354e-05
+815,Tulare Lake,Potatoes - Beans (dry),2.7199388416194836e-05
+816,Tulare Lake,Potatoes - Carrots,8.021843772991796e-05
+817,Tulare Lake,Potatoes - Corn,4.338774795981136e-05
+818,Tulare Lake,Potatoes - Cotton,4.2168092581155e-05
+819,Tulare Lake,Potatoes - Field Misc.,2.4625690075009314e-05
+820,Tulare Lake,Potatoes - Lettuce,4.0777243537950656e-05
+821,Tulare Lake,"Potatoes - Melons, Squash, and Cucumbers",6.113399092636264e-05
+822,Tulare Lake,Potatoes - Misc. Grain and Hay,9.16112427407563e-05
+823,Tulare Lake,Potatoes - Onions and Garlic,3.271201804572692e-05
+824,Tulare Lake,Potatoes - Peppers,3.33125690320117e-05
+825,Tulare Lake,Potatoes - Safflower,2.4735717640329696e-05
+826,Tulare Lake,Potatoes - Sweet Potatoes,1.3897944014366021e-05
+827,Tulare Lake,Potatoes - Tomatoes (Processing),2.9771436601504045e-05
+828,Tulare Lake,Potatoes - Tomatoes (all),2.3295254611025768e-05
+829,Tulare Lake,Potatoes - Truck Crops - Misc.,6.380843674814277e-05
+830,Tulare Lake,Potatoes - Wheat,3.9474532280333e-05
+831,Tulare Lake,Potatoes - Young Orchard,2.341447069056882e-05
+832,Tulare Lake,Prunes,0.0004544729453999187
+833,Tulare Lake,Prunes - Young Orchard,1.6798990868903223e-06
+834,Tulare Lake,Safflower,0.007351176074336609
+835,Tulare Lake,Strawberries,1.3251095332511098e-05
+836,Tulare Lake,Subtropical,3.255028243523039e-05
+837,Tulare Lake,Subtropical - Misc. Grain and Hay,3.7794180435413977e-06
+838,Tulare Lake,Sugar beets,3.682825049301445e-05
+839,Tulare Lake,Sweet Potatoes,5.6452326384989315e-05
+840,Tulare Lake,Tomatoes (Processing),0.02919811179330314
+841,Tulare Lake,Tomatoes (Processing) - Truck Crops - Misc.,7.371416091470821e-05
+842,Tulare Lake,Tomatoes (all),0.025136124023711397
+843,Tulare Lake,Tomatoes (all) - Corn,7.124115497597988e-05
+844,Tulare Lake,Tomatoes (all) - Cotton,3.146895213578821e-05
+845,Tulare Lake,"Tomatoes (all) - Melons, Squash, and Cucumbers",4.768921343290077e-05
+846,Tulare Lake,Tomatoes (all) - Misc. Grain and Hay,5.016987371498957e-05
+847,Tulare Lake,Truck Crops - Misc.,0.004069655528275881
+848,Tulare Lake,Truck Crops - Misc. - Almonds,1.1765420465194647e-05
+849,Tulare Lake,Truck Crops - Misc. - Beans (dry),1.6580286604394636e-05
+850,Tulare Lake,Truck Crops - Misc. - Broccoli,7.400925189641818e-06
+851,Tulare Lake,Truck Crops - Misc. - Carrots,4.246954134025941e-05
+852,Tulare Lake,Truck Crops - Misc. - Corn,9.993995225166604e-05
+853,Tulare Lake,Truck Crops - Misc. - Cotton,0.00013187291110069695
+854,Tulare Lake,Truck Crops - Misc. - Field Misc.,2.3533405899902458e-05
+855,Tulare Lake,Truck Crops - Misc. - Lettuce,2.102535209709738e-05
+856,Tulare Lake,"Truck Crops - Misc. - Melons, Squash, and Cucumbers",4.622845111705143e-05
+857,Tulare Lake,Truck Crops - Misc. - Misc. Grain and Hay,9.792441010314939e-05
+858,Tulare Lake,Truck Crops - Misc. - Onions and Garlic,3.8252857723340445e-05
+859,Tulare Lake,Truck Crops - Misc. - Peppers,2.2467684846207264e-05
+860,Tulare Lake,Truck Crops - Misc. - Potatoes,0.00010749389332115813
+861,Tulare Lake,Truck Crops - Misc. - Sweet Potatoes,4.917101814496779e-05
+862,Tulare Lake,Truck Crops - Misc. - Tomatoes (Processing),0.000139886496528306
+863,Tulare Lake,Truck Crops - Misc. - Tomatoes (all),0.0001706573411383574
+864,Tulare Lake,Truck Crops - Misc. - Wheat,1.217838590955691e-05
+865,Tulare Lake,Truck Crops - Misc. - Young Orchard,6.692245394120522e-06
+866,Tulare Lake,Turf Farms,0.0001323821335672984
+867,Tulare Lake,Vineyards,0.0857597202603907
+868,Tulare Lake,Vineyards - Alfalfa,7.081070635941053e-06
+869,Tulare Lake,Vineyards - Almonds,5.581804925173407e-05
+870,Tulare Lake,Vineyards - Blueberries,1.2296265780052762e-05
+871,Tulare Lake,Vineyards - Citrus,3.0375498055766574e-05
+872,Tulare Lake,Vineyards - Corn,4.430078073197915e-05
+873,Tulare Lake,Vineyards - Field Misc.,1.220495511933968e-05
+874,Tulare Lake,Vineyards - Misc. Grain and Hay,1.4219180403172148e-05
+875,Tulare Lake,Vineyards - Miscellaneous grasses,2.4733242564676172e-06
+876,Tulare Lake,Vineyards - Peppers,5.187349998166819e-06
+877,Tulare Lake,Vineyards - Pistachios,3.8970521848969325e-05
+878,Tulare Lake,Vineyards - Potatoes,4.903143948485338e-05
+879,Tulare Lake,Vineyards - Truck Crops - Misc.,1.0995059945841103e-05
+880,Tulare Lake,Vineyards - Young Orchard,0.00042770246096504176
+881,Tulare Lake,Walnuts,0.019299541081645295
+882,Tulare Lake,Walnuts - Alfalfa,4.824660757055764e-06
+883,Tulare Lake,Walnuts - Almonds,1.126077018177447e-05
+884,Tulare Lake,Walnuts - Corn,0.0001591610467215666
+885,Tulare Lake,Walnuts - Misc. Grain and Hay,2.0156523325546287e-05
+886,Tulare Lake,Walnuts - Miscellaneous grasses,7.0821365805398485e-06
+887,Tulare Lake,Walnuts - Potatoes,2.2766131754507388e-05
+888,Tulare Lake,Walnuts - Truck Crops - Misc.,4.09618609799268e-06
+889,Tulare Lake,Walnuts - Wheat,7.045226860962903e-06
+890,Tulare Lake,Walnuts - Young Orchard,1.2709397531111771e-05
+891,Tulare Lake,Wheat,0.021201114887483937
+892,Tulare Lake,Wheat - Alfalfa,5.0448222308156444e-05
+893,Tulare Lake,Wheat - Beans (dry),0.00011960323085044914
+894,Tulare Lake,Wheat - Broccoli,4.8340131345003045e-05
+895,Tulare Lake,Wheat - Corn,0.03530368536652563
+896,Tulare Lake,Wheat - Cotton,7.545230356219987e-05
+897,Tulare Lake,Wheat - Field Misc.,8.488146119528199e-06
+898,Tulare Lake,Wheat - Lettuce,2.2633504099443745e-05
+899,Tulare Lake,"Wheat - Melons, Squash, and Cucumbers",8.32982599753321e-05
+900,Tulare Lake,Wheat - Misc. Grain and Hay,5.696033547761684e-06
+901,Tulare Lake,Wheat - Miscellaneous grasses,0.00011901829884281779
+902,Tulare Lake,Wheat - Onions and Garlic,1.0884821657043729e-05
+903,Tulare Lake,Wheat - Peppers,3.423393396125024e-05
+904,Tulare Lake,Wheat - Safflower,3.7103339551887087e-06
+905,Tulare Lake,Wheat - Sweet Potatoes,1.3893626090852727e-05
+906,Tulare Lake,Wheat - Tomatoes (Processing),7.066826001458699e-05
+907,Tulare Lake,Wheat - Tomatoes (all),7.943483547031387e-05
+908,Tulare Lake,Wheat - Truck Crops - Misc.,6.583238089517391e-06
+909,Tulare Lake,Wheat - Young Orchard,3.6384796405798415e-05
+910,Tulare Lake,Young Orchard,0.01391280096318666
