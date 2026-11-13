@@ -17,4 +17,7 @@ geodata/landiq_results_2021.geojson
 geodata/landiq_results_2022.geojson
 geodata/landiq_results_2023.geojson
 geodata/landiq_results_2024.geojson
-eto_CAproject.csv
+ca_eto.csv
+data_summaries/gsa_fields.csv
+data_summaries/hydrologic_fields.csv
+data_summaries/subbasin_fields.csv

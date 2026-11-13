@@ -17,7 +17,8 @@ data = data.rename(columns={'value': 'value_mm'})
 data.fillna(0, inplace=True)
 data['month'] = data['month'] + '-01'
 
-eto = pd.read_csv('eto_CAproject.csv')
+eto_path = Path(__file__).resolve().parent.parent / 'geodata' / 'ca_eto.csv'
+eto = pd.read_csv(eto_path)
 eto['month_date'] = pd.to_datetime(eto['month'])
 
 data['month_date'] = pd.to_datetime(data['month'])
