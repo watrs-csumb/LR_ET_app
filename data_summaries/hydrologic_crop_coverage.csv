@@ -55,7 +55,7 @@ Central Coast,Carrots - Misc. Grain and Hay,0.008902515195072036
 Central Coast,Carrots - Onions and Garlic,0.0035516968053519575
 Central Coast,Carrots - Potatoes,0.009037214676794188
 Central Coast,Carrots - Truck Crops - Misc.,0.00943924521417368
-Central Coast,Cherries,0.2229864920932189
+Central Coast,Cherries,0.21492784627757794
 Central Coast,Cherries - Truck Crops - Misc.,0.0004848902159130559
 Central Coast,Citrus,0.4707762775896583
 Central Coast,Corn,0.09164922730320543
@@ -64,7 +64,7 @@ Central Coast,Corn - Lettuce,0.001193016743320688
 Central Coast,"Corn - Melons, Squash, and Cucumbers",0.0002757700616137001
 Central Coast,Corn - Misc. Grain and Hay,0.007926045715410387
 Central Coast,Corn - Truck Crops - Misc.,0.0013763168433636563
-Central Coast,Fallow/Idle,13.754430117095973
+Central Coast,Fallow/Idle,13.75094727130901
 Central Coast,Fallow/Idle - Alfalfa,0.01802880598803033
 Central Coast,Fallow/Idle - Miscellaneous grasses,0.0011065840108131905
 Central Coast,Field Misc.,0.013224836400676534
@@ -100,7 +100,7 @@ Central Coast,"Melons, Squash, and Cucumbers - Misc. Grain and Hay",0.0019249296
 Central Coast,"Melons, Squash, and Cucumbers - Peppers",0.0010226277197645333
 Central Coast,"Melons, Squash, and Cucumbers - Truck Crops",4.779246884969052e-05
 Central Coast,"Melons, Squash, and Cucumbers - Truck Crops - Misc.",0.0021912577339047775
-Central Coast,Misc. Grain and Hay,7.647573411664394
+Central Coast,Misc. Grain and Hay,7.646978076591901
 Central Coast,Misc. Grain and Hay - Alfalfa,0.0035020675236691156
 Central Coast,Misc. Grain and Hay - Beans (dry),0.006758938156166052
 Central Coast,Misc. Grain and Hay - Blueberries,0.0003394100610633907
@@ -124,7 +124,7 @@ Central Coast,Misc. Grain and Hay - Tomatoes (all),0.04707946438828931
 Central Coast,Misc. Grain and Hay - Truck Crops,0.0016275102360945753
 Central Coast,Misc. Grain and Hay - Truck Crops - Misc.,0.25020953881640035
 Central Coast,Misc. Grain and Hay - Vineyards,0.0009794334767214707
-Central Coast,Miscellaneous deciduous,0.08134051875766903
+Central Coast,Miscellaneous deciduous,0.08072793545275168
 Central Coast,Miscellaneous grasses,0.19130489577399207
 Central Coast,Miscellaneous grasses - Broccoli,0.000129665027159493
 Central Coast,Miscellaneous grasses - Field Misc.,0.0007414037478787669
@@ -447,11 +447,11 @@ San Francisco Bay,Apricots,0.3472324209575658
 San Francisco Bay,Blueberries,0.03259773907109515
 San Francisco Bay,Broccoli,0.28694307837194044
 San Francisco Bay,Broccoli - Truck Crops - Misc.,0.025318622362102035
-San Francisco Bay,Cherries,5.3112533100473645
+San Francisco Bay,Cherries,5.957091572814497
 San Francisco Bay,Citrus,0.2776228609133505
 San Francisco Bay,Corn,0.7762896966221946
 San Francisco Bay,Corn - Lettuce,0.05237249039807064
-San Francisco Bay,Fallow/Idle,25.7487713929171
+San Francisco Bay,Fallow/Idle,26.02789460095938
 San Francisco Bay,Field Misc.,0.01000145962577584
 San Francisco Bay,Kiwis,0.09233034054633157
 San Francisco Bay,Lettuce,0.1991627990634088
@@ -461,12 +461,12 @@ San Francisco Bay,Lettuce - Peppers,0.021955574852522298
 San Francisco Bay,Lettuce - Tomatoes (all),0.04943380484393277
 San Francisco Bay,Lettuce - Truck Crops - Misc.,0.14572827397747146
 San Francisco Bay,"Melons, Squash, and Cucumbers",0.3389735495539507
-San Francisco Bay,Misc. Grain and Hay,31.504832792362123
+San Francisco Bay,Misc. Grain and Hay,31.55254430342478
 San Francisco Bay,Misc. Grain and Hay - Broccoli,0.029000185922045375
 San Francisco Bay,Misc. Grain and Hay - Corn,0.036427969978758454
 San Francisco Bay,Misc. Grain and Hay - Lettuce,0.009545999944084815
 San Francisco Bay,Misc. Grain and Hay - Truck Crops - Misc.,1.04345038819975
-San Francisco Bay,Miscellaneous deciduous,1.2497461549211235
+San Francisco Bay,Miscellaneous deciduous,1.2988399786849238
 San Francisco Bay,Miscellaneous grasses,1.699545213093161
 San Francisco Bay,Mixed pasture,4.1904743507180156
 San Francisco Bay,Olives,0.1953315909800589

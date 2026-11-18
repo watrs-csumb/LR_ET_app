@@ -6,6 +6,7 @@ import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 import textwrap
+from adjustText import adjust_text
 from faicons import icon_svg
 
 from ipyleaflet import GeoJSON, Map
@@ -16,8 +17,9 @@ from shinywidgets import render_widget
 MIN_AVG_CROP_COVERAGE_PERC = 1  # The minimum average percentage of a region's total acreage over all years a crop needs to cover to be included in the application.
 
 plt.style.use('bmh')
+annual_totals_color_map = {'Wet': 'blue', 'Average': 'green', 'Dry': 'red'}
 
-selection = reactive.Value('')               # Stores name of last clicked map region
+selection = reactive.Value('')  # Stores name of last clicked map region (HR_NAME, Basin_Subb, or GSA_Name)
 
 #region Map layer and GDF Loading
 def get_style(feature_id):
@@ -252,9 +254,12 @@ def get_annual_dist(selection_type: str, region: str, value: str = 'ET'):
         point_count = summary.shape[0] / summary['water_year_class'].nunique()
         ax = summary.boxplot(column='value_ft', by='water_year_class', flierprops=outlier_design(point_count))
 
-        plt.ylim(top=6, bottom=0)  # TODO: Un-hardcode this
+        if summary['value_ft'].min() < 0:
+            plt.axhline(y=0, linestyle='--', color='black')
+
+        plt.ylim(top=6, bottom=min(-0.01, summary['value_ft'].min() - 0.01))  # TODO: Un-hardcode this
         plt.xlabel('Water Year Classification')
-        plt.ylabel(f'Annual Field {value} (acre-ft)')
+        plt.ylabel(f'Annual Field {value} (acre-ft / acre)')
         plt.title(f'Annual Field {value} Distribution')
         plt.suptitle('')
         plt.tight_layout()
@@ -266,13 +271,13 @@ def get_annual_totals(selection_type: str, region: str, value: str = 'ET'):
     if selection() != '':
         if selection_type == 'i03':
             summary = hydrologic_summary[hydrologic_summary['HR_NAME'] == region]
-            summary['total'] = summary['SUM'] / 100000
-            unit = 'hundred thousands of'
+            summary['total'] = summary['SUM'] / 1000000
+            unit = 'millions of'
         elif selection_type == 'i08':
             code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
             summary = subbasin_summary[subbasin_summary['Basin_Subb'] == code]
-            summary['total'] = summary['SUM'] / 10000
-            unit = 'ten thousands of'
+            summary['total'] = summary['SUM'] / 1000000
+            unit = 'millions of'
         elif selection_type == 'gsa':
             code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
             summary = gsa_summary[gsa_summary['GSA_ID'] == code]
@@ -287,20 +292,31 @@ def get_annual_totals(selection_type: str, region: str, value: str = 'ET'):
             dataset = 'net_et'
 
         summary = summary[summary['dataset'] == dataset]
+        summary['zeroes'] = 0
 
         fig, ax = plt.subplots()
         for water_year_class in [('Wet', 'blue'), ('Average', 'green'), ('Dry', 'red')]:
             summary[summary['water_year_class'] == water_year_class[0]].plot.scatter(
-                x='water_year', y='total', 
+                x='total', y='zeroes', 
                 c=water_year_class[1], 
+                s=100,
+                alpha=0.7,
                 ax=ax, label=water_year_class[0]
             )
 
-        plt.xlabel('Water Year')
-        plt.ylabel(f'Total {value}\n({unit} acre-ft)')
-        plt.title(f'Annual {value} Totals')
+        plt.gca().get_yaxis().set_visible(False)
+
+        plt.xlabel(f'Total {value}\n({unit} acre-ft)')
+        plt.title(f'Annual Region {value} Totals')
         plt.legend(bbox_to_anchor=(1,1))
         plt.tight_layout()
+
+        labels = [ax.text(point.total, point.zeroes, point.water_year) for point in summary.itertuples()]
+        adjust_text(
+            labels, arrowprops=dict(arrowstyle='-', color='gray', lw=0.5), 
+            only_move={'points': 'xy+', 'text': 'xy+', 'objects': 'xy+'}, 
+            expand=(1.2, 1.5), force_static=(0.1, 1), force_explode=(0.1, 0.8)
+        )
         return ax
     else:
         return empty_plot()
@@ -586,7 +602,7 @@ with ui.sidebar(open='closed', width='260px', resizable=False):
     pass
 
 with ui.layout_columns(col_widths=[4, 8]):
-    with ui.layout_columns(col_widths=[12, 12, 12]):
+    with ui.layout_columns(col_widths=[12, 12]):
         # region Map Control Stuff
         with ui.card():
             with ui.layout_columns(col_widths=[6, 6, 12]):
@@ -809,8 +825,9 @@ with ui.layout_columns(col_widths=[4, 8]):
                     []
                 )
 
-                with ui.h3():
-                    '     -->'
+                with ui.h3(style='display: flex; justify-content: center; align-items: center; font-size: 60px;'):
+                    ''
+                    '\u2192'
 
                 ui.input_selectize(
                     'target_crops',
@@ -833,7 +850,24 @@ with ui.layout_columns(col_widths=[4, 8]):
                     for target in old_targets:
                         if target not in new_choices:
                             old_targets.remove(target)
+                    if old_current != '':
+                        new_choices.pop(old_current)
                     ui.update_selectize('target_crops', choices=new_choices, selected=old_targets)
+
+                @reactive.effect
+                @reactive.event(input.current_crop)
+                def remove_current_crop_from_target_options():
+                    current_choices = get_crops_for_selectize(input.selection_type.get(), selection())
+
+                    current_crop = input.current_crop.get()
+                    if(current_crop != ''):
+                        current_choices.pop(current_crop)
+
+                    old_targets = list(input.target_crops.get())
+                    for target in old_targets:
+                        if target not in current_choices:
+                            old_targets.remove(target)
+                    ui.update_selectize('target_crops', choices=current_choices, selected=old_targets)
 
             with ui.layout_columns(col_widths=[1, 2]):
                 ui.input_switch(

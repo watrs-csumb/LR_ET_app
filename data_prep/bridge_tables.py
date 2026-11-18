@@ -56,7 +56,7 @@ for year in range(START_YEAR, END_YEAR + 1):
         landiq_conversions[year] = conversion
 
         if year == END_YEAR:
-            crop_to_category = pd.read_csv(crop_to_category).set_index['']
+            crop_to_category = pd.read_csv(crop_to_category_path).set_index('crop')['plant_type'].to_dict()
     else:
         landiq_cropland_path = Path(__file__).resolve().parent.parent / 'geodata' / 'crop_translations' / f'landiq_to_cropland_{year}.csv'
         conversion = pd.read_csv(landiq_cropland_path).set_index('code')['cropland'].to_dict()
@@ -180,6 +180,11 @@ print('Done')
 # Add GSAs
 print('Adding GSAs')
 field_points = gpd.sjoin(field_points, gsa_gdf[['GSA_ID', 'geometry']], how='left', predicate='intersects').drop(columns='index_right')
+print('Done')
+
+# Manually adjust the fields in San Jose subbasin and GSA that overhang into the Central Coast HR
+print('Manually adjusting Santa Clara subbasin and GSA fields to all stay in same HR region')
+field_points.loc[(field_points['Basin_Subb'] == '2-009.02') | (field_points['GSA_ID'] == 148), 'HR_NAME'] = 'San Francisco Bay'
 print('Done')
 
 # Purging fields that aren't in a Hydrologic Region, Subbasin, or GSA
