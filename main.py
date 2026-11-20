@@ -17,7 +17,6 @@ from shinywidgets import render_widget
 MIN_AVG_CROP_COVERAGE_PERC = 1  # The minimum average percentage of a region's total acreage over all years a crop needs to cover to be included in the application.
 
 plt.style.use('bmh')
-annual_totals_color_map = {'Wet': 'blue', 'Average': 'green', 'Dry': 'red'}
 
 selection = reactive.Value('')  # Stores name of last clicked map region (HR_NAME, Basin_Subb, or GSA_Name)
 
@@ -578,7 +577,7 @@ def get_field_count(selection_type: str, region: str):
             return bridge[bridge['GSA_ID'] == code].shape[0]
 
 ui.tags.style('.bslib-value-box .value-box-value { font-size:20px !important; }')
-ui.page_opts(fillable=True)
+ui.page_opts(window_title='CASC Tool', fillable=True)  # Consumptive wAter uSe Comparison (CASC) Tool
 
 # Icon for the information pop-up in the region info section
 info_icon = ui.span(
@@ -598,386 +597,404 @@ info_icon = ui.span(
     '''
 )
 
-with ui.sidebar(open='closed', width='260px', resizable=False):
-    pass
 
-with ui.layout_columns(col_widths=[4, 8]):
-    with ui.layout_columns(col_widths=[12, 12]):
-        # region Map Control Stuff
-        with ui.card():
-            with ui.layout_columns(col_widths=[6, 6, 12]):
-                # User input for region boundary type to use
-                ui.input_select(
-                    'selection_type',
-                    'Boundaries:',
-                    {
-                        'i03': 'Hydrologic Regions (i03)',
-                        'i08': 'Subbasins (i08)',
-                        'gsa': 'Groundwater Sustainability Agencies',
-                    },
-                    selected='i08'  # Default to subbasins
-                )
+with ui.panel_absolute(top='20px', right='25px'):
+    ui.input_action_button(
+        'about',
+        'ABOUT'
+    )
 
-                # User input for type of data to use
-                ui.input_select(
-                    'value_type',
-                    'Values:',
-                    {
-                        'ET': 'Evapotranspiration (ET)',
-                        'PR': 'Precipitation (PR)',
-                        'Net ET': 'Net ET (ET - PR)',
-                    },
-                    selected='ET'  # Default to ET
-                )
+@reactive.effect
+@reactive.event(input.about)
+def update_about_button():
+    if input.about.get() % 2 == 0:
+        ui.update_action_button('about', label='ABOUT')
+    else:
+        ui.update_action_button('about', label='BACK')
 
-                # Toggle for highlighting critically overdrafted subbasins
-                ui.input_checkbox(
-                    'show_overdrafted',
-                    'Show Critically Overdrafted Subbasins',
-                    False
-                )
-        # endregion
+# Main Application
+with ui.panel_conditional('input.about % 2 === 0'):
+    with ui.layout_columns(col_widths=[4, 8]):
+        with ui.layout_columns(col_widths=[12, 12]):
+            # region Map Control Stuff
+            with ui.card():
+                with ui.layout_columns(col_widths=[6, 6, 12]):
+                    # User input for region boundary type to use
+                    ui.input_select(
+                        'selection_type',
+                        'Boundaries:',
+                        {
+                            'i03': 'Hydrologic Regions (i03)',
+                            'i08': 'Subbasins (i08)',
+                            'gsa': 'Groundwater Sustainability Agencies',
+                        },
+                        selected='i08'  # Default to subbasins
+                    )
+
+                    # User input for type of data to use
+                    ui.input_select(
+                        'value_type',
+                        'Values:',
+                        {
+                            'ET': 'Evapotranspiration (ET)',
+                            'PR': 'Precipitation (PR)',
+                            'Net ET': 'Net ET (ET - PR)',
+                        },
+                        selected='ET'  # Default to ET
+                    )
+
+                    # Toggle for highlighting critically overdrafted subbasins
+                    ui.input_checkbox(
+                        'show_overdrafted',
+                        'Show Critically Overdrafted Subbasins',
+                        False
+                    )
+            # endregion
 
 
-        #region Map Stuff
-        with ui.card(full_screen=True, fill=True):
-            # Create a map centered on California
-            m = Map(center=(37.5, -121.2), zoom=6)
+            #region Map Stuff
+            with ui.card(full_screen=True, fill=True):
+                # Create a map centered on California
+                m = Map(center=(37.5, -121.2), zoom=6)
 
-            def map_click(**kwargs):
-                '''Handle a map click by storing the'''
-                if kwargs.get('type') == 'click':
-                    print(kwargs)
-                    # Get click coordinates for determining the region clicked in
-                    coords = kwargs.get('coordinates')
-                    point = Point(coords[1], coords[0])
+                def map_click(**kwargs):
+                    '''Handle a map click by storing the'''
+                    if kwargs.get('type') == 'click':
+                        print(kwargs)
+                        # Get click coordinates for determining the region clicked in
+                        coords = kwargs.get('coordinates')
+                        point = Point(coords[1], coords[0])
 
-                    selection_type = input.selection_type.get()
+                        selection_type = input.selection_type.get()
 
-                    # Determine which region the click coordinates landed in
-                    if selection_type == 'i03':
-                        click_results = hydrologic_gdf[hydrologic_gdf.geometry.contains(point)]['HR_NAME']
-                    elif selection_type == 'i08':
-                        click_results = subbasin_gdf[subbasin_gdf.geometry.contains(point)]['Basin_Su_1']
-                    elif selection_type == 'gsa':
-                        click_results = gsa_gdf[gsa_gdf.geometry.contains(point)]['GSA_Name']
+                        # Determine which region the click coordinates landed in
+                        if selection_type == 'i03':
+                            click_results = hydrologic_gdf[hydrologic_gdf.geometry.contains(point)]['HR_NAME']
+                        elif selection_type == 'i08':
+                            click_results = subbasin_gdf[subbasin_gdf.geometry.contains(point)]['Basin_Su_1']
+                        elif selection_type == 'gsa':
+                            click_results = gsa_gdf[gsa_gdf.geometry.contains(point)]['GSA_Name']
 
-                    # Set the reactive selection value to the clicked region
-                    if len(click_results) > 0:
-                        selection.set(click_results.iloc[0])
-                    else:
-                        selection.set('')
-                    
-                    # Refresh styles to visually update which region is selected
-                    if selection_type == 'i03':
+                        # Set the reactive selection value to the clicked region
+                        if len(click_results) > 0:
+                            selection.set(click_results.iloc[0])
+                        else:
+                            selection.set('')
+                        
+                        # Refresh styles to visually update which region is selected
+                        # if selection_type == 'i03':
                         hydrologic_layer._update_data(None)
-                    elif selection_type == 'i08':
+                        # elif selection_type == 'i08':
                         subbasin_layer._update_data(None)
-                    elif selection_type == 'gsa':
+                        # elif selection_type == 'gsa':
                         gsa_layer._update_data(None)
 
-            # Assign the click handler to the map's interaction response
-            m.on_interaction(map_click)
+                # Assign the click handler to the map's interaction response
+                m.on_interaction(map_click)
 
-            @render_widget
-            def map():
-                m.add(subbasin_layer)  # Starting with subbasin layer as default
-                return m     
+                @render_widget
+                def map():
+                    # m.add(subbasin_layer)  # Starting with subbasin layer as default
+                    return m     
 
-            # Update which boundaries are shown when the input value changes. Also, reset selection since the selected region will no longer be shown
-            @reactive.effect
-            @reactive.event(input.selection_type)
-            def _():
-                selection_type = input.selection_type.get()
+                # Update which boundaries are shown when the input value changes. Also, reset selection since the selected region will no longer be shown
+                @reactive.effect
+                @reactive.event(input.selection_type)
+                def _():
+                    selection_type = input.selection_type.get()
 
-                # Reset map to just the base map layer
-                m.layers = m.layers[:1]  
+                    # Reset map to just the base map layer
+                    m.layers = m.layers[:1]  
 
-                # If active, always put the overdrafted subbasins layer below whatever the currently selected boundaries are
-                if input.show_overdrafted.get():
-                    m.add(overdrafted_layer)
+                    # If active, always put the overdrafted subbasins layer below whatever the currently selected boundaries are
+                    if input.show_overdrafted.get():
+                        m.add(overdrafted_layer)
 
-                # Add selected boundaries on the top layer
-                if selection_type == 'i03':
-                    m.add(hydrologic_layer)
-                elif selection_type == 'i08':
-                    m.add(subbasin_layer)
-                elif selection_type == 'gsa':
-                    m.add(gsa_layer)       
+                    # Add selected boundaries on the top layer
+                    if selection_type == 'i03':
+                        m.add(hydrologic_layer)
+                    elif selection_type == 'i08':
+                        m.add(subbasin_layer)
+                    elif selection_type == 'gsa':
+                        m.add(gsa_layer)       
 
-                # Reset selection since the previously selected region is gone
-                selection.set('')
+                    # Reset selection since the previously selected region is gone
+                    selection.set('')
 
-            # Update overdrafted subbasin layer when the option to show it is changed. Doesn't reset selection since boundaries aren't changing
-            @reactive.effect
-            @reactive.event(input.show_overdrafted)
-            def _():
-                selection_type = input.selection_type.get()
+                # Update overdrafted subbasin layer when the option to show it is changed. Doesn't reset selection since boundaries aren't changing
+                @reactive.effect
+                @reactive.event(input.show_overdrafted)
+                def _():
+                    selection_type = input.selection_type.get()
 
-                # Reset map to just the base map layer
-                m.layers = m.layers[:1]
+                    # Reset map to just the base map layer
+                    m.layers = m.layers[:1]
 
-                # If active, always put the overdrafted subbasins layer below whatever the currently selected boundaries are
-                if input.show_overdrafted.get():
-                    m.add(overdrafted_layer)
+                    # If active, always put the overdrafted subbasins layer below whatever the currently selected boundaries are
+                    if input.show_overdrafted.get():
+                        m.add(overdrafted_layer)
 
-                # Add selected boundaries on the top layer
-                if selection_type == 'i03':
-                    m.add(hydrologic_layer)
-                elif selection_type == 'i08':
-                    m.add(subbasin_layer)
-                elif selection_type == 'gsa':
-                    m.add(gsa_layer)  
-
-
-            with ui.card(style='white-space: pre-wrap;', fill=True):
-                # Information pop-up
-                with ui.popover(title='Region Data', placement='right'):
-                    info_icon 
-                    'The information in this box is based on 2024 field boundaries and crop types (except for the mean field value, which is an average over 2018 - 2024).'
-
-                with ui.card_body():
-                    @render.text
-                    def name_output():
-                        # TODO: Formatting
-                        return f'Region: {selection()}'
-                    
-                    @render.text
-                    def field_count_total_acreage_output():
-                        if selection() == '':
-                            return f'Total Acreage:                     Field Count:     '
-                            
-                        selection_type = input.selection_type.get()
-                        count = get_field_count(selection_type, selection())
-                        total_acreage = get_avg_acreage(selection_type, selection())
-                        return f'Total Acreage: {total_acreage:.2f} acres       Field Count: {count}'
-
-                    @render.text
-                    def perennial_annual_acreage_output():
-                        if selection() == '':
-                            return f'Perennial:  XX %                   Annual  XX %                   Fallow  XX %'
-                        
-                        selection_type = input.selection_type.get()
-                        perennial_acreage = get_avg_acreage(selection_type, selection(), 'perennial')
-                        annual_acreage = get_avg_acreage(selection_type, selection(), 'annual')
-                        fallow_acreage = get_avg_acreage(selection_type, selection(), 'fallow')
-                        return f'Perennial: {perennial_acreage:.2f}%                  Annual {annual_acreage:.2f}%                  Fallow {fallow_acreage:.2f}%'
-
-                    @render.text
-                    def mean_output():
-                        if selection() == '':
-                            return f'Weighted Mean Field {input.value_type.get()}:'
-                            
-                        selection_type = input.selection_type.get()
-                        value_type = input.value_type.get()
-                        avg = get_avg(selection_type, selection(), value_type)
-                        return f'Weighted Mean Field {input.value_type.get()}: {avg:.2f} acre-ft'
-        #endregion
-
-    with ui.navset_pill(id='tab'):
-        with ui.nav_panel('Regional Crop Data'):
-            with ui.layout_columns(col_widths=[3, 9]):
-                with ui.card():
-                    ui.input_radio_buttons(
-                        'crop_display_setting',
-                        'Crop Types to Display:',
-                        {
-                            'most_common': 'Most Common',
-                            'most_et':     'Highest Mean',
-                            'least_et':    'Lowest Mean',
-                            'mix':         'Highest/Lowest Mean'
-                        },
-                        selected='most_common'
-                    )
-                
-                with ui.card(height=798.5, full_screen=True):
-                    @render.plot
-                    def crop_plot():
-                        value_type = input.value_type.get()
-                        selection_type = input.selection_type.get()
-                        crop_display_setting = input.crop_display_setting.get()
-
-                        crops = select_crops(selection_type, selection(), value_type, crop_display_setting)
-                        return get_crop_comparison(selection_type, selection(), crops, value_type)
+                    # Add selected boundaries on the top layer
+                    if selection_type == 'i03':
+                        m.add(hydrologic_layer)
+                    elif selection_type == 'i08':
+                        m.add(subbasin_layer)
+                    elif selection_type == 'gsa':
+                        m.add(gsa_layer)  
 
 
-        with ui.nav_panel('Water Savings Calculator'):
-            with ui.card():
-                with ui.layout_columns(col_widths=[6, 6]):
-                    with ui.h6():
-                        'Region (selected from map):'
+                with ui.card(style='white-space: pre-wrap;', fill=True):
+                    # Information pop-up
+                    with ui.popover(title='Region Data', placement='right'):
+                        info_icon 
+                        'The information in this box is based on 2024 field boundaries and crop types (except for the mean field value, which is an average over 2018 - 2024).'
+
+                    with ui.card_body():
                         @render.text
-                        def calc_region_display():
-                            return f'{selection()}'
+                        def name_output():
+                            # TODO: Formatting
+                            return f'Region: {selection()}'
+                        
+                        @render.text
+                        def field_count_total_acreage_output():
+                            if selection() == '':
+                                return f'Total Acreage:                     Field Count:     '
+                                
+                            selection_type = input.selection_type.get()
+                            count = get_field_count(selection_type, selection())
+                            total_acreage = get_avg_acreage(selection_type, selection())
+                            return f'Total Acreage: {total_acreage:.2f} acres       Field Count: {count}'
 
-                    ui.input_numeric(
-                        'calc_acreage',
-                        'Field Acreage:',
-                        25,
-                        min=0.1,
-                        step=0.1
+                        @render.text
+                        def perennial_annual_acreage_output():
+                            if selection() == '':
+                                return f'Perennial:  XX %                   Annual  XX %                   Fallow  XX %'
+                            
+                            selection_type = input.selection_type.get()
+                            perennial_acreage = get_avg_acreage(selection_type, selection(), 'perennial')
+                            annual_acreage = get_avg_acreage(selection_type, selection(), 'annual')
+                            fallow_acreage = get_avg_acreage(selection_type, selection(), 'fallow')
+                            return f'Perennial: {perennial_acreage:.2f}%                  Annual {annual_acreage:.2f}%                  Fallow {fallow_acreage:.2f}%'
+
+                        @render.text
+                        def mean_output():
+                            if selection() == '':
+                                return f'Weighted Mean Field {input.value_type.get()}:'
+                                
+                            selection_type = input.selection_type.get()
+                            value_type = input.value_type.get()
+                            avg = get_avg(selection_type, selection(), value_type)
+                            return f'Weighted Mean Field {input.value_type.get()}: {avg:.2f} acre-ft'
+            #endregion
+
+        with ui.navset_pill(id='tab'):
+            with ui.nav_panel('Regional Crop Data'):
+                with ui.layout_columns(col_widths=[3, 9]):
+                    with ui.card():
+                        ui.input_radio_buttons(
+                            'crop_display_setting',
+                            'Crop Types to Display:',
+                            {
+                                'most_common': 'Most Common',
+                                'most_et':     'Highest Mean',
+                                'least_et':    'Lowest Mean',
+                                'mix':         'Highest/Lowest Mean'
+                            },
+                            selected='most_common'
+                        )
+                    
+                    with ui.card(height=798.5, full_screen=True):
+                        @render.plot
+                        def crop_plot():
+                            value_type = input.value_type.get()
+                            selection_type = input.selection_type.get()
+                            crop_display_setting = input.crop_display_setting.get()
+
+                            crops = select_crops(selection_type, selection(), value_type, crop_display_setting)
+                            return get_crop_comparison(selection_type, selection(), crops, value_type)
+
+
+            with ui.nav_panel('Water Savings Calculator'):
+                with ui.card():
+                    with ui.layout_columns(col_widths=[6, 6]):
+                        with ui.h6():
+                            'Region (selected from map):'
+                            @render.text
+                            def calc_region_display():
+                                return f'{selection()}'
+
+                        ui.input_numeric(
+                            'calc_acreage',
+                            'Field Acreage:',
+                            25,
+                            min=0.1,
+                            step=0.1
+                        )
+
+                with ui.layout_columns(col_widths=[5, 2, 5]):
+                    ui.input_selectize(
+                        'current_crop',
+                        'Current Crop',
+                        []
                     )
 
-            with ui.layout_columns(col_widths=[5, 2, 5]):
-                ui.input_selectize(
-                    'current_crop',
-                    'Current Crop',
-                    []
-                )
+                    with ui.h3(style='display: flex; justify-content: center; align-items: center; font-size: 60px;'):
+                        ''
+                        '\u2192'
 
-                with ui.h3(style='display: flex; justify-content: center; align-items: center; font-size: 60px;'):
-                    ''
-                    '\u2192'
+                    ui.input_selectize(
+                        'target_crops',
+                        'Target Crops',
+                        [],
+                        multiple=True
+                    )
 
-                ui.input_selectize(
-                    'target_crops',
-                    'Target Crops',
-                    [],
-                    multiple=True
-                )
+                    @reactive.effect
+                    @reactive.event(input.selection_type, selection)
+                    def current_and_target_crop_selection():
+                        new_choices = get_crops_for_selectize(input.selection_type.get(), selection())
 
-                @reactive.effect
-                @reactive.event(input.selection_type, selection)
-                def current_and_target_crop_selection():
-                    new_choices = get_crops_for_selectize(input.selection_type.get(), selection())
+                        old_current = input.current_crop.get()
+                        if old_current not in new_choices:
+                            old_current = ''
+                        ui.update_selectize('current_crop', choices=new_choices, selected=old_current)
 
-                    old_current = input.current_crop.get()
-                    if old_current not in new_choices:
-                        old_current = ''
-                    ui.update_selectize('current_crop', choices=new_choices, selected=old_current)
+                        old_targets = list(input.target_crops.get())
+                        for target in old_targets:
+                            if target not in new_choices:
+                                old_targets.remove(target)
+                        if old_current != '':
+                            new_choices.pop(old_current)
+                        ui.update_selectize('target_crops', choices=new_choices, selected=old_targets)
 
-                    old_targets = list(input.target_crops.get())
-                    for target in old_targets:
-                        if target not in new_choices:
-                            old_targets.remove(target)
-                    if old_current != '':
-                        new_choices.pop(old_current)
-                    ui.update_selectize('target_crops', choices=new_choices, selected=old_targets)
+                    @reactive.effect
+                    @reactive.event(input.current_crop)
+                    def remove_current_crop_from_target_options():
+                        current_choices = get_crops_for_selectize(input.selection_type.get(), selection())
 
-                @reactive.effect
-                @reactive.event(input.current_crop)
-                def remove_current_crop_from_target_options():
-                    current_choices = get_crops_for_selectize(input.selection_type.get(), selection())
+                        current_crop = input.current_crop.get()
+                        if(current_crop != ''):
+                            current_choices.pop(current_crop)
 
-                    current_crop = input.current_crop.get()
-                    if(current_crop != ''):
-                        current_choices.pop(current_crop)
+                        old_targets = list(input.target_crops.get())
+                        for target in old_targets:
+                            if target not in current_choices:
+                                old_targets.remove(target)
+                        ui.update_selectize('target_crops', choices=current_choices, selected=old_targets)
 
-                    old_targets = list(input.target_crops.get())
-                    for target in old_targets:
-                        if target not in current_choices:
-                            old_targets.remove(target)
-                    ui.update_selectize('target_crops', choices=current_choices, selected=old_targets)
+                with ui.layout_columns(col_widths=[1, 2]):
+                    ui.input_switch(
+                        'calculator_display_relative',
+                        'Display: ',
+                        True
+                    )
 
-            with ui.layout_columns(col_widths=[1, 2]):
-                ui.input_switch(
-                    'calculator_display_relative',
-                    'Display: ',
-                    True
-                )
+                    @render.text
+                    def calculator_display_setting_type():
+                        display_relative = input.calculator_display_relative.get()
+                        value_type = input.value_type.get()
 
-                @render.text
-                def calculator_display_setting_type():
-                    display_relative = input.calculator_display_relative.get()
+                        if display_relative:
+                            return f'Relative {value_type}'
+                        else:
+                            return f'Total {value_type}'
+
+                with ui.navset_card_tab(id='calc_year_classes'):
+                    with ui.nav_panel('All Years'):
+                        @render.plot
+                        def crop_savings_plot_all_years():
+                            value_type = input.value_type.get()
+                            selection_type = input.selection_type.get()
+                            display_relative = input.calculator_display_relative.get()
+
+                            current_crop = input.current_crop.get()
+                            target_crops = list(input.target_crops.get())
+                            acres = input.calc_acreage.get()
+
+                            if selection() == '':
+                                return empty_plot()
+                            elif len(target_crops) == 0:
+                                return empty_plot('Please select crops to compare (max 9)...')
+                            elif len(target_crops) > 9:
+                                return empty_plot('More than 9 comparison crops selected...')
+                            else:
+                                return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'all')
+
+                    
+                    with ui.nav_panel('Wet Years'):
+                        @render.plot
+                        def crop_savings_plot_wet_years():
+                            value_type = input.value_type.get()
+                            selection_type = input.selection_type.get()
+                            display_relative = input.calculator_display_relative.get()
+
+                            current_crop = input.current_crop.get()
+                            target_crops = list(input.target_crops.get())
+                            acres = input.calc_acreage.get()
+
+                            if selection() == '':
+                                return empty_plot()
+                            elif len(target_crops) == 0:
+                                return empty_plot('Please select crops to compare (max 9)...')
+                            elif len(target_crops) > 9:
+                                return empty_plot('More than 9 comparison crops selected...')
+                            else:
+                                return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'Wet')
+
+                    
+                    with ui.nav_panel('Average Years'):
+                        @render.plot
+                        def crop_relative_plot_normal_years():
+                            value_type = input.value_type.get()
+                            selection_type = input.selection_type.get()
+                            display_relative = input.calculator_display_relative.get()
+
+                            current_crop = input.current_crop.get()
+                            target_crops = list(input.target_crops.get())
+                            acres = input.calc_acreage.get()
+
+                            if selection() == '':
+                                return empty_plot()
+                            elif len(target_crops) == 0:
+                                return empty_plot('Please select crops to compare (max 9)...')
+                            elif len(target_crops) > 9:
+                                return empty_plot('More than 9 comparison crops selected...')
+                            else:
+                                return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'Average')
+                    
+                    with ui.nav_panel('Dry Years'):
+                        @render.plot
+                        def crop_savings_plot_dry_years():
+                            value_type = input.value_type.get()
+                            selection_type = input.selection_type.get()
+                            display_relative = input.calculator_display_relative.get()
+
+                            current_crop = input.current_crop.get()
+                            target_crops = list(input.target_crops.get())
+                            acres = input.calc_acreage.get()
+
+                            if selection() == '':
+                                return empty_plot()
+                            elif len(target_crops) == 0:
+                                return empty_plot('Please select crops to compare (max 9)...')
+                            elif len(target_crops) > 9:
+                                return empty_plot('More than 9 comparison crops selected...')
+                            else:
+                                return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'Dry')
+
+            with ui.nav_panel('Regional Distribution'):
+                @render.plot
+                def annual_dist_plot():
                     value_type = input.value_type.get()
-
-                    if display_relative:
-                        return f'Relative {value_type}'
-                    else:
-                        return f'Total {value_type}'
-
-            with ui.navset_card_tab(id='calc_year_classes'):
-                with ui.nav_panel('All Years'):
-                    @render.plot
-                    def crop_savings_plot_all_years():
-                        value_type = input.value_type.get()
-                        selection_type = input.selection_type.get()
-                        display_relative = input.calculator_display_relative.get()
-
-                        current_crop = input.current_crop.get()
-                        target_crops = list(input.target_crops.get())
-                        acres = input.calc_acreage.get()
-
-                        if selection() == '':
-                            return empty_plot()
-                        elif len(target_crops) == 0:
-                            return empty_plot('Please select crops to compare (max 9)...')
-                        elif len(target_crops) > 9:
-                            return empty_plot('More than 9 comparison crops selected...')
-                        else:
-                            return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'all')
-
+                    selection_type = input.selection_type.get()
+                    return get_annual_dist(selection_type, selection(), value_type)
                 
-                with ui.nav_panel('Wet Years'):
-                    @render.plot
-                    def crop_savings_plot_wet_years():
-                        value_type = input.value_type.get()
-                        selection_type = input.selection_type.get()
-                        display_relative = input.calculator_display_relative.get()
+                @render.plot
+                def annual_total_plot():
+                    value_type = input.value_type.get()
+                    selection_type = input.selection_type.get()
+                    return get_annual_totals(selection_type, selection(), value_type)
 
-                        current_crop = input.current_crop.get()
-                        target_crops = list(input.target_crops.get())
-                        acres = input.calc_acreage.get()
-
-                        if selection() == '':
-                            return empty_plot()
-                        elif len(target_crops) == 0:
-                            return empty_plot('Please select crops to compare (max 9)...')
-                        elif len(target_crops) > 9:
-                            return empty_plot('More than 9 comparison crops selected...')
-                        else:
-                            return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'Wet')
-
-                
-                with ui.nav_panel('Average Years'):
-                    @render.plot
-                    def crop_relative_plot_normal_years():
-                        value_type = input.value_type.get()
-                        selection_type = input.selection_type.get()
-                        display_relative = input.calculator_display_relative.get()
-
-                        current_crop = input.current_crop.get()
-                        target_crops = list(input.target_crops.get())
-                        acres = input.calc_acreage.get()
-
-                        if selection() == '':
-                            return empty_plot()
-                        elif len(target_crops) == 0:
-                            return empty_plot('Please select crops to compare (max 9)...')
-                        elif len(target_crops) > 9:
-                            return empty_plot('More than 9 comparison crops selected...')
-                        else:
-                            return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'Average')
-                
-                with ui.nav_panel('Dry Years'):
-                    @render.plot
-                    def crop_savings_plot_dry_years():
-                        value_type = input.value_type.get()
-                        selection_type = input.selection_type.get()
-                        display_relative = input.calculator_display_relative.get()
-
-                        current_crop = input.current_crop.get()
-                        target_crops = list(input.target_crops.get())
-                        acres = input.calc_acreage.get()
-
-                        if selection() == '':
-                            return empty_plot()
-                        elif len(target_crops) == 0:
-                            return empty_plot('Please select crops to compare (max 9)...')
-                        elif len(target_crops) > 9:
-                            return empty_plot('More than 9 comparison crops selected...')
-                        else:
-                            return get_crop_calculator_comparison(selection_type, selection(), current_crop, target_crops, acres, display_relative, value_type, 'Dry')
-
-        with ui.nav_panel('Regional Distribution'):
-            @render.plot
-            def annual_dist_plot():
-                value_type = input.value_type.get()
-                selection_type = input.selection_type.get()
-                return get_annual_dist(selection_type, selection(), value_type)
-            
-            @render.plot
-            def annual_total_plot():
-                value_type = input.value_type.get()
-                selection_type = input.selection_type.get()
-                return get_annual_totals(selection_type, selection(), value_type)
+# About Page
+with ui.panel_conditional('input.about % 2 != 0'):
+    pass

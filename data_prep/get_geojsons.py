@@ -16,6 +16,7 @@ if hydrologic_path.is_file():
 else:
     print('Retrieving Hydrologic Regions GeoJSON...')
     hydrologic_regions = ee.FeatureCollection(f'projects/{project_id}/assets/land_repurposing_app/i03_hydrologic_regions_clipped')
+    hydrologic_regions.filter(ee.Filter.Not(ee.Filter.eq('HR_NAME', 'South Coast')))  # Drop South Coast (3 whole fields)
     geemap.ee_to_geojson(hydrologic_regions, filename=str(hydrologic_path))
     print('Done')
 
