@@ -1,6 +1,8 @@
 import pandas as pd
 import geopandas as gpd
 from pathlib import Path
+from matplotlib.cbook import boxplot_stats
+import json
 
 bridge = pd.read_csv('bridge_table.csv')
 # Actual summary based on 2024 LandIQ boundaries, so filter out fields without a crop in LandIQ 2024
@@ -58,10 +60,16 @@ print('done')
 
 
 print('hydrologic summary')
-# Field-wise summary
-hydrologic_fields = data[['HR_NAME', 'dataset', 'water_year_class', 'value_ft']].dropna(subset=['HR_NAME'])
-hydrologic_fields_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'hydrologic_fields.csv'
-hydrologic_fields.to_csv(hydrologic_fields_path, index=False)
+# Boxplot summary
+hydrologic_boxplot = data.groupby(['HR_NAME', 'dataset', 'water_year_class'], as_index=False).aggregate(
+    MEDIAN = ('value_ft', 'median'),
+    PCT25 = ('value_ft', pct25),
+    PCT75 = ('value_ft', pct75),
+    LOWER_WHISKER = ('value_ft', lower_whisker),
+    UPPER_WHISKER = ('value_ft', upper_whisker)
+)
+hydrologic_boxplot_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'hydrologic_boxplot.csv'
+hydrologic_boxplot.to_csv(hydrologic_boxplot_path, index=False)
 
 # Overall summary
 hydrologic_summary = data.groupby(['HR_NAME', 'dataset', 'water_year', 'water_year_class'], as_index=False).aggregate(SUM = ('value_acre_ft', 'sum'))
@@ -83,10 +91,16 @@ print('done')
 
 
 print('subbasin summary')
-# Field-wise summary
-subbasin_fields = data[['Basin_Subb', 'dataset', 'water_year_class', 'value_ft']].dropna(subset=['Basin_Subb'])
-subbasin_fields_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'subbasin_fields.csv'
-subbasin_fields.to_csv(subbasin_fields_path, index=False)
+# Boxplot summary
+subbasin_boxplot = data.groupby(['Basin_Subb', 'dataset', 'water_year_class'], as_index=False).aggregate(
+    MEDIAN = ('value_ft', 'median'),
+    PCT25 = ('value_ft', pct25),
+    PCT75 = ('value_ft', pct75),
+    LOWER_WHISKER = ('value_ft', lower_whisker),
+    UPPER_WHISKER = ('value_ft', upper_whisker)
+)
+subbasin_boxplot_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'subbasin_boxplot.csv'
+subbasin_boxplot.to_csv(subbasin_boxplot_path, index=False)
 
 # Overall summary
 subbasin_summary = data.groupby(['Basin_Subb', 'dataset', 'water_year', 'water_year_class'], as_index=False).aggregate(SUM = ('value_acre_ft', 'sum'))
@@ -109,10 +123,15 @@ print('done')
 
 print('gsa summary')
 # Field-wise summary
-gsa_fields = data[['GSA_ID', 'dataset', 'water_year_class', 'value_ft']].dropna(subset=['GSA_ID'])
-gsa_fields['GSA_ID'] = gsa_fields['GSA_ID'].astype(int)
-gsa_fields_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'gsa_fields.csv'
-gsa_fields.to_csv(gsa_fields_path, index=False)
+gsa_boxplot = data.groupby(['GSA_ID', 'dataset', 'water_year_class'], as_index=False).aggregate(
+    MEDIAN = ('value_ft', 'median'),
+    PCT25 = ('value_ft', pct25),
+    PCT75 = ('value_ft', pct75),
+    LOWER_WHISKER = ('value_ft', lower_whisker),
+    UPPER_WHISKER = ('value_ft', upper_whisker)
+)
+gsa_boxplot_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'gsa_boxplot.csv'
+gsa_boxplot.to_csv(gsa_boxplot_path, index=False)
 
 # Overall summary
 gsa_summary = data.groupby(['GSA_ID', 'dataset', 'water_year', 'water_year_class'], as_index=False).aggregate(SUM = ('value_acre_ft', 'sum'))
@@ -128,7 +147,6 @@ gsa_summary = gsa_summary.merge(
     how='left', 
     on=['GSA_ID', 'dataset', 'water_year', 'water_year_class']
 )
-gsa_summary['GSA_ID'] = gsa_summary['GSA_ID'].astype(int)
 gsa_summary_path = Path(__file__).resolve().parent.parent / 'data_summaries' / 'gsa_summary.csv'
 gsa_summary.to_csv(gsa_summary_path, index=False)
 print('done')

@@ -133,15 +133,15 @@ subbasin_summary = pd.read_csv(subbasin_summary_path)
 gsa_summary_path = Path(__file__).resolve().parent / 'data_summaries' / 'gsa_summary.csv'
 gsa_summary = pd.read_csv(gsa_summary_path)
 
-# Field summaries are essentially striped down versions of the main data file with only depth data, used for overall regional boxplots
-hydrologic_fields_path = Path(__file__).resolve().parent / 'data_summaries' / 'hydrologic_fields.csv'
-hydrologic_fields = pd.read_csv(hydrologic_fields_path)
+# Boxplot summaries contain regionally-aggregated field information ready to manually build boxplots
+hydrologic_boxplot_path = Path(__file__).resolve().parent / 'data_summaries' / 'hydrologic_boxplot.csv'
+hydrologic_boxplot = pd.read_csv(hydrologic_boxplot_path)
 
-subbasin_fields_path = Path(__file__).resolve().parent / 'data_summaries' / 'subbasin_fields.csv'
-subbasin_fields = pd.read_csv(subbasin_fields_path)
+subbasin_boxplot_path = Path(__file__).resolve().parent / 'data_summaries' / 'subbasin_boxplot.csv'
+subbasin_boxplot = pd.read_csv(subbasin_boxplot_path)
 
-gsa_fields_path = Path(__file__).resolve().parent / 'data_summaries' / 'gsa_fields.csv'
-gsa_fields = pd.read_csv(gsa_fields_path)
+gsa_boxplot_path = Path(__file__).resolve().parent / 'data_summaries' / 'gsa_boxplot.csv'
+gsa_boxplot = pd.read_csv(gsa_boxplot_path)
 
 # Crop summaries contain aggregated ET, precip, and net ET data by crop type
 # Crop coverage contains information on how much acreage each crop takes, and is used for filtering out rare crop combinations
@@ -232,15 +232,6 @@ def outlier_design(total_count):
 
 def get_annual_dist(selection_type: str, region: str, value: str = 'ET'):
     if selection() != '':
-        if selection_type == 'i03':
-            summary = hydrologic_fields[hydrologic_fields['HR_NAME'] == region]
-        elif selection_type == 'i08':
-            code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
-            summary = subbasin_fields[subbasin_fields['Basin_Subb'] == code]
-        elif selection_type == 'gsa':
-            code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
-            summary = gsa_fields[gsa_fields['GSA_ID'] == code]
-
         if value == 'ET':
             dataset = 'ensemble'
         elif value == 'PR':
@@ -248,15 +239,43 @@ def get_annual_dist(selection_type: str, region: str, value: str = 'ET'):
         elif value == 'Net ET':
             dataset = 'net_et'
 
-        summary = summary[summary['dataset'] == dataset]
+        if selection_type == 'i03':
+            boxplots = hydrologic_boxplot[(hydrologic_boxplot['HR_NAME'] == region) & (hydrologic_boxplot['dataset'] == dataset)]
+        elif selection_type == 'i08':
+            code = get_data(selection_type=input.selection_type.get(), region=selection(), data='id')
+            boxplots = subbasin_boxplot[(subbasin_boxplot['Basin_Subb'] == code) & (subbasin_boxplot['dataset'] == dataset)]
+        elif selection_type == 'gsa':
+            code = int(get_data(selection_type=input.selection_type.get(), region=selection(), data='id'))
+            boxplots = gsa_boxplot[(gsa_boxplot['GSA_ID'] == code) & (gsa_boxplot['dataset'] == dataset)]
 
-        point_count = summary.shape[0] / summary['water_year_class'].nunique()
-        ax = summary.boxplot(column='value_ft', by='water_year_class', flierprops=outlier_design(point_count))
+        stats = []
+        lowest = 100
+        for water_year_class in ['Wet', 'Average', 'Dry']:
+            box = boxplots[boxplots['water_year_class'] == water_year_class]
 
-        if summary['value_ft'].min() < 0:
-            plt.axhline(y=0, linestyle='--', color='black')
+            if box.shape[0] == 0:
+                continue
+            box = box.iloc[0]
 
-        plt.ylim(top=6, bottom=min(-0.01, summary['value_ft'].min() - 0.01))  # TODO: Un-hardcode this
+            stats.append({
+                'med': box['MEDIAN'],
+                'q1': box['PCT25'],
+                'q3': box['PCT75'],
+                'whislo': box['LOWER_WHISKER'],
+                'whishi': box['UPPER_WHISKER'],
+                'label': water_year_class,
+            })
+
+            if box['LOWER_WHISKER'] < lowest:
+                lowest = box['LOWER_WHISKER']
+
+        fig, ax = plt.subplots()
+        ax.bxp(stats, showfliers=False)
+
+        # if summary['value_ft'].min() < 0:
+        #     plt.axhline(y=0, linestyle='--', color='black')
+
+        plt.ylim(top=6, bottom=min(-0.01, lowest - 0.01))  # TODO: Un-hardcode this
         plt.xlabel('Water Year Classification')
         plt.ylabel(f'Annual Field {value} (acre-ft / acre)')
         plt.title(f'Annual Field {value} Distribution')
